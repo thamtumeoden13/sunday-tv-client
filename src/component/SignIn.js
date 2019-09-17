@@ -13,7 +13,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
-function Copyright() {
+import { AUTH_TOKEN } from '../constant/config'
+
+
+const Copyright = () => {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
@@ -55,8 +58,17 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function SignInSide() {
+const SignInComponent = (props) => {
     const classes = useStyles();
+
+    const _confirm = async () => {
+        _saveUserData('auth-token')
+        props.history.push(`/`)
+    }
+
+    const _saveUserData = token => {
+        localStorage.setItem(AUTH_TOKEN, token)
+    }
 
     return (
         <Grid container component="main" className={classes.root}>
@@ -98,11 +110,12 @@ export default function SignInSide() {
                             label="Remember me"
                         />
                         <Button
-                            type="submit"
+                            type="button"
                             fullWidth
                             variant="contained"
                             color="primary"
                             className={classes.submit}
+                            onClick={_confirm}
                         >
                             Sign In
                         </Button>
@@ -126,4 +139,6 @@ export default function SignInSide() {
             </Grid>
         </Grid>
     );
+
 }
+export default SignInComponent;

@@ -1,15 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './view/App'
 // import App1 from './view/App'
 import registerServiceWorker from './registerServiceWorker'
+import { BrowserRouter } from 'react-router-dom'
 
 import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context'
 
-import { APOLLO_API_URL } from './constant/config'
+import App from './view/App'
+
+import { APOLLO_API_URL, AUTH_TOKEN } from './constant/config'
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
@@ -29,10 +32,20 @@ const defaultOptions = {
         errorPolicy: 'all',
     },
 };
+const authLink = setContext((_, { headers }) => {
+    const token = localStorage.getItem(AUTH_TOKEN)
+    return {
+        headers: {
+            ...headers,
+            authorization: token ? `Bearer ${token}` : ''
+        }
+    }
+})
 const client = new ApolloClient({
     // Provide required constructor fields
     cache: cache,
-    link: link,
+    // link: link,
+    link: authLink.concat(link),
 
     // Provide some optional constructor fields
     name: 'react-web-client',
@@ -42,9 +55,11 @@ const client = new ApolloClient({
 });
 
 const AppRoot = () => (
-    <ApolloProvider client={client}>
-        <App />
-    </ApolloProvider>
+    <BrowserRouter>
+        <ApolloProvider client={client}>
+            <App />
+        </ApolloProvider>
+    </BrowserRouter>
 );
 ReactDOM.render(<AppRoot />, document.getElementById('root'))
 registerServiceWorker()
