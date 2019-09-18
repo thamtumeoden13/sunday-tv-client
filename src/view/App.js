@@ -3,7 +3,7 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom'
 
 import SignIn from '../component/SignIn'
 import Home from './home/Home'
-
+import NotFound from './notfound/NotFound'
 import { APOLLO_API_URL } from '../constant/config'
 
 
@@ -22,6 +22,7 @@ export default class App extends Component {
 				<Switch>
 					<Route exact path="/" component={Home} />
 					<Route path="/signin" component={SignIn} />
+					<Route path="*" component={NotFound} />
 				</Switch>
 			</BrowserRouter>
 		)

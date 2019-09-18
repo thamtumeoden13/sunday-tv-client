@@ -1,4 +1,6 @@
 import React, { useEffect, useState, Fragment } from 'react';
+import { Link } from 'react-router-dom';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -87,7 +89,6 @@ const DrawerComponent = (props) => {
                     <Card className={classes.card}>
                         <CardMedia
                             className={classes.media}
-                            // image={require("../img/logoSundayTv.jpg")}
                             image={process.env.PUBLIC_URL + '/logoSundayTv.jpg'}
                             title="Contemplative Reptile"
                         />
@@ -101,30 +102,31 @@ const DrawerComponent = (props) => {
                         return (
                             <Fragment key={indexGroupMenu}>
                                 <Divider />
-                                <ListSubheader>{itemGroupMenu.GroupMenuName}</ListSubheader>
+                                {itemGroupMenu
+                                    && itemGroupMenu.groupMenuName
+                                    && itemGroupMenu.groupMenuName.length > 0
+                                    && <ListSubheader>{itemGroupMenu.groupMenuName}</ListSubheader>
+                                }
                                 <List>
-                                    {itemGroupMenu.GroupMenuDetail && itemGroupMenu.GroupMenuDetail.length > 0 &&
-                                        itemGroupMenu.GroupMenuDetail.map((itemMenu, indexMenu) => {
-                                            const Icon = itemMenu.MenuIcon;
+                                    {itemGroupMenu.groupMenuDetail && itemGroupMenu.groupMenuDetail.length > 0 &&
+                                        itemGroupMenu.groupMenuDetail.map((itemMenu, indexMenu) => {
                                             return (
-                                                <ListItem button>
-                                                    <ListItemIcon>
-                                                        {React.cloneElement(Icon)}
-                                                    </ListItemIcon>
-                                                    <ListItemText primary={itemMenu.MenuTitle} />
-                                                </ListItem>
+                                                <Link to={itemMenu.linkTo} key={indexMenu} style={{ textDecoration: 'none', color: 'grey' }}>
+                                                    <ListItem button>
+                                                        <ListItemIcon>
+                                                            {React.cloneElement(itemMenu.menuIcon)}
+                                                        </ListItemIcon>
+                                                        <ListItemText primary={itemMenu.menuTitle} />
+                                                    </ListItem>
+                                                </Link>
                                             )
                                         })
-
                                     }
                                 </List>
-                                {/* <List>{mainListItems}</List> */}
                             </Fragment>
                         )
                     })
                 }
-                {/* <Divider />
-                <List>{secondaryListItems}</List> */}
             </Drawer>
         </Fragment>
     );

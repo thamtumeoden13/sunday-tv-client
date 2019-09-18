@@ -10,69 +10,69 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 
 const AppBarMenu = [
     {
-        GroupMenuKey: 1,
-        GroupMenuName: 'group menu 1',
-        GroupMenuDetail: [
+        groupMenuKey: 1,
+        groupMenuName: '',
+        groupMenuDetail: [
             {
-                MenuName: 'dashboards',
-                MenuTitle: 'Trang chủ',
-                LinkTo: '/',
-                MenuIcon: <DashboardIcon />,
-                SubMenu: [
+                menuName: 'dashboards',
+                menuTitle: 'Trang chủ',
+                linkTo: '/',
+                menuIcon: <DashboardIcon />,
+                subMenu: [
                 ]
             },
             {
-                MenuName: 'Catalogs',
-                MenuTitle: 'Mục lục',
-                LinkTo: '',
-                MenuIcon: <PermMediaIcon />,
-                SubMenu: [
+                menuName: 'Catalogs',
+                menuTitle: 'Mục lục',
+                linkTo: '/catalog',
+                menuIcon: <PermMediaIcon />,
+                subMenu: [
                 ]
             },
             {
-                MenuName: 'Orders',
-                MenuTitle: 'Đặt hàng',
-                LinkTo: '',
-                MenuIcon: <ShoppingCartIcon />,
-                SubMenu: [
+                menuName: 'Orders',
+                menuTitle: 'Đặt hàng',
+                linkTo: '/order',
+                menuIcon: <ShoppingCartIcon />,
+                subMenu: [
                 ]
             },
             {
-                MenuName: 'Customers',
-                MenuTitle: 'Khách hàng',
-                LinkTo: '',
-                MenuIcon: <PeopleIcon />,
-                SubMenu: [
+                menuName: 'Customers',
+                menuTitle: 'Khách hàng',
+                linkTo: '/customer',
+                menuIcon: <PeopleIcon />,
+                subMenu: [
                 ]
             },
         ]
     },
     {
-        GroupMenuKey: 2,
-        GroupMenuName: 'group menu 2',
-        GroupMenuDetail: [
+        groupMenuKey: 2,
+        groupMenuName: '',
+        groupMenuDetail: [
             {
-                MenuName: 'CurrentMonth',
-                MenuTitle: 'Tháng gần nhất',
-                LinkTo: '/',
-                MenuIcon: <AssignmentIcon />,
-                SubMenu: [
+                menuName: 'CurrentMonth',
+                menuTitle: 'Tháng gần nhất',
+                linkTo: '/currentmonth',
+                menuIcon: <AssignmentIcon />,
+                subMenu: [
                 ]
             },
             {
-                MenuName: 'LastQuarter',
-                MenuTitle: 'Quý cuối cùng',
-                LinkTo: '',
-                MenuIcon: <AssignmentIcon />,
-                SubMenu: [
+                menuName: 'LastQuarter',
+                menuTitle: 'Quý cuối cùng',
+                linkTo: '/lastquarter',
+                menuIcon: <AssignmentIcon />,
+                subMenu: [
                 ]
             },
             {
-                MenuName: 'YearEnd',
-                MenuTitle: 'Cuối năm',
-                LinkTo: '',
-                MenuIcon: <AssignmentIcon />,
-                SubMenu: [
+                menuName: 'YearEnd',
+                menuTitle: 'Cuối năm',
+                linkTo: '/yearend',
+                menuIcon: <AssignmentIcon />,
+                subMenu: [
                 ]
             }
         ]

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, BrowserRouter } from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -8,6 +8,8 @@ import Drawer from '../../component/Drawer'
 import Main from '../../component/Main'
 
 import Dashboard from '../dashboard/Dashboard'
+import Catalog from '../catalog/Catalog'
+import NotFound from '../notfound/NotFound'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -22,15 +24,19 @@ const HomeScreen = (props) => {
     }
 
     return (
-        <div className={classes.root}>
-            <AppBar handleDrawer={handleDrawer} statusDrawer={statusDrawer} title={"Trang chủ"} />
-            <Drawer handleDrawer={handleDrawer} statusDrawer={statusDrawer} />
-            <Main>
-                <Switch>
-                    <Route exact path="/" component={Dashboard} />
-                </Switch>
-            </Main>
-        </div>
+        <BrowserRouter>
+            <div className={classes.root}>
+                <AppBar handleDrawer={handleDrawer} statusDrawer={statusDrawer} title={"Trang chủ"} />
+                <Drawer handleDrawer={handleDrawer} statusDrawer={statusDrawer} />
+                <Main>
+                    <Switch>
+                        <Route exact path="/" component={Dashboard} />
+                        <Route path="/catalog" component={Catalog} />
+                        <Route path="*" component={NotFound} />
+                    </Switch>
+                </Main>
+            </div>
+        </BrowserRouter>
     )
 }
 export default HomeScreen
