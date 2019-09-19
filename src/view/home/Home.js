@@ -9,6 +9,7 @@ import Main from '../../component/Main'
 
 import Dashboard from '../dashboard/Dashboard'
 import Catalog from '../catalog/Catalog'
+import Poster from '../poster/Poster'
 import NotFound from '../notfound/NotFound'
 
 const useStyles = makeStyles(theme => ({
@@ -31,6 +32,7 @@ const HomeScreen = (props) => {
                 <Main>
                     <Switch>
                         <Route exact path="/" component={Dashboard} />
+                        <Route path="/poster" component={Poster} />
                         <Route path="/catalog" component={Catalog} />
                         <Route path="*" component={NotFound} />
                     </Switch>

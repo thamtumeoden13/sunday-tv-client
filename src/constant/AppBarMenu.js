@@ -4,7 +4,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import PermMediaIcon from '@material-ui/icons/PermMedia';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 
@@ -30,10 +30,10 @@ const AppBarMenu = [
                 ]
             },
             {
-                menuName: 'Orders',
-                menuTitle: 'Đặt hàng',
-                linkTo: '/order',
-                menuIcon: <ShoppingCartIcon />,
+                menuName: 'Posters',
+                menuTitle: 'Hình ảnh',
+                linkTo: '/poster',
+                menuIcon: <PhotoCameraIcon />,
                 subMenu: [
                 ]
             },

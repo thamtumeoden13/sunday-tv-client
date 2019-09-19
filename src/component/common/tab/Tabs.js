@@ -16,7 +16,7 @@ import PersonPinIcon from '@material-ui/icons/PersonPin';
 
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
-
+    console.log("props", props)
     return (
         <Typography
             component="div"
@@ -47,8 +47,9 @@ const a11yProps = (index) => {
 const TabContainer = (props) => {
     const [value, setValue] = useState(0);
     const [listTab, setListTab] = useState(props.listTab);
-
+    console.log("props.children", props.children)
     const handleChange = (event, newValue) => {
+        console.log({ event, newValue })
         setValue(newValue);
     }
 
@@ -61,7 +62,6 @@ const TabContainer = (props) => {
                 scrollButtons="on"
                 indicatorColor="primary"
                 textColor="primary"
-                aria-label="scrollable force tabs example"
             >
                 {
                     listTab && listTab.length > 0 &&
@@ -73,7 +73,15 @@ const TabContainer = (props) => {
             {
                 listTab && listTab.length > 0 &&
                 listTab.map((item, index) => {
-                    return <TabPanel value={value} index={index} key={index}>{item.title}</TabPanel>
+                    return (
+                        <TabPanel value={value} index={index} key={index}>
+                            {props.children
+                                && props.children[index]
+                                ? React.cloneElement(props.children[index])
+                                : <div>{item.title}</div>
+                            }
+                        </TabPanel>
+                    )
                 })
             }
         </Fragment>

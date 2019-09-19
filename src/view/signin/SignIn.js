@@ -1,22 +1,10 @@
 import React from 'react';
-
 import SignInComponent from '../../component/SignIn'
 
-export default class SignInScreen extends React.Component {
+const SignInScreen = () => {
 
-    constructor(props) {
-        super(props);
-        this.state = { isLoading: true }
-    }
-
-
-    componentDidMount() {
-        console.log("SignIn");
-    }
-
-    render() {
-        return (
-            <SignInComponent />
-        )
-    }
+    return (
+        <SignInComponent />
+    )
 }
+export default SignInScreen;
