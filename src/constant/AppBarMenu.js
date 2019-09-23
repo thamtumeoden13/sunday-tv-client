@@ -22,9 +22,9 @@ const AppBarMenu = [
                 ]
             },
             {
-                menuName: 'Catalogs',
+                menuName: 'Categories',
                 menuTitle: 'Mục lục',
-                linkTo: '/catalog',
+                linkTo: '/category',
                 menuIcon: <PermMediaIcon />,
                 subMenu: [
                 ]

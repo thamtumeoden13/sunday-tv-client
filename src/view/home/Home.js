@@ -8,7 +8,7 @@ import Drawer from '../../component/Drawer'
 import Main from '../../component/Main'
 
 import Dashboard from '../dashboard/Dashboard'
-import Catalog from '../catalog/Catalog'
+import Category from '../category/Category'
 import Poster from '../poster/Poster'
 import NotFound from '../notfound/NotFound'
 
@@ -33,7 +33,7 @@ const HomeScreen = (props) => {
                     <Switch>
                         <Route exact path="/" component={Dashboard} />
                         <Route path="/poster" component={Poster} />
-                        <Route path="/catalog" component={Catalog} />
+                        <Route path="/category" component={Category} />
                         <Route path="*" component={NotFound} />
                     </Switch>
                 </Main>
