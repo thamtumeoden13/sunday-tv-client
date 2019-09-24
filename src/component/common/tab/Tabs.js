@@ -47,9 +47,7 @@ const a11yProps = (index) => {
 const TabContainer = (props) => {
     const [value, setValue] = useState(0);
     const [listTab, setListTab] = useState(props.listTab);
-    console.log("props.children", props.children)
     const handleChange = (event, newValue) => {
-        console.log({ event, newValue })
         setValue(newValue);
     }
 

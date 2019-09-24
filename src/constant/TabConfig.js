@@ -1,9 +1,11 @@
 
 import React from 'react'
 
-import PhoneIcon from '@material-ui/icons/Phone';
+import BurstModeIcon from '@material-ui/icons/BurstMode';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import PhoneIcon from '@material-ui/icons/Phone'
+import PersonPinIcon from '@material-ui/icons/PersonPin'
 
 const TabCatalogConfig = [
     {
@@ -48,4 +50,26 @@ const TabCatalogConfig1 = [
     },
 
 ];
-export { TabCatalogConfig, TabCatalogConfig1 };
+
+const TabCategoryConfig = [
+    {
+        key: 'one',
+        index: 1,
+        title: 'Chi Tiết Danh Mục',
+        icon: <AssignmentIcon />,
+    },
+    {
+        key: 'two',
+        index: 2,
+        title: 'Nội dung Danh Mục',
+        icon: <FavoriteIcon />,
+    },
+    {
+        key: 'three',
+        index: 3,
+        title: 'Danh sách hình ảnh',
+        icon: <BurstModeIcon />,
+    },
+
+];
+export { TabCatalogConfig, TabCatalogConfig1, TabCategoryConfig };

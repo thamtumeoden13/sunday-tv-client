@@ -9,6 +9,7 @@ import Main from '../../component/Main'
 
 import Dashboard from '../dashboard/Dashboard'
 import Category from '../category/Category'
+import CategoryAdd from '../category/CategoryAdd'
 import Poster from '../poster/Poster'
 import NotFound from '../notfound/NotFound'
 
@@ -23,7 +24,7 @@ const HomeScreen = (props) => {
     const handleDrawer = (value) => {
         setStatusDrawer(value)
     }
-
+    console.log({ props })
     return (
         <BrowserRouter>
             <div className={classes.root}>
@@ -33,8 +34,9 @@ const HomeScreen = (props) => {
                     <Switch>
                         <Route exact path="/" component={Dashboard} />
                         <Route path="/poster" component={Poster} />
-                        <Route path="/category" component={Category} />
-                        <Route path="*" component={NotFound} />
+                        <Route exact path="/category" component={Category} />
+                        <Route path="/category/:id" component={CategoryAdd} />
+                        {/* <Route path="*" component={NotFound} /> */}
                     </Switch>
                 </Main>
             </div>
