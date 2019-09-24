@@ -1,19 +1,21 @@
 import React, { Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import { Editor } from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import clsx from 'clsx';
-import DeleteIcon from '@material-ui/icons/Delete';
-import SaveIcon from '@material-ui/icons/Save';
+import Toolbar from '@material-ui/core/Toolbar';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography';
 
-import Tabs from '../../component/common/tab/Tabs';
-import { TabCategoryConfig } from '../../constant/TabConfig'
-import CategoryAddComponent from '../../component/category/CategoryAdd'
-import CategoryAddContentComponent from '../../component/category/CategoryAddContent'
+import Step1 from '../../component/category/add/Step1'
+import Step2 from '../../component/category/add/Step2'
+import Step3 from '../../component/category/add/Step3'
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -22,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     },
     buttons: {
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
     },
     button: {
         marginTop: theme.spacing(3),
@@ -37,42 +39,83 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
+const steps = ['Shipping address', 'Payment details', 'Review your order'];
+
+function getStepContent(step) {
+    switch (step) {
+        case 0:
+            return <Step1 />;
+        case 1:
+            return <Step2 />;
+        case 2:
+            return <Step3 />;
+        default:
+            throw new Error('Unknown step');
+    }
+}
 const CategoryAdd = () => {
     const classes = useStyles();
+    const [activeStep, setActiveStep] = React.useState(0);
 
+    const handleNext = () => {
+        setActiveStep(activeStep + 1);
+    };
+
+    const handleBack = () => {
+        setActiveStep(activeStep - 1);
+    };
     return (
         <Fragment>
             <CssBaseline />
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Paper square className={classes.paper}>
-                        <Tabs
-                            listTab={TabCategoryConfig}
-                        >
-                            <CategoryAddComponent />
-                            <Editor
-                                // editorState={editorState}
-                                toolbarClassName="toolbarClassName"
-                                wrapperClassName="wrapperClassName"
-                                editorClassName="editorClassName"
-                            // onEditorStateChange={this.onEditorStateChange}
-                            />
-                            <CategoryAddContentComponent />
-                        </Tabs>
-                        <div className={classes.buttons}>
-                            <Button variant="contained" className={classes.button}>
-                                <SaveIcon className={clsx(classes.leftIcon)} />
-                                Save
-                            </Button>
-                            <Button variant="outlined" color="secondary" className={classes.button}>
-                                Delete
-                                <DeleteIcon className={classes.rightIcon} />
-                            </Button>
-                        </div>
+                        <Typography component="h1" variant="h4" align="center">
+                            Checkout
+                        </Typography>
+                        <Stepper activeStep={activeStep} className={classes.stepper}>
+                            {steps.map(label => (
+                                <Step key={label}>
+                                    <StepLabel>{label}</StepLabel>
+                                </Step>
+                            ))}
+                        </Stepper>
+                        <React.Fragment>
+                            {activeStep === steps.length ? (
+                                <React.Fragment>
+                                    <Typography variant="h5" gutterBottom>
+                                        Thank you for your order.
+                                    </Typography>
+                                    <Typography variant="subtitle1">
+                                        Your order number is #2001539. We have emailed your order confirmation, and will
+                                        send you an update when your order has shipped.
+                                    </Typography>
+                                </React.Fragment>
+                            ) : (
+                                    <React.Fragment>
+                                        {getStepContent(activeStep)}
+                                        <div className={classes.buttons}>
+                                            {activeStep !== 0 && (
+                                                <Button onClick={handleBack} className={classes.button}>
+                                                    Back
+                                                </Button>
+                                            )}
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={handleNext}
+                                                className={classes.button}
+                                            >
+                                                {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                                            </Button>
+                                        </div>
+                                    </React.Fragment>
+                                )}
+                        </React.Fragment>
                     </Paper>
                 </Grid>
             </Grid>
         </Fragment>
     );
 }
-export default CategoryAdd;
+export default withRouter(CategoryAdd);

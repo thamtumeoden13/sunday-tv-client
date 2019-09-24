@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Switch, Route, BrowserRouter } from 'react-router-dom'
+import React, { Component, Fragment } from 'react'
+import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 
 import SignIn from '../component/SignIn'
 import SignUp from '../component/SignUp'
@@ -10,9 +10,15 @@ import { APOLLO_API_URL } from '../constant/config'
 
 
 export default class App extends Component {
+	constructor(props) {
+		super(props);
+		this.stat = {
+
+		}
+	}
 
 	componentDidMount() {
-		console.log("componentDidMount");
+		console.log("componentDidMount", this.props);
 	}
 	onUserSelected = () => {
 		console.log("onUserSelected", APOLLO_API_URL);
@@ -20,14 +26,14 @@ export default class App extends Component {
 	render() {
 
 		return (
-			<BrowserRouter>
+			<Router>
 				<Switch>
 					<Route exact path="/" component={Home} />
 					<Route path="/signin" component={SignIn} />
 					<Route path="/signup" component={SignUp} />
-					<Route path="*" component={NotFound} />
+					<Route path="*" component={Home} />
 				</Switch>
-			</BrowserRouter>
+			</Router>
 		)
 	}
 }

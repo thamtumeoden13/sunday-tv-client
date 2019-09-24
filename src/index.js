@@ -2,8 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 // import App1 from './view/App'
 import registerServiceWorker from './registerServiceWorker'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 
+import { createBrowserHistory } from "history";
 import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -13,6 +14,7 @@ import { setContext } from 'apollo-link-context'
 import App from './view/App'
 
 import { APOLLO_API_URL, AUTH_TOKEN } from './constant/config'
+const history = createBrowserHistory()
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
@@ -55,11 +57,11 @@ const client = new ApolloClient({
 });
 
 const AppRoot = () => (
-    <BrowserRouter>
-        <ApolloProvider client={client}>
-            <App />
-        </ApolloProvider>
-    </BrowserRouter>
+    // <Router history={history}>
+    <ApolloProvider client={client}>
+        <App />
+    </ApolloProvider>
+    // </Router>
 );
 ReactDOM.render(<AppRoot />, document.getElementById('root'))
 registerServiceWorker()

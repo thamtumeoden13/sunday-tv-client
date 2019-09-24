@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import EditIcon from '@material-ui/icons/EditOutlined'
@@ -54,6 +54,9 @@ const CategoryAddNew = (props) => {
         setSelectedRow(rowData);
     }
 
+    const addNewCategory = () => {
+        props.history.push('category/add')
+    }
     return (
         <React.Fragment>
             <CssBaseline />
@@ -71,13 +74,14 @@ const CategoryAddNew = (props) => {
                             />
                         ),
                     },
-                    { title: 'Id', field: 'id' },
-                    { title: 'First Name', field: 'first_name', },
-                    { title: 'Last Name', field: 'last_name' },
+                    { title: 'Mã Danh mục', field: 'id' },
+                    { title: 'Tên Danh mục', field: 'first_name', },
+                    { title: 'Tiêu đề', field: 'last_name' },
                     {
-                        title: 'Edit', field: 'edit',
+                        title: 'Chỉnh sửa', field: 'edit',
                         render: rowData => (
-                            <Link to={`/category/${rowData.id}`}><EditIcon /></Link>
+                            <Link to={`/category/edit/${rowData.id}`}><EditIcon /></Link>
+                            // <Link to={`/category/add`}><EditIcon /></Link>
                         )
                     },
                 ]}
@@ -99,17 +103,23 @@ const CategoryAddNew = (props) => {
                     })
                 }
                 actions={[
+                    // {
+                    //     icon: 'refresh',
+                    //     tooltip: 'Refresh Data',
+                    //     isFreeAction: true,
+                    //     onClick: () => tableRef.current && tableRef.current.onQueryChange(),
+                    // },
                     {
-                        icon: 'refresh',
-                        tooltip: 'Refresh Data',
+                        tooltip: 'Add New Category',
+                        icon: 'add',
                         isFreeAction: true,
-                        onClick: () => tableRef.current && tableRef.current.onQueryChange(),
+                        onClick: (evt, data) => addNewCategory()
                     },
                     {
-                        tooltip: 'Remove All Selected Users',
+                        tooltip: 'Remove All Selected Categories',
                         icon: 'delete',
                         onClick: (evt, data) => alert('You want to delete ' + data.length + ' rows')
-                    }
+                    },
                 ]}
                 onRowClick={((evt, row) => onSelectRow(evt, row))}
                 options={
@@ -119,14 +129,14 @@ const CategoryAddNew = (props) => {
                         sorting: true,
                         rowStyle: (rowData, index) => ({
                             backgroundColor: (selectedRow && selectedRow.tableData.id === rowData.tableData.id)
-                                ? '#e2004dc4'
+                                ? '#00bcd4'
                                 : (index % 2 === 1 ? '#cfeaff' : '#b4e8ff')
                         }),
-                        headerStyle: { backgroundColor: '#03a9f4f7' }
+                        headerStyle: { backgroundColor: '#9da1a2', color: "#000", fontSize: "24", fontWeight: "bold" }
                     }
                 }
             />
         </React.Fragment>
     );
 }
-export default CategoryAddNew;
+export default withRouter(CategoryAddNew);
