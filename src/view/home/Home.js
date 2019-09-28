@@ -30,7 +30,6 @@ const HomeScreen = (props) => {
     }
     console.log({ props, history })
     return (
-        // <Router>
         <div className={classes.root}>
             <AppBar handleDrawer={handleDrawer} statusDrawer={statusDrawer} title={"Trang chủ"} />
             <Drawer handleDrawer={handleDrawer} statusDrawer={statusDrawer} />
@@ -45,7 +44,6 @@ const HomeScreen = (props) => {
                 </Switch>
             </Main>
         </div>
-        // </Router>
     )
 }
 export default HomeScreen

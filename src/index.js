@@ -57,11 +57,11 @@ const client = new ApolloClient({
 });
 
 const AppRoot = () => (
-    // <Router history={history}>
-    <ApolloProvider client={client}>
-        <App />
-    </ApolloProvider>
-    // </Router>
+    <Router history={history}>
+        <ApolloProvider client={client}>
+            <App />
+        </ApolloProvider>
+    </Router>
 );
 ReactDOM.render(<AppRoot />, document.getElementById('root'))
 registerServiceWorker()

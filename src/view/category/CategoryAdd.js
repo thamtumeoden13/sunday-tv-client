@@ -6,16 +6,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import Toolbar from '@material-ui/core/Toolbar';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 
-import Step1 from '../../component/category/add/Step1'
-import Step2 from '../../component/category/add/Step2'
-import Step3 from '../../component/category/add/Step3'
+import Step1 from '../../component/category/add/Detail'
+import Step2 from '../../component/category/add/Content'
+import Step3 from '../../component/category/add/AddImages'
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -39,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+const steps = ['Detail', 'TextEditor', 'Add Image'];
 
 function getStepContent(step) {
     switch (step) {
@@ -71,7 +69,7 @@ const CategoryAdd = () => {
                 <Grid item xs={12}>
                     <Paper square className={classes.paper}>
                         <Typography component="h1" variant="h4" align="center">
-                            Checkout
+                            CATEGORY
                         </Typography>
                         <Stepper activeStep={activeStep} className={classes.stepper}>
                             {steps.map(label => (

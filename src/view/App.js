@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
+import { Switch, Route, BrowserRouter as Router, Redirect } from 'react-router-dom'
 
 import SignIn from '../component/SignIn'
 import SignUp from '../component/SignUp'
@@ -26,14 +26,12 @@ export default class App extends Component {
 	render() {
 
 		return (
-			<Router>
-				<Switch>
-					<Route exact path="/" component={Home} />
-					<Route path="/signin" component={SignIn} />
-					<Route path="/signup" component={SignUp} />
-					<Route path="*" component={Home} />
-				</Switch>
-			</Router>
+			<Switch>
+				<Route exact path="/" component={Home} />
+				<Route path="/signin" component={SignIn} />
+				<Route path="/signup" component={SignUp} />
+				<Route path="*" component={Home} />
+			</Switch>
 		)
 	}
 }

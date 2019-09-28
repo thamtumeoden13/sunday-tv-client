@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -8,8 +8,19 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faImages, faImage } from '@fortawesome/free-solid-svg-icons'
+import { styles } from 'ansi-colors';
 
 const useStyles = makeStyles(theme => ({
+    paper: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     icon: {
         marginRight: theme.spacing(2),
     },
@@ -45,14 +56,15 @@ const useStyles = makeStyles(theme => ({
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-const CategoryAddContent = () => {
+const CategoryEditContent = () => {
     const classes = useStyles();
-
+    const [hasImage, setHasImage] = useState(false)
     return (
-        <React.Fragment>
+        <Grid container component="main" spacing={4}>
             <CssBaseline />
-            <Grid container spacing={4}>
-                {cards.map(card => (
+            {hasImage
+                ?
+                cards.map(card => (
                     <Grid item key={card} xs={12} sm={6} md={4}>
                         <Card className={classes.card}>
                             <CardMedia
@@ -61,27 +73,30 @@ const CategoryAddContent = () => {
                                 title="Image title"
                             >
                                 <CardContent className={classes.cardContent}>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        Heading
-                                        </Typography>
-                                    <Typography>
-                                        This is a media card. You can use this section to describe the content.
-                                        </Typography>
+                                    <DeleteIcon color="secondary" />
                                 </CardContent>
                             </CardMedia>
-                            <CardActions className={classes.footer}>
-                                <Button size="small" color="primary">
-                                    View
-                                        </Button>
-                                <Button size="small" color="primary">
-                                    Edit
-                                        </Button>
-                            </CardActions>
+                            {/* <CardActions className={classes.footer}>
+                                <Button size="small" color="secondary">
+                                    Delete
+                                </Button>
+                            </CardActions> */}
                         </Card>
                     </Grid>
-                ))}
-            </Grid>
-        </React.Fragment>
+                ))
+                :
+                <Grid item xs={12}>
+                    <div className={classes.paper}>
+                        <div className='button'>
+                            <label htmlFor='multi'>
+                                <FontAwesomeIcon icon={faImages} color='#6d84b4' size='10x' />
+                            </label>
+                            <input type='button' id='multi' onClick={() => setHasImage(true)} />
+                        </div>
+                    </div>
+                </Grid>
+            }
+        </Grid>
     );
 }
-export default CategoryAddContent;
+export default CategoryEditContent;
