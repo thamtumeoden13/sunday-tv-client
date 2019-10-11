@@ -73,7 +73,9 @@ const CategoryEditContent = () => {
                                 title="Image title"
                             >
                                 <CardContent className={classes.cardContent}>
-                                    <DeleteIcon color="secondary" />
+                                    <Button size="small" color="primary">
+                                        <DeleteIcon color="secondary" />
+                                    </Button>
                                 </CardContent>
                             </CardMedia>
                             {/* <CardActions className={classes.footer}>

@@ -9,9 +9,14 @@ import Drawer from '../../component/Drawer'
 import Main from '../../component/Main'
 
 import Dashboard from '../dashboard/Dashboard'
+
 import Category from '../category/Category'
 import CategoryAdd from '../category/CategoryAdd'
 import CategoryEdit from '../category/CategoryEdit'
+
+import Diocese from '../diocese/Diocese'
+import DioceseAdd from '../diocese/DioceseAdd'
+import DioceseEdit from '../diocese/DioceseEdit'
 
 import Poster from '../poster/Poster'
 import NotFound from '../notfound/NotFound1'
@@ -40,6 +45,9 @@ const HomeScreen = (props) => {
                     <Route exact path="/category" component={Category} />
                     <Route path="/category/add" component={CategoryAdd} />
                     <Route path="/category/edit/:id" component={CategoryEdit} />
+                    <Route exact path="/diocese" component={Diocese} />
+                    <Route path="/diocese/add" component={DioceseAdd} />
+                    <Route path="/diocese/edit/:id" component={DioceseEdit} />
                     <Route path="*" component={NotFound} />
                 </Switch>
             </Main>

@@ -104,7 +104,7 @@ const CategoryAdd = () => {
                                                 onClick={handleNext}
                                                 className={classes.button}
                                             >
-                                                {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                                                {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
                                             </Button>
                                         </div>
                                     </React.Fragment>

@@ -72,10 +72,10 @@ const CategoryEditContent = () => {
                             <CardActions className={classes.footer}>
                                 <Button size="small" color="primary">
                                     View
-                                        </Button>
+                                </Button>
                                 <Button size="small" color="primary">
                                     Edit
-                                        </Button>
+                                </Button>
                             </CardActions>
                         </Card>
                     </Grid>
