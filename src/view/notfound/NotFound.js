@@ -14,7 +14,6 @@ const useStyles = makeStyles(theme => ({
 
 const NotFoundScreen = (props) => {
     const classes = useStyles();
-    // console.log({ props });
     return (
         <Fragment>
             <CssBaseline />

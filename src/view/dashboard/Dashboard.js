@@ -19,7 +19,6 @@ const useStyles = makeStyles(theme => ({
 
 const DashBoardScreen = () => {
     const classes = useStyles();
-
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     return (
         <Fragment>

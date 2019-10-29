@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom'
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,7 +16,19 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { AUTH_TOKEN } from '../constant/config'
-
+import { useMutation, useApolloClient } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+const SIGNIN = gql`
+   mutation signIn($email: String!,$password: String!) {
+    signIn(email: $email, password: $password) {
+      token
+      user {
+          id
+          email
+      }
+    }
+  }
+`;
 
 const Copyright = () => {
     return (
@@ -60,15 +74,51 @@ const useStyles = makeStyles(theme => ({
 
 const SignInComponent = (props) => {
     const classes = useStyles();
+    const [errors, setErrors] = useState({})
 
-    const _confirm = async () => {
-        _saveUserData('auth-token')
-        props.history.push(`/`)
+    const [stateInput, setStateInput] = useState({ email: "", password: "" })
+
+    const client = useApolloClient();
+    const [signIn, { loading, error }] = useMutation(SIGNIN,
+        {
+            onCompleted(...params) {
+                if (params && params[0] && params[0].signIn) {
+                    localStorage.setItem(AUTH_TOKEN, params[0].signIn.token);
+                    client.writeData({ data: { isLoggedIn: true } });
+                    const { from } = props.location.state || { from: { pathname: '/' } }
+                    props.history.push(from)
+                    // < Redirect to = '/' />
+                }
+            },
+            onError(error) {
+                console.log('onError', { error })
+            }
+        }
+    );
+
+    const onSignIn = async () => {
+        const { email, password } = stateInput
+        if (email && password) {
+            signIn({ variables: { email: email, password: password } });
+        }
+        else {
+            let errors = {}
+            if (!email)
+                errors.email = "email error"
+            if (!password)
+                errors.password = "password error"
+
+            setErrors(errors);
+        }
     }
 
-    const _saveUserData = token => {
-        localStorage.setItem(AUTH_TOKEN, token)
+    const onChangeInput = (e) => {
+        setStateInput({ ...stateInput, [e.target.id]: e.target.value })
+        setErrors({ ...errors, [e.target.id]: "" })
     }
+
+    if (loading) return <p>Loading....</p>;;
+    // if (error) return <p>An error occurred</p>;
 
     return (
         <Grid container component="main" className={classes.root}>
@@ -86,24 +136,30 @@ const SignInComponent = (props) => {
                         <TextField
                             variant="outlined"
                             margin="normal"
-                            required
+                            // required
                             fullWidth
                             id="email"
-                            label="Email Address"
+                            label={errors.email ? errors.email : "Email"}
                             name="email"
-                            autoComplete="email"
+                            // autoComplete="email"
                             autoFocus
+                            value={stateInput.email}
+                            onChange={(e) => onChangeInput(e)}
+                            error={!!errors.email}
                         />
                         <TextField
                             variant="outlined"
                             margin="normal"
-                            required
+                            // required
                             fullWidth
                             name="password"
-                            label="Password"
+                            label={errors.password ? errors.password : "Password"}
                             type="password"
                             id="password"
-                            autoComplete="current-password"
+                            // autoComplete="current-password"
+                            value={stateInput.password}
+                            onChange={(e) => onChangeInput(e)}
+                            error={!!errors.password}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
@@ -115,7 +171,7 @@ const SignInComponent = (props) => {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
-                            onClick={_confirm}
+                            onClick={onSignIn}
                         >
                             Sign In
                         </Button>

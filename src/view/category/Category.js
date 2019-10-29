@@ -50,7 +50,6 @@ const CategoryAddNew = (props) => {
     const [selectedRow, setSelectedRow] = useState(null);
 
     const onSelectRow = (evt, rowData) => {
-        console.log({ evt, rowData })
         setSelectedRow(rowData);
     }
 
@@ -93,7 +92,6 @@ const CategoryAddNew = (props) => {
                         fetch(url)
                             .then(response => response.json())
                             .then(result => {
-                                console.log(result.data)
                                 resolve({
                                     data: result.data,
                                     page: result.page - 1,

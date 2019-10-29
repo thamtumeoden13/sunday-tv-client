@@ -121,12 +121,10 @@ const CategoryAddContent = (props) => {
         parish: ''
     });
     const handleChange = (event) => {
-        console.log({ event })
         setState({ ...state, [event.target.name]: Number(event.target.value) });
     };
     const onChangePublished = () => {
         setPublished(!publish)
-        console.log("submit", !publish)
     }
     const onSubmit = () => {
         console.log("submit")
@@ -141,7 +139,6 @@ const CategoryAddContent = (props) => {
     }
 
     useEffect(() => {
-        console.log("props.publish", props.publish)
         setPublished(!props.publish ? false : props.publish)
     }, [props.publish])
 

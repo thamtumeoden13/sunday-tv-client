@@ -16,7 +16,6 @@ import PersonPinIcon from '@material-ui/icons/PersonPin';
 
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
-    console.log("props", props)
     return (
         <Typography
             component="div"

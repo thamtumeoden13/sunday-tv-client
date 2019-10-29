@@ -21,6 +21,11 @@ import DioceseEdit from '../diocese/DioceseEdit'
 import Poster from '../poster/Poster'
 import NotFound from '../notfound/NotFound1'
 
+import { AUTH_TOKEN } from '../../constant/config'
+import { useMutation, useApolloClient } from '@apollo/react-hooks';
+
+import PrivateRoute from '../../route/privateRoute'
+
 const history = createBrowserHistory()
 const useStyles = makeStyles(theme => ({
     root: {
@@ -29,26 +34,37 @@ const useStyles = makeStyles(theme => ({
 }))
 const HomeScreen = (props) => {
     const classes = useStyles();
+    const client = useApolloClient();
+
+    const isLoggedIn = !!localStorage.getItem(AUTH_TOKEN)
+    console.log("isLoggedIn", isLoggedIn)
+
     const [statusDrawer, setStatusDrawer] = useState(true)
     const handleDrawer = (value) => {
         setStatusDrawer(value)
     }
-    console.log({ props, history })
+
+    const onSignOut = () => {
+        localStorage.removeItem(AUTH_TOKEN);
+        props.history.push(`/SignIn`)
+        client.writeData({ data: { isLoggedIn: false } });
+    }
+
     return (
         <div className={classes.root}>
-            <AppBar handleDrawer={handleDrawer} statusDrawer={statusDrawer} title={"Trang chủ"} />
+            <AppBar handleDrawer={handleDrawer} statusDrawer={statusDrawer} title={"Trang chủ"} onSignOut={onSignOut} />
             <Drawer handleDrawer={handleDrawer} statusDrawer={statusDrawer} />
             <Main>
                 <Switch>
-                    <Route exact path="/" component={Dashboard} />
-                    <Route path="/poster" component={Poster} />
-                    <Route exact path="/category" component={Category} />
-                    <Route path="/category/add" component={CategoryAdd} />
-                    <Route path="/category/edit/:id" component={CategoryEdit} />
-                    <Route exact path="/diocese" component={Diocese} />
-                    <Route path="/diocese/add" component={DioceseAdd} />
-                    <Route path="/diocese/edit/:id" component={DioceseEdit} />
-                    <Route path="*" component={NotFound} />
+                    <PrivateRoute exact path="/" component={Dashboard} isLoggedIn={isLoggedIn} />
+                    <PrivateRoute path="/poster" component={Poster} isLoggedIn={isLoggedIn} />
+                    <PrivateRoute exact path="/category" component={Category} isLoggedIn={isLoggedIn} />
+                    <PrivateRoute path="/category/add" component={CategoryAdd} isLoggedIn={isLoggedIn} />
+                    <PrivateRoute path="/category/edit/:id" component={CategoryEdit} isLoggedIn={isLoggedIn} />
+                    <PrivateRoute exact path="/diocese" component={Diocese} isLoggedIn={isLoggedIn} />
+                    <PrivateRoute path="/diocese/add" component={DioceseAdd} isLoggedIn={isLoggedIn} />
+                    <PrivateRoute path="/diocese/edit/:id" component={DioceseEdit} isLoggedIn={isLoggedIn} />
+                    <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} />
                 </Switch>
             </Main>
         </div>

@@ -9,6 +9,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import SignOut from '@material-ui/icons/SettingsPower';
+
 
 const drawerWidth = 240;
 
@@ -53,6 +55,11 @@ const AppBarComponent = (props) => {
         setStatusDrawer(true);
     }
 
+    const handleSignOut = () => {
+        if (props.onSignOut)
+            props.onSignOut()
+    }
+
     useEffect(() => {
         setStatusDrawer(props.statusDrawer)
     }, [props.statusDrawer])
@@ -78,6 +85,9 @@ const AppBarComponent = (props) => {
                         <Badge badgeContent={4} color="secondary">
                             <NotificationsIcon />
                         </Badge>
+                    </IconButton>
+                    <IconButton color="inherit" onClick={handleSignOut}>
+                        <SignOut />
                     </IconButton>
                 </Toolbar>
             </AppBar>

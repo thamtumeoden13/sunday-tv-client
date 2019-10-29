@@ -56,6 +56,12 @@ const client = new ApolloClient({
     defaultOptions: defaultOptions,
 });
 
+cache.writeData({
+    data: {
+        isLoggedIn: !!localStorage.getItem(AUTH_TOKEN),
+    },
+});
+
 const AppRoot = () => (
     <Router history={history}>
         <ApolloProvider client={client}>

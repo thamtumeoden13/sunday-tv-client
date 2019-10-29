@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,6 +13,17 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+
+const SIGNUP = gql`
+   mutation signUp($email: String!,$password: String!) {
+    signUp(email: $email, password: $password) {
+      id
+      email
+    }
+  }
+`;
 const Copyright = () => {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
@@ -51,8 +62,30 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const SignUpComponent = () => {
+const SignUpComponent = (props) => {
     const classes = useStyles();
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const client = useApolloClient();
+    const [signUp, { loading, error }] = useMutation(SIGNUP,
+        {
+            onCompleted(...params) {
+                if (params && params[0] && params[0].signUp) {
+                    props.history.push(`/signin`)
+                }
+            },
+            onError(error) {
+                console.log('onError', { error })
+            }
+        }
+    );
+
+    const onSignUp = () => {
+        signUp({ variables: { email: email, password: password } });
+    }
+
+    if (loading) return <p>Loading....</p>;;
+    if (error) return <p>An error occurred</p>;
 
     return (
         <Container component="main" maxWidth="xs">
@@ -98,6 +131,8 @@ const SignUpComponent = () => {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -110,6 +145,8 @@ const SignUpComponent = () => {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -120,11 +157,12 @@ const SignUpComponent = () => {
                         </Grid>
                     </Grid>
                     <Button
-                        type="submit"
+                        type="button"
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        onClick={onSignUp}
                     >
                         Sign Up
                      </Button>
