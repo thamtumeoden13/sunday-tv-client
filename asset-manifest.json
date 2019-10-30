@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.js": "/sunday-tv/static/js/main.de8b9400.chunk.js",
+    "main.js.map": "/sunday-tv/static/js/main.de8b9400.chunk.js.map",
+    "runtime~main.js": "/sunday-tv/static/js/runtime~main.b01cf4d9.js",
+    "runtime~main.js.map": "/sunday-tv/static/js/runtime~main.b01cf4d9.js.map",
+    "static/css/2.2fe65d49.chunk.css": "/sunday-tv/static/css/2.2fe65d49.chunk.css",
+    "static/js/2.2728d24b.chunk.js": "/sunday-tv/static/js/2.2728d24b.chunk.js",
+    "static/js/2.2728d24b.chunk.js.map": "/sunday-tv/static/js/2.2728d24b.chunk.js.map",
+    "index.html": "/sunday-tv/index.html",
+    "precache-manifest.0da36318270e61fead3af959dddce9bf.js": "/sunday-tv/precache-manifest.0da36318270e61fead3af959dddce9bf.js",
+    "service-worker.js": "/sunday-tv/service-worker.js",
+    "static/css/2.2fe65d49.chunk.css.map": "/sunday-tv/static/css/2.2fe65d49.chunk.css.map"
+  }
+}
