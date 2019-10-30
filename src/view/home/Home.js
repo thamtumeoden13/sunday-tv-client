@@ -46,7 +46,7 @@ const HomeScreen = (props) => {
 
     const onSignOut = () => {
         localStorage.removeItem(AUTH_TOKEN);
-        props.history.push(`/SignIn`)
+        props.history.push(`/signin`)
         client.writeData({ data: { isLoggedIn: false } });
     }
 
