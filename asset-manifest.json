@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.js": "/sunday-tv-client/static/js/main.fcaef64d.chunk.js",
-    "main.js.map": "/sunday-tv-client/static/js/main.fcaef64d.chunk.js.map",
-    "runtime~main.js": "/sunday-tv-client/static/js/runtime~main.800eb149.js",
-    "runtime~main.js.map": "/sunday-tv-client/static/js/runtime~main.800eb149.js.map",
-    "static/css/2.2fe65d49.chunk.css": "/sunday-tv-client/static/css/2.2fe65d49.chunk.css",
-    "static/js/2.cf848905.chunk.js": "/sunday-tv-client/static/js/2.cf848905.chunk.js",
-    "static/js/2.cf848905.chunk.js.map": "/sunday-tv-client/static/js/2.cf848905.chunk.js.map",
-    "index.html": "/sunday-tv-client/index.html",
-    "precache-manifest.4029a1cc0f9b8af1ba89f562e5bb5d8b.js": "/sunday-tv-client/precache-manifest.4029a1cc0f9b8af1ba89f562e5bb5d8b.js",
-    "service-worker.js": "/sunday-tv-client/service-worker.js",
-    "static/css/2.2fe65d49.chunk.css.map": "/sunday-tv-client/static/css/2.2fe65d49.chunk.css.map"
+    "main.js": "/sundaytv/static/js/main.e570f23a.chunk.js",
+    "main.js.map": "/sundaytv/static/js/main.e570f23a.chunk.js.map",
+    "runtime~main.js": "/sundaytv/static/js/runtime~main.ad3f0ba5.js",
+    "runtime~main.js.map": "/sundaytv/static/js/runtime~main.ad3f0ba5.js.map",
+    "static/css/2.2fe65d49.chunk.css": "/sundaytv/static/css/2.2fe65d49.chunk.css",
+    "static/js/2.934206fd.chunk.js": "/sundaytv/static/js/2.934206fd.chunk.js",
+    "static/js/2.934206fd.chunk.js.map": "/sundaytv/static/js/2.934206fd.chunk.js.map",
+    "index.html": "/sundaytv/index.html",
+    "precache-manifest.8fa4727318006839266e04d2ca32f5f5.js": "/sundaytv/precache-manifest.8fa4727318006839266e04d2ca32f5f5.js",
+    "service-worker.js": "/sundaytv/service-worker.js",
+    "static/css/2.2fe65d49.chunk.css.map": "/sundaytv/static/css/2.2fe65d49.chunk.css.map"
   }
 }
