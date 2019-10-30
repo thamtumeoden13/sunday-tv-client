@@ -2,7 +2,7 @@
   "name": "sunday-tv",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://thamtumeoden13.github.io",
+  "homepage": "https://thamtumeoden13.github.io/",
   "dependencies": {
     "@apollo/react-hooks": "^3.1.0",
     "@fortawesome/fontawesome-free-brands": "^5.0.13",
