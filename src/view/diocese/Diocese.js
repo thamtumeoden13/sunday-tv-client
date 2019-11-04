@@ -1,10 +1,23 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import EditIcon from '@material-ui/icons/EditOutlined'
 
 import MaterialTable from "material-table";
+
+import { useQuery, useLazyQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+
+const DIOCESES = gql`
+   query dioceses{
+        dioceses{
+            id
+            name
+            shortName
+        }
+    }
+`;
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -44,24 +57,38 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const DioceseAddNew = (props) => {
+const Diocese = (props) => {
     const classes = useStyles();
     const tableRef = useRef();
     const [selectedRow, setSelectedRow] = useState(null);
+    const [dioceses, setDioceses] = useState([])
+    // const [loading, error, data] = useQuery(DIOCESES)
+
+    const [getDioceses, { loading, data, error, refetch }] = useLazyQuery(DIOCESES);
+    useEffect(() => {
+        getDioceses()
+    }, [])
+
+    useEffect(() => {
+        if (data && data.dioceses) {
+            console.log("data.dioceses", data.dioceses)
+            setDioceses(data.dioceses)
+        }
+    }, [data])
 
     const onSelectRow = (evt, rowData) => {
-        console.log({ evt, rowData })
         setSelectedRow(rowData);
     }
 
     const addNewDiocese = () => {
         props.history.push('diocese/add')
     }
+
     return (
         <React.Fragment>
             <CssBaseline />
             <MaterialTable
-                title="Refresh Data Preview"
+                title="Danh Sách Giáo Phận"
                 tableRef={tableRef}
                 columns={[
                     {
@@ -75,40 +102,23 @@ const DioceseAddNew = (props) => {
                         ),
                     },
                     { title: 'Mã Giáo Phận', field: 'id' },
-                    { title: 'Tên Giáo Phận', field: 'first_name', },
-                    { title: 'Tên rút gọn', field: 'last_name' },
+                    { title: 'Tên Giáo Phận', field: 'name', },
+                    { title: 'Tên rút gọn', field: 'shortName' },
                     {
                         title: 'Chỉnh sửa', field: 'edit',
                         render: rowData => (
                             <Link to={`/diocese/edit/${rowData.id}`}><EditIcon /></Link>
-                            // <Link to={`/category/add`}><EditIcon /></Link>
                         )
                     },
                 ]}
-                data={query =>
-                    new Promise((resolve, reject) => {
-                        let url = 'https://reqres.in/api/users?'
-                        url += 'per_page=' + query.pageSize
-                        url += '&page=' + (query.page + 1)
-                        fetch(url)
-                            .then(response => response.json())
-                            .then(result => {
-                                console.log(result.data)
-                                resolve({
-                                    data: result.data,
-                                    page: result.page - 1,
-                                    totalCount: result.total,
-                                })
-                            })
-                    })
-                }
+                data={dioceses}
                 actions={[
-                    // {
-                    //     icon: 'refresh',
-                    //     tooltip: 'Refresh Data',
-                    //     isFreeAction: true,
-                    //     onClick: () => tableRef.current && tableRef.current.onQueryChange(),
-                    // },
+                    {
+                        icon: 'refresh',
+                        tooltip: 'Refresh Data',
+                        isFreeAction: true,
+                        onClick: () => refetch(),
+                    },
                     {
                         tooltip: 'Add New Diocese',
                         icon: 'add',
@@ -139,4 +149,4 @@ const DioceseAddNew = (props) => {
         </React.Fragment>
     );
 }
-export default withRouter(DioceseAddNew);
+export default Diocese;

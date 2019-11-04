@@ -91,7 +91,7 @@ const SignInComponent = (props) => {
                 }
             },
             onError(error) {
-                console.log('onError', { error })
+                console.log('onError', error)
                 alert(error)
             }
         }

@@ -37,12 +37,13 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const CategoryEditContent = (props) => {
+const DioceseEditDetail = (props) => {
     const classes = useStyles();
-    const [publish, setPublished] = useState(!props.publish ? false : props.publish);
     const [state, setState] = React.useState({
-        dioceseName: '',
-        dioceseShortName: ''
+        id: '',
+        name: '',
+        shortName: '',
+        published: false
     });
 
     const handleChange = (event) => {
@@ -50,20 +51,22 @@ const CategoryEditContent = (props) => {
 
     };
 
-    const onChangePublished = () => {
-        setPublished(!publish)
-    }
+    // const onChangePublished = () => {
+    //     setPublished(!publish)
+    // }
 
     useEffect(() => {
         setState({
-            dioceseName: props.dioceseName ? props.dioceseName : '',
-            dioceseShortName: props.dioceseShortName ? props.dioceseShortName : '',
+            id: props.data.id ? props.data.id : '',
+            name: props.data.name ? props.data.name : '',
+            shortName: props.data.shortName ? props.data.shortName : '',
+            published: props.data.published ? props.data.published : false,
         });
-    }, [])
+    }, [props.data])
 
-    useEffect(() => {
-        setPublished(!props.publish ? false : props.publish)
-    }, [props.publish])
+    // useEffect(() => {
+    //     setPublished(!props.publish ? false : props.publish)
+    // }, [props.publish])
 
     return (
         <div className={classes.paper}>
@@ -71,13 +74,14 @@ const CategoryEditContent = (props) => {
             <Grid container component="main" spacing={2} className={classes.root} >
                 <Grid item xs={12}>
                     <TextField
-                        name="dioceseId"
+                        name="id"
                         variant="outlined"
                         required
                         fullWidth
-                        id="dioceseId"
+                        id="id"
                         label="Mã Giáo Phận(Tự động)"
                         disabled
+                        value={state.id}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -85,10 +89,11 @@ const CategoryEditContent = (props) => {
                         variant="outlined"
                         required
                         fullWidth
-                        id="dioceseName"
+                        id="name"
                         label="Tên Giáo Phận"
-                        name="dioceseName"
+                        name="name"
                         autoFocus
+                        value={state.dioceseName}
                         onChange={(event) => handleChange(event)}
                     />
                 </Grid>
@@ -96,18 +101,19 @@ const CategoryEditContent = (props) => {
                     <TextField
                         variant="outlined"
                         fullWidth
-                        id="dioceseShortName"
+                        id="shortName"
                         label="Tên rút gọn"
-                        name="dioceseShortName"
+                        name="shortName"
+                        value={state.shortName}
                         onChange={(event) => handleChange(event)}
                     />
                 </Grid>
                 <Grid item xs={12}>
                     <FormControlLabel
                         control={
-                            <Checkbox value={publish} checked={publish}
+                            <Checkbox value={state.published} checked={state.published}
                                 color="primary" name="published" id="published"
-                                onChange={() => onChangePublished()}
+                                onChange={(event) => handleChange(event)}
                             />}
                         label="Công khai"
                     />
@@ -116,4 +122,4 @@ const CategoryEditContent = (props) => {
         </div>
     );
 }
-export default CategoryEditContent;
+export default DioceseEditDetail;

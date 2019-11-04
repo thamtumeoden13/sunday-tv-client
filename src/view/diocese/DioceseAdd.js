@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,6 +9,19 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import Detail from '../../component/diocese/add/Detail'
+
+import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+
+const CREATEDIOCESE = gql`
+   mutation createDiocese($name: String!,$shortName: String!) {
+    createDiocese(name: $name, shortName: $shortName) {
+        id
+        name
+        shortName
+    }
+  }
+`;
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -25,10 +38,36 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const DioceseAdd = () => {
+const DioceseAdd = (props) => {
     const classes = useStyles();
+    const [diocese, setDiocese] = useState({
+        id: '',
+        name: '',
+        shortName: ''
+    })
+
+    const [createDiocese, { loading, error }] = useMutation(CREATEDIOCESE,
+        {
+            onCompleted(...params) {
+                if (params) {
+                    // < Redirect to = '/' />
+                    props.history.goBack();
+                    console.log({ params })
+                }
+            },
+            onError(error) {
+                console.log('onError', error)
+                alert(error)
+            }
+        }
+    );
+
+    const onChangeText = (name, value) => {
+        setDiocese({ ...diocese, [name]: value });
+    }
+
     const handleSubmit = () => {
-        console.log('submit')
+        createDiocese({ variables: { name: diocese.name, shortName: diocese.shortName } })
     };
 
     return (
@@ -41,7 +80,10 @@ const DioceseAdd = () => {
                             TẠO MỚI GIÁO PHẬN
                         </Typography>
                         <React.Fragment>
-                            <Detail />
+                            <Detail
+                                // data={diocese}
+                                onChange={onChangeText}
+                            />
                             <div className={classes.buttons}>
                                 <Button
                                     variant="contained"
