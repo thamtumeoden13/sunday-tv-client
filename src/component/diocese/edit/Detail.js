@@ -48,7 +48,9 @@ const DioceseEditDetail = (props) => {
 
     const handleChange = (event) => {
         setState({ ...state, [event.target.name]: event.target.value });
-
+        if (props.onChange) {
+            props.onChange(event.target.name, event.target.value)
+        }
     };
 
     // const onChangePublished = () => {
@@ -93,7 +95,7 @@ const DioceseEditDetail = (props) => {
                         label="Tên Giáo Phận"
                         name="name"
                         autoFocus
-                        value={state.dioceseName}
+                        value={state.name}
                         onChange={(event) => handleChange(event)}
                     />
                 </Grid>

@@ -38,8 +38,8 @@ const DIOCESEBYID = gql`
     }
 `;
 const UPDATEDIOCESEBYID = gql`
-   mutation createDiocese($name: String!,$shortName: String!) {
-    createDiocese(name: $name, shortName: $shortName) {
+   mutation updateDiocese($id: ID! $name: String!,$shortName: String!) {
+    updateDiocese(id: $id, name: $name, shortName: $shortName) {
         id
         name
         shortName
@@ -62,7 +62,7 @@ const DioceseEdit = (props) => {
         }
     });
 
-    const [updateDioceseById, { loadingEdit, errorEdit }] = useMutation(UPDATEDIOCESEBYID,
+    const [updateDiocese, { loadingEdit, errorEdit }] = useMutation(UPDATEDIOCESEBYID,
         {
             onCompleted(...params) {
                 if (params) {
@@ -93,7 +93,7 @@ const DioceseEdit = (props) => {
     }
 
     const handleSubmit = () => {
-        updateDioceseById({ variables: { name: diocese.name, shortName: diocese.shortName } })
+        updateDiocese({ variables: { id: diocese.id, name: diocese.name, shortName: diocese.shortName } })
     };
 
     return (
