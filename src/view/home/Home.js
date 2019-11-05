@@ -18,6 +18,10 @@ import Diocese from '../diocese/Diocese'
 import DioceseAdd from '../diocese/DioceseAdd'
 import DioceseEdit from '../diocese/DioceseEdit'
 
+import Deanery from '../deanery/Deanery'
+import DeaneryAdd from '../deanery/DeaneryAdd'
+import DeaneryEdit from '../deanery/DeaneryEdit'
+
 import Poster from '../poster/Poster'
 import NotFound from '../notfound/NotFound1'
 
@@ -64,6 +68,9 @@ const HomeScreen = (props) => {
                     <PrivateRoute exact path="/diocese" component={Diocese} isLoggedIn={isLoggedIn} />
                     <PrivateRoute path="/diocese/add" component={DioceseAdd} isLoggedIn={isLoggedIn} />
                     <PrivateRoute path="/diocese/edit/:id" component={DioceseEdit} isLoggedIn={isLoggedIn} />
+                    <PrivateRoute exact path="/deanery" component={Deanery} isLoggedIn={isLoggedIn} />
+                    <PrivateRoute path="/deanery/add" component={DeaneryAdd} isLoggedIn={isLoggedIn} />
+                    <PrivateRoute path="/deanery/edit/:id" component={DeaneryEdit} isLoggedIn={isLoggedIn} />
                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} />
                 </Switch>
             </Main>

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -8,10 +8,20 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import Detail from '../../component/diocese/edit/Detail'
+import Detail from '../../component/deanery/add/Detail'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+
+const CREATEDEANERY = gql`
+   mutation createDeanery($name: String!,$shortName: String!) {
+    createDeanery(name: $name, shortName: $shortName) {
+        id
+        name
+        shortName
+    }
+  }
+`;
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -28,41 +38,15 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const DIOCESEBYID = gql`
-   query diocese($id: ID!){
-        diocese(id: $id){
-            id
-            name
-            shortName
-        }
-    }
-`;
-const UPDATEDIOCESEBYID = gql`
-   mutation updateDiocese($id: ID! $name: String!,$shortName: String!) {
-    updateDiocese(id: $id, name: $name, shortName: $shortName) {
-        id
-        name
-        shortName
-    }
-  }
-`;
-
-const DioceseEdit = (props) => {
+const DeaneryAdd = (props) => {
     const classes = useStyles();
-    const dioceseId = props.match.params.id
-    const [diocese, setDiocese] = useState({
+    const [deanery, setDeanery] = useState({
         id: '',
-        nName: '',
+        name: '',
         shortName: ''
     })
 
-    const [getDioceseById, { loading, data, error, refetch }] = useLazyQuery(DIOCESEBYID, {
-        variables: {
-            id: dioceseId
-        }
-    });
-
-    const [updateDiocese, { loadingEdit, errorEdit }] = useMutation(UPDATEDIOCESEBYID,
+    const [createDeanery, { loading, error }] = useMutation(CREATEDEANERY,
         {
             onCompleted(...params) {
                 if (params) {
@@ -78,22 +62,12 @@ const DioceseEdit = (props) => {
         }
     );
 
-    useEffect(() => {
-        getDioceseById()
-    }, [])
-
-    useEffect(() => {
-        if (data && data.diocese) {
-            setDiocese(data.diocese)
-        }
-    }, [data])
-
     const onChangeText = (name, value) => {
-        setDiocese({ ...diocese, [name]: value });
+        setDeanery({ ...deanery, [name]: value });
     }
 
     const handleSubmit = () => {
-        updateDiocese({ variables: { id: diocese.id, name: diocese.name, shortName: diocese.shortName } })
+        createDeanery({ variables: { name: deanery.name, shortName: deanery.shortName } })
     };
 
     return (
@@ -103,11 +77,11 @@ const DioceseEdit = (props) => {
                 <Grid item xs={12}>
                     <Paper square className={classes.paper}>
                         <Typography component="h1" variant="h4" align="center">
-                            CHỈNH SỬA GIÁO PHẬN
+                            TẠO MỚI GIÁO HẠT
                         </Typography>
                         <React.Fragment>
                             <Detail
-                                data={diocese}
+                                // data={diocese}
                                 onChange={onChangeText}
                             />
                             <div className={classes.buttons}>
@@ -127,4 +101,4 @@ const DioceseEdit = (props) => {
         </Fragment>
     );
 }
-export default withRouter(DioceseEdit);
+export default withRouter(DeaneryAdd);
