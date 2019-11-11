@@ -34,12 +34,16 @@ const DEANERYBYID = gql`
             id
             name
             shortName
+            diocese{
+                id
+                name
+            }
         }
     }
 `;
 const UPDATEDEANERYBYID = gql`
-   mutation updateDeanery($id: ID! $name: String!,$shortName: String!) {
-    updateDeanery(id: $id, name: $name, shortName: $shortName) {
+   mutation updateDeanery($id: ID! $name: String!,$shortName: String!,$dioceseId: ID!) {
+    updateDeanery(id: $id, name: $name, shortName: $shortName,dioceseId: $dioceseId) {
         id
         name
         shortName
@@ -47,21 +51,37 @@ const UPDATEDEANERYBYID = gql`
   }
 `;
 
+
+const DIOCESES = gql`
+   query dioceses{
+        dioceses{
+            id
+            name
+            shortName
+        }
+    }
+`;
+
+
 const DeaneryEdit = (props) => {
     const classes = useStyles();
     const deaneryId = props.match.params.id
     const [deanery, setDeanery] = useState({
         id: '',
-        nName: '',
-        shortName: ''
+        name: '',
+        shortName: '',
+        dioceseId: '',
     })
+    const [dioceses, setDioceses] = useState([])
 
-    const [getDeaneryById, { loading, data, error, refetch }] = useLazyQuery(DEANERYBYID, {
+
+    const [getDeaneryById, { loading, data: dataDeanery, error, refetch }] = useLazyQuery(DEANERYBYID, {
         variables: {
             id: deaneryId
         }
     });
 
+    const [getDioceses, { loadingDioceses, data: dataDioceses, errorDioceses }] = useLazyQuery(DIOCESES);
     const [updateDeanery, { loadingEdit, errorEdit }] = useMutation(UPDATEDEANERYBYID,
         {
             onCompleted(...params) {
@@ -78,23 +98,32 @@ const DeaneryEdit = (props) => {
         }
     );
 
-    useEffect(() => {
-        getDeaneryById()
-    }, [])
-
-    useEffect(() => {
-        if (data && data.deanery) {
-            setDeanery(data.deanery)
-        }
-    }, [data])
-
     const onChangeText = (name, value) => {
         setDeanery({ ...deanery, [name]: value });
     }
 
     const handleSubmit = () => {
-        updateDeanery({ variables: { id: deanery.id, name: deanery.name, shortName: deanery.shortName } })
+        updateDeanery({ variables: { id: deanery.id, name: deanery.name, shortName: deanery.shortName, dioceseId: deanery.dioceseId } })
     };
+
+    useEffect(() => {
+        getDeaneryById()
+        getDioceses()
+    }, [])
+
+    useEffect(() => {
+        if (dataDeanery && dataDeanery.deanery) {
+            let temp = dataDeanery.deanery
+            temp.dioceseId = dataDeanery.deanery.diocese.id ? dataDeanery.deanery.diocese.id : ''
+            setDeanery(temp)
+        }
+    }, [dataDeanery])
+
+    useEffect(() => {
+        if (dataDioceses && dataDioceses.dioceses) {
+            setDioceses(dataDioceses.dioceses)
+        }
+    }, [dataDioceses])
 
     return (
         <Fragment>
@@ -107,7 +136,8 @@ const DeaneryEdit = (props) => {
                         </Typography>
                         <React.Fragment>
                             <Detail
-                                data={deanery}
+                                deanery={deanery}
+                                dioceses={dioceses}
                                 onChange={onChangeText}
                             />
                             <div className={classes.buttons}>

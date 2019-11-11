@@ -65,6 +65,15 @@ const Diocese = (props) => {
     // const [loading, error, data] = useQuery(DIOCESES)
 
     const [getDioceses, { loading, data, error, refetch }] = useLazyQuery(DIOCESES);
+
+    const onSelectRow = (evt, rowData) => {
+        setSelectedRow(rowData);
+    }
+
+    const addNewDiocese = () => {
+        props.history.push('diocese/add')
+    }
+
     useEffect(() => {
         getDioceses()
     }, [])
@@ -75,14 +84,6 @@ const Diocese = (props) => {
             setDioceses(data.dioceses)
         }
     }, [data])
-
-    const onSelectRow = (evt, rowData) => {
-        setSelectedRow(rowData);
-    }
-
-    const addNewDiocese = () => {
-        props.history.push('diocese/add')
-    }
 
     return (
         <React.Fragment>

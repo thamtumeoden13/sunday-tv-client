@@ -15,6 +15,11 @@ const DEANERIES = gql`
             id
             name
             shortName
+            diocese{
+                id 
+                name
+                shortName
+            }
         }
     }
 `;
@@ -70,7 +75,10 @@ const Deanery = (props) => {
 
     useEffect(() => {
         if (data && data.deaneries) {
-            console.log("data.deaneries", data.deaneries)
+            data.deaneries.map((e, i) => {
+                e.dioceseName = e.diocese.name
+                return e
+            })
             setDeaneries(data.deaneries)
         }
     }, [data])
@@ -103,6 +111,7 @@ const Deanery = (props) => {
                     { title: 'Mã Giáo Hạt', field: 'id' },
                     { title: 'Tên Giáo Hạt', field: 'name', },
                     { title: 'Tên rút gọn', field: 'shortName' },
+                    { title: 'Giáo phận', field: 'dioceseName' },
                     {
                         title: 'Chỉnh sửa', field: 'edit',
                         render: rowData => (

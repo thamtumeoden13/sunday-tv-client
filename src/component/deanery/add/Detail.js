@@ -43,11 +43,12 @@ const useStyles = makeStyles(theme => ({
 
 const DeaneryAddDetail = (props) => {
     const classes = useStyles();
-    // const [publish, setPublished] = useState(!props.publish ? false : props.publish);
+    const [dioceses, setDioceses] = useState([]);
     const [state, setState] = React.useState({
         id: '',
         name: '',
         shortName: '',
+        dioceseId: '',
         published: false
     });
     const handleChange = (event) => {
@@ -56,13 +57,17 @@ const DeaneryAddDetail = (props) => {
             props.onChange(event.target.name, event.target.value)
         }
     };
-    // const onChangePublished = () => {
-    //     setPublished(!publish)
-    // }
 
-    // useEffect(() => {
-    //     setPublished(!props.publish ? false : props.publish)
-    // }, [props.publish])
+    const renderOption = (listOption) => {
+        return (
+            listOption.map((e, i) => {
+                return <MenuItem value={e.id} key={i}>{e.name}</MenuItem>
+            })
+        )
+    }
+    useEffect(() => {
+        setDioceses(props.dioceses ? props.dioceses : [])
+    }, [props.dioceses])
 
     return (
         <div className={classes.paper}>
@@ -103,6 +108,26 @@ const DeaneryAddDetail = (props) => {
                         value={state.shortName}
                         onChange={(event) => handleChange(event)}
                     />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        required
+                        fullWidth
+                        variant="outlined"
+                        name="dioceseId"
+                        label="Giáo Phận"
+                        select={true}
+                        value={state.dioceseId}
+                        onChange={(event) => handleChange(event)}
+                    >
+                        {dioceses && dioceses.length > 0
+                            ? renderOption(dioceses)
+                            :
+                            <MenuItem value="">
+                                <em>Vui Lòng Chọn Giáo Phận</em>
+                            </MenuItem>
+                        }
+                    </TextField>
                 </Grid>
                 <Grid item xs={12}>
                     <FormControlLabel

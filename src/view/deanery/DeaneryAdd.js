@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,13 +14,23 @@ import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 const CREATEDEANERY = gql`
-   mutation createDeanery($name: String!,$shortName: String!) {
-    createDeanery(name: $name, shortName: $shortName) {
+   mutation createDeanery($name: String!,$shortName: String!, $dioceseId: ID!) {
+    createDeanery(name: $name, shortName: $shortName, dioceseId: $dioceseId) {
         id
         name
         shortName
     }
   }
+`;
+
+const DIOCESES = gql`
+   query dioceses{
+        dioceses{
+            id
+            name
+            shortName
+        }
+    }
 `;
 
 const useStyles = makeStyles(theme => ({
@@ -41,11 +51,13 @@ const useStyles = makeStyles(theme => ({
 const DeaneryAdd = (props) => {
     const classes = useStyles();
     const [deanery, setDeanery] = useState({
-        id: '',
         name: '',
-        shortName: ''
+        shortName: '',
+        dioceseId: ''
     })
+    const [dioceses, setDioceses] = useState([])
 
+    const [getDioceses, { loadingDioceses, data, errorDioceses }] = useLazyQuery(DIOCESES);
     const [createDeanery, { loading, error }] = useMutation(CREATEDEANERY,
         {
             onCompleted(...params) {
@@ -67,8 +79,18 @@ const DeaneryAdd = (props) => {
     }
 
     const handleSubmit = () => {
-        createDeanery({ variables: { name: deanery.name, shortName: deanery.shortName } })
+        createDeanery({ variables: { name: deanery.name, shortName: deanery.shortName, dioceseId: deanery.dioceseId } })
     };
+
+    useEffect(() => {
+        getDioceses()
+    }, [])
+
+    useEffect(() => {
+        if (data && data.dioceses) {
+            setDioceses(data.dioceses)
+        }
+    }, [data])
 
     return (
         <Fragment>
@@ -83,6 +105,7 @@ const DeaneryAdd = (props) => {
                             <Detail
                                 // data={diocese}
                                 onChange={onChangeText}
+                                dioceses={dioceses}
                             />
                             <div className={classes.buttons}>
                                 <Button
