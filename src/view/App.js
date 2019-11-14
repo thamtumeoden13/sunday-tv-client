@@ -7,7 +7,7 @@ import SignIn from '../component/SignIn'
 import SignUp from '../component/SignUp'
 import Home from './home/Home'
 
-const App = () => {
+const App = (props) => {
 	// const { loading, error, data } = useQuery(IS_LOGGED_IN);
 	// const client = useApolloClient();
 	// const { loading, error, data } = client.readQuery({ query: IS_LOGGED_IN })
@@ -15,7 +15,7 @@ const App = () => {
 	// if (error) return <p>ERROR: {error.message}</p>;
 	// console.log({ data })
 	// const isLoggedIn = !!localStorage.getItem(AUTH_TOKEN)
-	// console.log("isLoggedIn", isLoggedIn)
+	console.log("App", props)
 	return (
 		<Switch>
 			<Route exact path="/" component={Home} />

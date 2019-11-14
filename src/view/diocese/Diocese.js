@@ -3,6 +3,12 @@ import { Link, withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import EditIcon from '@material-ui/icons/EditOutlined'
+import HomeIcon from '@material-ui/icons/Home';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import GrainIcon from '@material-ui/icons/Grain';
+
+import { connect } from "react-redux";
+import { setPagePath } from "../../actions/pageInfos";
 
 import MaterialTable from "material-table";
 
@@ -57,12 +63,25 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
+const mapStateToProps = state => {
+    return {
+        PageInfos: state.PageInfosModule,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPagePath: pagePath => {
+            dispatch(setPagePath(pagePath));
+        },
+    };
+};
+
 const Diocese = (props) => {
     const classes = useStyles();
     const tableRef = useRef();
     const [selectedRow, setSelectedRow] = useState(null);
     const [dioceses, setDioceses] = useState([])
-    // const [loading, error, data] = useQuery(DIOCESES)
 
     const [getDioceses, { loading, data, error, refetch }] = useLazyQuery(DIOCESES);
 
@@ -75,6 +94,10 @@ const Diocese = (props) => {
     }
 
     useEffect(() => {
+        props.setPagePath([
+            { link: "/", title: "Trang chủ", icon: <HomeIcon /> },
+            { link: "/diocese", title: "DS Giáo Phận", icon: <WhatshotIcon /> }
+        ])
         getDioceses()
     }, [])
 
@@ -150,4 +173,4 @@ const Diocese = (props) => {
         </React.Fragment>
     );
 }
-export default Diocese;
+export default connect(mapStateToProps, mapDispatchToProps)(Diocese);

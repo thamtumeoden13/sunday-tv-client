@@ -8,7 +8,7 @@ import Footer from '../component/Footer'
 import Header from '../component/Header'
 
 import SignIn from '../component/SignIn'
-import { Users } from '../component/Hook'
+// import { Users } from '../component/Hook'
 
 import { API_URL } from '../constant/config'
 import './App.css'
@@ -130,14 +130,14 @@ export default class App extends Component {
 
 		return (
 			<div className='container'>
-				{/* <Notifications />
-				<Header />
+				<Notifications />
+				{/* <Header /> */}
 				<div className='buttons'>
 					{content()}
 				</div>
-				<Footer /> */}
+				<Footer />
 				{/* <SignIn /> */}
-				<Users onUserSelected={this.onUserSelected} />
+				{/* <Users onUserSelected={this.onUserSelected} /> */}
 			</div>
 		)
 	}

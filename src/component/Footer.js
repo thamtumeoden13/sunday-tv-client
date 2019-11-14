@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMediumM, faGithub } from '@fortawesome/fontawesome-free-brands'
 
 export default () => (
-	<footer style={{ backgroundColor: 'red' }}>
+	<footer>
 		<a
 			href='https://medium.com/p/cc96430eaece'
 			title='Medium Article'

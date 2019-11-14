@@ -88,7 +88,7 @@ const DeaneryEdit = (props) => {
                 if (params) {
                     // < Redirect to = '/' />
                     props.history.goBack();
-                    console.log({ params })
+                    //console.log({ params })
                 }
             },
             onError(error) {

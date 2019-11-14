@@ -41,7 +41,7 @@ const HomeScreen = (props) => {
     const client = useApolloClient();
 
     const isLoggedIn = !!localStorage.getItem(AUTH_TOKEN)
-    console.log("isLoggedIn", isLoggedIn)
+    console.log("isLoggedIn", props)
 
     const [statusDrawer, setStatusDrawer] = useState(true)
     const handleDrawer = (value) => {

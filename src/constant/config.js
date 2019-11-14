@@ -1,9 +1,11 @@
-export const API_URL = process.env.NODE_ENV === 'production'
-  ? 'https://react-image-upload.herokuapp.com'
+export const API_URL = process.env.REACT_APP_NODE_ENV === 'production'
+  ? 'https://sunday-tv-cloudinary.herokuapp.com'
   : 'http://localhost:8080'
 
 // export const APOLLO_API_URL = 'http://localhost:8383'
-export const APOLLO_API_URL = 'https://euf0jp3r7h.execute-api.us-east-1.amazonaws.com/dev/graphql'
+export const APOLLO_API_URL = process.env.REACT_APP_NODE_ENV === 'production'
+  ? 'https://euf0jp3r7h.execute-api.us-east-1.amazonaws.com/dev/graphql'
+  : 'http://localhost:8383'
 
 export const AUTH_TOKEN = 'auth-token';
 

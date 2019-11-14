@@ -1,9 +1,13 @@
 import React, { Fragment } from 'react';
+import { connect } from "react-redux";
 import clsx from 'clsx';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+
+import { setPagePath } from "../../actions/pageInfos";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -17,7 +21,20 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const DashBoardScreen = () => {
+const mapStateToProps = state => {
+    return {
+        PageInfos: state.PageInfosModule,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPagePath: pagePath => {
+            dispatch(setPagePath(pagePath));
+        },
+    };
+};
+const DashBoardScreen = (props) => {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     return (
@@ -46,4 +63,6 @@ const DashBoardScreen = () => {
         </Fragment>
     );
 }
-export default DashBoardScreen;
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashBoardScreen);
+// export default DashBoardScreen;
