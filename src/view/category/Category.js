@@ -1,10 +1,15 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import EditIcon from '@material-ui/icons/EditOutlined'
 
 import MaterialTable from "material-table";
+
+import { connect } from "react-redux";
+import { setPagePath } from "../../actions/pageInfos";
+
+import { CATEGORY } from '../../constant/BreadcrumbsConfig'
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -43,6 +48,19 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const mapStateToProps = state => {
+    return {
+        PageInfos: state.PageInfosModule,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPagePath: pagePath => {
+            dispatch(setPagePath(pagePath));
+        },
+    };
+};
 
 const CategoryAddNew = (props) => {
     const classes = useStyles();
@@ -56,6 +74,11 @@ const CategoryAddNew = (props) => {
     const addNewCategory = () => {
         props.history.push('category/add')
     }
+
+    useEffect(() => {
+        props.setPagePath(CATEGORY.search)
+    }, [])
+
     return (
         <React.Fragment>
             <CssBaseline />
@@ -137,4 +160,4 @@ const CategoryAddNew = (props) => {
         </React.Fragment>
     );
 }
-export default withRouter(CategoryAddNew);
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryAddNew);

@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { withRouter } from 'react-router-dom';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,7 +7,11 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+import { connect } from "react-redux";
+import { setPagePath } from "../../actions/pageInfos";
+
 import Detail from '../../component/diocese/edit/Detail'
+import { DIOCESE } from '../../constant/BreadcrumbsConfig'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -47,6 +50,20 @@ const UPDATEDIOCESEBYID = gql`
   }
 `;
 
+const mapStateToProps = state => {
+    return {
+        PageInfos: state.PageInfosModule,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPagePath: pagePath => {
+            dispatch(setPagePath(pagePath));
+        },
+    };
+};
+
 const DioceseEdit = (props) => {
     const classes = useStyles();
     const dioceseId = props.match.params.id
@@ -79,6 +96,7 @@ const DioceseEdit = (props) => {
     );
 
     useEffect(() => {
+        props.setPagePath(DIOCESE.edit)
         getDioceseById()
     }, [])
 
@@ -127,4 +145,4 @@ const DioceseEdit = (props) => {
         </Fragment>
     );
 }
-export default withRouter(DioceseEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(DioceseEdit);

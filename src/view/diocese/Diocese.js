@@ -3,14 +3,13 @@ import { Link, withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import EditIcon from '@material-ui/icons/EditOutlined'
-import HomeIcon from '@material-ui/icons/Home';
-import WhatshotIcon from '@material-ui/icons/Whatshot';
-import GrainIcon from '@material-ui/icons/Grain';
 
 import { connect } from "react-redux";
 import { setPagePath } from "../../actions/pageInfos";
 
 import MaterialTable from "material-table";
+
+import { DIOCESE } from '../../constant/BreadcrumbsConfig'
 
 import { useQuery, useLazyQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -62,7 +61,6 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-
 const mapStateToProps = state => {
     return {
         PageInfos: state.PageInfosModule,
@@ -94,10 +92,7 @@ const Diocese = (props) => {
     }
 
     useEffect(() => {
-        props.setPagePath([
-            { link: "/", title: "Trang chủ", icon: <HomeIcon /> },
-            { link: "/diocese", title: "DS Giáo Phận", icon: <WhatshotIcon /> }
-        ])
+        props.setPagePath(DIOCESE.search)
         getDioceses()
     }, [])
 

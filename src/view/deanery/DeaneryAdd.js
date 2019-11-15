@@ -10,6 +10,11 @@ import Typography from '@material-ui/core/Typography';
 
 import Detail from '../../component/deanery/add/Detail'
 
+import { connect } from "react-redux";
+import { setPagePath } from "../../actions/pageInfos";
+
+import { DEANERY } from '../../constant/BreadcrumbsConfig'
+
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
@@ -48,6 +53,20 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const mapStateToProps = state => {
+    return {
+        PageInfos: state.PageInfosModule,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPagePath: pagePath => {
+            dispatch(setPagePath(pagePath));
+        },
+    };
+};
+
 const DeaneryAdd = (props) => {
     const classes = useStyles();
     const [deanery, setDeanery] = useState({
@@ -83,6 +102,7 @@ const DeaneryAdd = (props) => {
     };
 
     useEffect(() => {
+        props.setPagePath(DEANERY.add)
         getDioceses()
     }, [])
 
@@ -124,4 +144,4 @@ const DeaneryAdd = (props) => {
         </Fragment>
     );
 }
-export default withRouter(DeaneryAdd);
+export default connect(mapStateToProps, mapDispatchToProps)(DeaneryAdd);

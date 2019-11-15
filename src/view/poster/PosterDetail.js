@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -9,13 +9,35 @@ import Tabs from '../../component/common/tab/Tabs';
 import { TabCatalogConfig } from '../../constant/TabConfig'
 import SignIn from '../../component/SignIn'
 
+import { connect } from "react-redux";
+import { setPagePath } from "../../actions/pageInfos";
+
+import { POSTER } from '../../constant/BreadcrumbsConfig'
+
 const useStyles = makeStyles(theme => ({
 
 }));
 
-const PosterScreen = () => {
+const mapStateToProps = state => {
+    return {
+        PageInfos: state.PageInfosModule,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPagePath: pagePath => {
+            dispatch(setPagePath(pagePath));
+        },
+    };
+};
+
+const PosterScreen = (props) => {
     const classes = useStyles();
 
+    useEffect(() => {
+        props.setPagePath(POSTER.view)
+    }, [])
     return (
         <Fragment>
             <CssBaseline />
@@ -39,4 +61,4 @@ const PosterScreen = () => {
         </Fragment>
     );
 }
-export default PosterScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(PosterScreen);

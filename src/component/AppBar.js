@@ -147,13 +147,23 @@ const AppBarComponent = (props) => {
                         <Breadcrumbs aria-label="breadcrumb">
                             {
                                 pagePaths.map((item, index) => {
-                                    return (
-                                        <Link color="inherit" to={item.link} className={classes.link} key={index}>
-                                            {/* <HomeIcon className={classes.icon} /> */}
-                                            {React.cloneElement(item.icon)}
-                                            {item.title}
-                                        </Link>
-                                    )
+                                    if (item.link.length === 0) {
+                                        return (
+                                            <Typography color="textPrimary" className={classes.link} key={index}>
+                                                {React.cloneElement(item.icon)}
+                                                {item.title}
+                                            </Typography>
+                                        )
+                                    }
+                                    else {
+                                        return (
+                                            <Link color="inherit" to={item.link} className={classes.link} key={index}>
+                                                {/* <HomeIcon className={classes.icon} /> */}
+                                                {React.cloneElement(item.icon)}
+                                                {item.title}
+                                            </Link>
+                                        )
+                                    }
                                 })
                             }
                             {/* <Link color="inherit" href="/" className={classes.link}>

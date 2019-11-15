@@ -6,6 +6,11 @@ import EditIcon from '@material-ui/icons/EditOutlined'
 
 import MaterialTable from "material-table";
 
+import { connect } from "react-redux";
+import { setPagePath } from "../../actions/pageInfos";
+
+import { DEANERY } from '../../constant/BreadcrumbsConfig'
+
 import { useQuery, useLazyQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
@@ -23,6 +28,20 @@ const DEANERIES = gql`
         }
     }
 `;
+
+const mapStateToProps = state => {
+    return {
+        PageInfos: state.PageInfosModule,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPagePath: pagePath => {
+            dispatch(setPagePath(pagePath));
+        },
+    };
+};
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -70,6 +89,7 @@ const Deanery = (props) => {
 
     const [getDeaneries, { loading, data, error, refetch }] = useLazyQuery(DEANERIES);
     useEffect(() => {
+        props.setPagePath(DEANERY.search)
         getDeaneries()
     }, [])
 
@@ -157,4 +177,4 @@ const Deanery = (props) => {
         </React.Fragment>
     );
 }
-export default Deanery;
+export default connect(mapStateToProps, mapDispatchToProps)(Deanery);

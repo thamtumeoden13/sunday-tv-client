@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -8,6 +8,11 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+
+import { connect } from "react-redux";
+import { setPagePath } from "../../actions/pageInfos";
+
+import { POSTER } from '../../constant/BreadcrumbsConfig'
 
 const useStyles = makeStyles(theme => ({
     icon: {
@@ -43,8 +48,26 @@ const useStyles = makeStyles(theme => ({
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-const PosterScreen = () => {
+const mapStateToProps = state => {
+    return {
+        PageInfos: state.PageInfosModule,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPagePath: pagePath => {
+            dispatch(setPagePath(pagePath));
+        },
+    };
+};
+
+const PosterScreen = (props) => {
     const classes = useStyles();
+
+    useEffect(() => {
+        props.setPagePath(POSTER.search)
+    }, [])
 
     return (
         <React.Fragment>
@@ -81,4 +104,4 @@ const PosterScreen = () => {
         </React.Fragment>
     );
 }
-export default PosterScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(PosterScreen);

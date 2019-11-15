@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,6 +15,11 @@ import { TabCategoryConfig } from '../../constant/TabConfig'
 import DetailComponent from '../../component/category/edit/Detail'
 import ContentComponent from '../../component/category/edit/UpdateImages'
 import TextEditorComponent from '../../component/category/edit/Content'
+
+import { connect } from "react-redux";
+import { setPagePath } from "../../actions/pageInfos";
+
+import { CATEGORY } from '../../constant/BreadcrumbsConfig'
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -38,8 +43,26 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-const CategoryEdit = () => {
+const mapStateToProps = state => {
+    return {
+        PageInfos: state.PageInfosModule,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPagePath: pagePath => {
+            dispatch(setPagePath(pagePath));
+        },
+    };
+};
+
+const CategoryEdit = (props) => {
     const classes = useStyles();
+
+    useEffect(() => {
+        props.setPagePath(CATEGORY.edit)
+    }, [])
 
     return (
         <Fragment>
@@ -70,4 +93,4 @@ const CategoryEdit = () => {
         </Fragment>
     );
 }
-export default withRouter(CategoryEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryEdit);

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,6 +14,11 @@ import Typography from '@material-ui/core/Typography';
 import Step1 from '../../component/category/add/Detail'
 import Step2 from '../../component/category/add/Content'
 import Step3 from '../../component/category/add/AddImages'
+
+import { connect } from "react-redux";
+import { setPagePath } from "../../actions/pageInfos";
+
+import { CATEGORY } from '../../constant/BreadcrumbsConfig'
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -51,7 +56,20 @@ function getStepContent(step) {
             throw new Error('Unknown step');
     }
 }
-const CategoryAdd = () => {
+const mapStateToProps = state => {
+    return {
+        PageInfos: state.PageInfosModule,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPagePath: pagePath => {
+            dispatch(setPagePath(pagePath));
+        },
+    };
+};
+const CategoryAdd = (props) => {
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
 
@@ -62,6 +80,11 @@ const CategoryAdd = () => {
     const handleBack = () => {
         setActiveStep(activeStep - 1);
     };
+
+    useEffect(() => {
+        props.setPagePath(CATEGORY.add)
+    }, [])
+
     return (
         <Fragment>
             <CssBaseline />
@@ -116,4 +139,4 @@ const CategoryAdd = () => {
         </Fragment>
     );
 }
-export default withRouter(CategoryAdd);
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryAdd);

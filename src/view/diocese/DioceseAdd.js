@@ -1,5 +1,7 @@
-import React, { Fragment, useState } from 'react';
-import { withRouter } from 'react-router-dom';
+import React, { Fragment, useState, useEffect } from 'react';
+
+import { connect } from "react-redux";
+import { setPagePath } from "../../actions/pageInfos";
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import Detail from '../../component/diocese/add/Detail'
+import { DIOCESE } from '../../constant/BreadcrumbsConfig'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -37,6 +40,21 @@ const useStyles = makeStyles(theme => ({
         marginLeft: theme.spacing(1),
     },
 }));
+
+
+const mapStateToProps = state => {
+    return {
+        PageInfos: state.PageInfosModule,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPagePath: pagePath => {
+            dispatch(setPagePath(pagePath));
+        },
+    };
+};
 
 const DioceseAdd = (props) => {
     const classes = useStyles();
@@ -70,6 +88,10 @@ const DioceseAdd = (props) => {
         createDiocese({ variables: { name: diocese.name, shortName: diocese.shortName } })
     };
 
+    useEffect(() => {
+        props.setPagePath(DIOCESE.add)
+    }, [])
+
     return (
         <Fragment>
             <CssBaseline />
@@ -101,4 +123,4 @@ const DioceseAdd = (props) => {
         </Fragment>
     );
 }
-export default withRouter(DioceseAdd);
+export default connect(mapStateToProps, mapDispatchToProps)(DioceseAdd);

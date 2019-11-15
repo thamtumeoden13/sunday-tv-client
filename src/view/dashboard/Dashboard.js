@@ -1,5 +1,4 @@
-import React, { Fragment } from 'react';
-import { connect } from "react-redux";
+import React, { Fragment, useEffect } from 'react';
 import clsx from 'clsx';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -7,7 +6,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
+import { connect } from "react-redux";
 import { setPagePath } from "../../actions/pageInfos";
+
+import { DASHBOARD } from '../../constant/BreadcrumbsConfig'
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -37,6 +39,11 @@ const mapDispatchToProps = dispatch => {
 const DashBoardScreen = (props) => {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+    useEffect(() => {
+        props.setPagePath(DASHBOARD.search)
+    }, [])
+
     return (
         <Fragment>
             <CssBaseline />

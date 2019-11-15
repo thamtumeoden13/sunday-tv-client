@@ -10,6 +10,11 @@ import Typography from '@material-ui/core/Typography';
 
 import Detail from '../../component/deanery/edit/Detail'
 
+import { connect } from "react-redux";
+import { setPagePath } from "../../actions/pageInfos";
+
+import { DEANERY } from '../../constant/BreadcrumbsConfig'
+
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
@@ -62,6 +67,19 @@ const DIOCESES = gql`
     }
 `;
 
+const mapStateToProps = state => {
+    return {
+        PageInfos: state.PageInfosModule,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPagePath: pagePath => {
+            dispatch(setPagePath(pagePath));
+        },
+    };
+};
 
 const DeaneryEdit = (props) => {
     const classes = useStyles();
@@ -107,6 +125,7 @@ const DeaneryEdit = (props) => {
     };
 
     useEffect(() => {
+        props.setPagePath(DEANERY.edit)
         getDeaneryById()
         getDioceses()
     }, [])
@@ -157,4 +176,4 @@ const DeaneryEdit = (props) => {
         </Fragment>
     );
 }
-export default withRouter(DeaneryEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(DeaneryEdit);
