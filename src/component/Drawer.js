@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,9 +13,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
+import Collapse from '@material-ui/core/Collapse';
+
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import StarBorder from '@material-ui/icons/StarBorder';
 
 import AppBarMenu from '../constant/AppBarMenu';
 
@@ -60,6 +66,9 @@ const useStyles = makeStyles(theme => ({
         width: 200,
         height: 40,
     },
+    nested: {
+        paddingLeft: theme.spacing(4),
+    },
 }));
 
 const DrawerComponent = (props) => {
@@ -69,6 +78,59 @@ const DrawerComponent = (props) => {
         if (props.handleDrawer)
             props.handleDrawer(false)
         setStatusDrawer(false);
+    }
+
+    const [open, setOpen] = useState({
+        settings: [
+            { id: "Customers", open: false },
+            { id: "Diocese", open: false }
+        ]
+    });
+    const handleClick = (id) => {
+        console.log({ id, open })
+        setOpen(open => ({
+            ...open,
+            settings: open.settings.map(item =>
+                item.id === id ? { ...item, open: !item.open } : item
+            )
+        }));
+    };
+
+    const collapseSubMenu = (itemMenu) => {
+        console.log({ itemMenu })
+        return (
+            <div key={itemMenu.menuName} style={{ textDecoration: 'none', color: 'grey' }}>
+                <ListItem button onClick={() => handleClick(itemMenu.menuName)}>
+                    <ListItemIcon>
+                        {React.cloneElement(itemMenu.menuIcon)}
+                    </ListItemIcon>
+                    <ListItemText primary={itemMenu.menuTitle} />
+                    {open.settings.find(item => item.id === itemMenu.menuName).open
+                        ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse
+                    in={open.settings.find(item => item.id === itemMenu.menuName).open}
+                    timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        {
+                            itemMenu.subMenu.map((itemSub, itemIndex) => {
+                                return (
+                                    <Link to={itemSub.linkTo} key={itemIndex} style={{ textDecoration: 'none', color: 'grey' }}>
+                                        <ListItem button className={classes.nested}>
+                                            <ListItemIcon>
+                                                {React.cloneElement(itemSub.menuIcon)}
+                                            </ListItemIcon>
+                                            <ListItemText primary={itemSub.menuTitle} />
+                                        </ListItem>
+                                    </Link>
+                                )
+                            })
+                        }
+                    </List>
+                </Collapse>
+            </div>
+        )
+
     }
 
     useEffect(() => {
@@ -110,16 +172,21 @@ const DrawerComponent = (props) => {
                                 <List>
                                     {itemGroupMenu.groupMenuDetail && itemGroupMenu.groupMenuDetail.length > 0 &&
                                         itemGroupMenu.groupMenuDetail.map((itemMenu, indexMenu) => {
-                                            return (
-                                                <Link to={itemMenu.linkTo} key={indexMenu} style={{ textDecoration: 'none', color: 'grey' }}>
-                                                    <ListItem button>
-                                                        <ListItemIcon>
-                                                            {React.cloneElement(itemMenu.menuIcon)}
-                                                        </ListItemIcon>
-                                                        <ListItemText primary={itemMenu.menuTitle} />
-                                                    </ListItem>
-                                                </Link>
-                                            )
+                                            if (itemMenu.subMenu.length === 0) {
+                                                return (
+                                                    <Link to={itemMenu.linkTo} key={indexMenu} style={{ textDecoration: 'none', color: 'grey' }}>
+                                                        <ListItem button>
+                                                            <ListItemIcon>
+                                                                {React.cloneElement(itemMenu.menuIcon)}
+                                                            </ListItemIcon>
+                                                            <ListItemText primary={itemMenu.menuTitle} />
+                                                        </ListItem>
+                                                    </Link>
+                                                )
+                                            }
+                                            else {
+                                                return collapseSubMenu(itemMenu)
+                                            }
                                         })
                                     }
                                 </List>

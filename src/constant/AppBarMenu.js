@@ -46,6 +46,22 @@ const AppBarMenu = [
                 linkTo: '/customer',
                 menuIcon: <PeopleIcon />,
                 subMenu: [
+                    {
+                        menuName: 'Aaaaaaa',
+                        menuTitle: 'aaaaaa',
+                        linkTo: '/aaa',
+                        menuIcon: <PhotoCameraIcon />,
+                        subMenu: [
+                        ]
+                    },
+                    {
+                        menuName: 'BBBBBB',
+                        menuTitle: 'bbbbb',
+                        linkTo: '/bbb',
+                        menuIcon: <PeopleIcon />,
+                        subMenu: [
+                        ]
+                    },
                 ]
             },
         ]
@@ -60,6 +76,30 @@ const AppBarMenu = [
                 linkTo: '/diocese',
                 menuIcon: <TwitterIcon />,
                 subMenu: [
+                    {
+                        menuName: 'ccccc',
+                        menuTitle: 'cccc',
+                        linkTo: '/ccc',
+                        menuIcon: <PhotoCameraIcon />,
+                        subMenu: [
+                        ]
+                    },
+                    {
+                        menuName: 'ddddd',
+                        menuTitle: 'ddddd',
+                        linkTo: '/dddd',
+                        menuIcon: <PeopleIcon />,
+                        subMenu: [
+                            {
+                                menuName: 'eeee',
+                                menuTitle: 'eeee',
+                                linkTo: '/eeee',
+                                menuIcon: <PeopleIcon />,
+                                subMenu: [
+                                ]
+                            },
+                        ]
+                    },
                 ]
             },
             {
