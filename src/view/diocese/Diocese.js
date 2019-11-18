@@ -83,14 +83,6 @@ const Diocese = (props) => {
 
     const [getDioceses, { loading, data, error, refetch }] = useLazyQuery(DIOCESES);
 
-    const onSelectRow = (evt, rowData) => {
-        setSelectedRow(rowData);
-    }
-
-    const addNewDiocese = () => {
-        props.history.push('diocese/add')
-    }
-
     useEffect(() => {
         props.setPagePath(DIOCESE.search)
         getDioceses()
@@ -103,12 +95,26 @@ const Diocese = (props) => {
         }
     }, [data])
 
+    const onSelectRow = (evt, rowData) => {
+        setSelectedRow(rowData);
+    }
+
+    const addNewDiocese = () => {
+        props.history.push('diocese/add')
+    }
+
+    const onDeleteData = (data) => {
+        console.log("{ evt.target, data }", data)
+        // props.history.push('deanery/add')
+    }
+
     return (
         <React.Fragment>
             <CssBaseline />
             <MaterialTable
                 title="Danh Sách Giáo Phận"
                 tableRef={tableRef}
+                isLoading={loading}
                 columns={[
                     {
                         title: 'Avatar',
@@ -147,7 +153,7 @@ const Diocese = (props) => {
                     {
                         tooltip: 'Remove All Selected Categories',
                         icon: 'delete',
-                        onClick: (evt, data) => alert('You want to delete ' + data.length + ' rows')
+                        onClick: (evt, data) => onDeleteData(data)
                     },
                 ]}
                 onRowClick={((evt, row) => onSelectRow(evt, row))}
@@ -156,12 +162,6 @@ const Diocese = (props) => {
                         search: true,
                         selection: true,
                         sorting: true,
-                        rowStyle: (rowData, index) => ({
-                            backgroundColor: (selectedRow && selectedRow.tableData.id === rowData.tableData.id)
-                                ? '#00bcd4'
-                                : (index % 2 === 1 ? '#cfeaff' : '#b4e8ff')
-                        }),
-                        headerStyle: { backgroundColor: '#9da1a2', color: "#000", fontSize: "24", fontWeight: "bold" }
                     }
                 }
             />

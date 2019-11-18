@@ -83,7 +83,7 @@ const CategoryAddNew = (props) => {
         <React.Fragment>
             <CssBaseline />
             <MaterialTable
-                title="Refresh Data Preview"
+                title="Danh Mục Hình Ảnh"
                 tableRef={tableRef}
                 columns={[
                     {
@@ -103,7 +103,6 @@ const CategoryAddNew = (props) => {
                         title: 'Chỉnh sửa', field: 'edit',
                         render: rowData => (
                             <Link to={`/category/edit/${rowData.id}`}><EditIcon /></Link>
-                            // <Link to={`/category/add`}><EditIcon /></Link>
                         )
                     },
                 ]}
@@ -124,12 +123,12 @@ const CategoryAddNew = (props) => {
                     })
                 }
                 actions={[
-                    // {
-                    //     icon: 'refresh',
-                    //     tooltip: 'Refresh Data',
-                    //     isFreeAction: true,
-                    //     onClick: () => tableRef.current && tableRef.current.onQueryChange(),
-                    // },
+                    {
+                        icon: 'refresh',
+                        tooltip: 'Refresh Data',
+                        isFreeAction: true,
+                        onClick: () => tableRef.current && tableRef.current.onQueryChange(),
+                    },
                     {
                         tooltip: 'Add New Category',
                         icon: 'add',
@@ -148,12 +147,6 @@ const CategoryAddNew = (props) => {
                         search: true,
                         selection: true,
                         sorting: true,
-                        rowStyle: (rowData, index) => ({
-                            backgroundColor: (selectedRow && selectedRow.tableData.id === rowData.tableData.id)
-                                ? '#00bcd4'
-                                : (index % 2 === 1 ? '#cfeaff' : '#b4e8ff')
-                        }),
-                        headerStyle: { backgroundColor: '#9da1a2', color: "#000", fontSize: "24", fontWeight: "bold" }
                     }
                 }
             />

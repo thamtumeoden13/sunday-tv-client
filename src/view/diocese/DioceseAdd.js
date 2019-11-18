@@ -16,7 +16,7 @@ import { DIOCESE } from '../../constant/BreadcrumbsConfig'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-const CREATEDIOCESE = gql`
+const CREATE_DIOCESE = gql`
    mutation createDiocese($name: String!,$shortName: String!) {
     createDiocese(name: $name, shortName: $shortName) {
         id
@@ -64,7 +64,7 @@ const DioceseAdd = (props) => {
         shortName: ''
     })
 
-    const [createDiocese, { loading, error }] = useMutation(CREATEDIOCESE,
+    const [createDiocese, { loading, error }] = useMutation(CREATE_DIOCESE,
         {
             onCompleted(...params) {
                 if (params) {
@@ -80,6 +80,10 @@ const DioceseAdd = (props) => {
         }
     );
 
+    useEffect(() => {
+        props.setPagePath(DIOCESE.add)
+    }, [])
+
     const onChangeText = (name, value) => {
         setDiocese({ ...diocese, [name]: value });
     }
@@ -87,10 +91,6 @@ const DioceseAdd = (props) => {
     const handleSubmit = () => {
         createDiocese({ variables: { name: diocese.name, shortName: diocese.shortName } })
     };
-
-    useEffect(() => {
-        props.setPagePath(DIOCESE.add)
-    }, [])
 
     return (
         <Fragment>

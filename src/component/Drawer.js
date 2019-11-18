@@ -82,6 +82,7 @@ const DrawerComponent = (props) => {
 
     const [open, setOpen] = useState({
         settings: [
+            { id: "Catalogs", open: false },
             { id: "Customers", open: false },
             { id: "Diocese", open: false }
         ]

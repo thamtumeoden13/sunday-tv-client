@@ -25,19 +25,27 @@ const AppBarMenu = [
                 ]
             },
             {
-                menuName: 'Categories',
+                menuName: 'Catalogs',
                 menuTitle: 'Mục lục',
-                linkTo: '/category',
+                linkTo: '/catalog',
                 menuIcon: <PermMediaIcon />,
                 subMenu: [
-                ]
-            },
-            {
-                menuName: 'Posters',
-                menuTitle: 'Hình ảnh',
-                linkTo: '/poster',
-                menuIcon: <PhotoCameraIcon />,
-                subMenu: [
+                    {
+                        menuName: 'Posters',
+                        menuTitle: 'Hình ảnh',
+                        linkTo: '/poster',
+                        menuIcon: <PhotoCameraIcon />,
+                        subMenu: [
+                        ]
+                    },
+                    {
+                        menuName: 'Categories',
+                        menuTitle: 'Danh Mục',
+                        linkTo: '/category',
+                        menuIcon: <PermMediaIcon />,
+                        subMenu: [
+                        ]
+                    },
                 ]
             },
             {
@@ -46,22 +54,6 @@ const AppBarMenu = [
                 linkTo: '/customer',
                 menuIcon: <PeopleIcon />,
                 subMenu: [
-                    {
-                        menuName: 'Aaaaaaa',
-                        menuTitle: 'aaaaaa',
-                        linkTo: '/aaa',
-                        menuIcon: <PhotoCameraIcon />,
-                        subMenu: [
-                        ]
-                    },
-                    {
-                        menuName: 'BBBBBB',
-                        menuTitle: 'bbbbb',
-                        linkTo: '/bbb',
-                        menuIcon: <PeopleIcon />,
-                        subMenu: [
-                        ]
-                    },
                 ]
             },
         ]
@@ -76,30 +68,6 @@ const AppBarMenu = [
                 linkTo: '/diocese',
                 menuIcon: <TwitterIcon />,
                 subMenu: [
-                    {
-                        menuName: 'ccccc',
-                        menuTitle: 'cccc',
-                        linkTo: '/ccc',
-                        menuIcon: <PhotoCameraIcon />,
-                        subMenu: [
-                        ]
-                    },
-                    {
-                        menuName: 'ddddd',
-                        menuTitle: 'ddddd',
-                        linkTo: '/dddd',
-                        menuIcon: <PeopleIcon />,
-                        subMenu: [
-                            {
-                                menuName: 'eeee',
-                                menuTitle: 'eeee',
-                                linkTo: '/eeee',
-                                menuIcon: <PeopleIcon />,
-                                subMenu: [
-                                ]
-                            },
-                        ]
-                    },
                 ]
             },
             {

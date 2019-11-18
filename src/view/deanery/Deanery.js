@@ -86,7 +86,6 @@ const Deanery = (props) => {
     const tableRef = useRef();
     const [selectedRow, setSelectedRow] = useState(null);
     const [deaneries, setDeaneries] = useState([])
-
     const [getDeaneries, { loading, data, error, refetch }] = useLazyQuery(DEANERIES);
     useEffect(() => {
         props.setPagePath(DEANERY.search)
@@ -109,6 +108,11 @@ const Deanery = (props) => {
 
     const addDeanery = () => {
         props.history.push('deanery/add')
+    }
+
+    const onDeleteData = (evt, data) => {
+        console.log({ evt, data })
+        // props.history.push('deanery/add')
     }
 
     return (
@@ -139,6 +143,7 @@ const Deanery = (props) => {
                         )
                     },
                 ]}
+                isLoading={loading}
                 data={deaneries}
                 actions={[
                     {
@@ -156,7 +161,7 @@ const Deanery = (props) => {
                     {
                         tooltip: 'Remove All Selected Categories',
                         icon: 'delete',
-                        onClick: (evt, data) => alert('You want to delete ' + data.length + ' rows')
+                        onClick: (evt, data) => onDeleteData(evt, data)
                     },
                 ]}
                 onRowClick={((evt, row) => onSelectRow(evt, row))}
@@ -165,12 +170,6 @@ const Deanery = (props) => {
                         search: true,
                         selection: true,
                         sorting: true,
-                        rowStyle: (rowData, index) => ({
-                            backgroundColor: (selectedRow && selectedRow.tableData.id === rowData.tableData.id)
-                                ? '#00bcd4'
-                                : (index % 2 === 1 ? '#cfeaff' : '#b4e8ff')
-                        }),
-                        headerStyle: { backgroundColor: '#9da1a2', color: "#000", fontSize: "24", fontWeight: "bold" }
                     }
                 }
             />
