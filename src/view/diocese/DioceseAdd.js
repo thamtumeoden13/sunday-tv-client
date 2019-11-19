@@ -54,7 +54,8 @@ const DioceseAdd = (props) => {
     const [diocese, setDiocese] = useState({
         id: '',
         name: '',
-        shortName: ''
+        shortName: '',
+        published: false
     })
 
     const [createDiocese, { loading: loadingMutation, error }] = useMutation(CREATE_DIOCESE,
@@ -76,7 +77,13 @@ const DioceseAdd = (props) => {
     }
 
     const handleSubmit = () => {
-        createDiocese({ variables: { name: diocese.name, shortName: diocese.shortName } })
+        createDiocese({
+            variables: {
+                name: diocese.name,
+                shortName: diocese.shortName,
+                published: diocese.published,
+            }
+        })
     };
 
 

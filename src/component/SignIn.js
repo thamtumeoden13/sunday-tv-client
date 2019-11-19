@@ -83,12 +83,10 @@ const SignInComponent = (props) => {
         {
             onCompleted(...params) {
                 if (params && params[0] && params[0].signIn) {
-                    console.log("params[0].signIn.token", params[0].signIn.token)
                     localStorage.setItem(AUTH_TOKEN, params[0].signIn.token);
                     client.writeData({ data: { isLoggedIn: true } });
                     const { from } = props.location.state || { from: { pathname: '/' } }
                     props.history.push(from)
-                    // < Redirect to = '/' />
                 }
             },
             onError(error) {

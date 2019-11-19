@@ -119,7 +119,6 @@ const AppBarComponent = (props) => {
     }, [props.statusDrawer])
 
     useEffect(() => {
-        console.log("props.PageInfos", props.PageInfos)
         if (props.PageInfos && props.PageInfos.pagePaths && props.PageInfos.pagePaths.length !== 0) {
             setPagePaths(props.PageInfos.pagePaths)
         }

@@ -1,6 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
 import gql from 'graphql-tag';
-
 
 export const DIOCESES = gql`
    query dioceses{
@@ -8,6 +6,7 @@ export const DIOCESES = gql`
             id
             name
             shortName
+            published
         }
     }
 `;
@@ -20,37 +19,38 @@ export const DELETE_DIOCESES = gql`
   }
 `;
 
-
-export const CREATE_DIOCESE = gql`
-   mutation createDiocese($name: String!,$shortName: String!) {
-    createDiocese(name: $name, shortName: $shortName) {
-        id
-        name
-        shortName
-    }
-  }
-`;
-
-
 export const DIOCESE_BY_ID = gql`
    query diocese($id: ID!){
         diocese(id: $id){
             id
             name
             shortName
+            published
         }
     }
 `;
-export const UPDATE_DIOCESE_BY_ID = gql`
-   mutation updateDiocese($id: ID! $name: String!,$shortName: String!) {
-    updateDiocese(id: $id, name: $name, shortName: $shortName) {
+
+export const CREATE_DIOCESE = gql`
+   mutation createDiocese($name: String!,$shortName: String!, $published: Boolean) {
+    createDiocese(name: $name, shortName: $shortName, published: $published) {
         id
         name
         shortName
+        published
     }
   }
 `;
 
+export const UPDATE_DIOCESE_BY_ID = gql`
+   mutation updateDiocese($id: ID! $name: String!,$shortName: String!, $published: Boolean) {
+    updateDiocese(id: $id, name: $name, shortName: $shortName, published: $published) {
+        id
+        name
+        shortName
+        published
+    }
+  }
+`;
 
 export const DEANERIES = gql`
    query deaneries{
@@ -58,6 +58,7 @@ export const DEANERIES = gql`
             id
             name
             shortName
+            published
             diocese{
                 id 
                 name
@@ -76,11 +77,12 @@ export const DELETE_DEANERIES = gql`
 `;
 
 export const CREATE_DEANERY = gql`
-   mutation createDeanery($name: String!,$shortName: String!, $dioceseId: ID!) {
-    createDeanery(name: $name, shortName: $shortName, dioceseId: $dioceseId) {
+   mutation createDeanery($name: String!,$shortName: String!, $published: Boolean, $dioceseId: ID!) {
+    createDeanery(name: $name, shortName: $shortName, published: $published, dioceseId: $dioceseId) {
         id
         name
         shortName
+        published
     }
   }
 `;
@@ -91,6 +93,7 @@ export const DEANERY_BY_ID = gql`
             id
             name
             shortName
+            published
             diocese{
                 id
                 name
@@ -98,12 +101,14 @@ export const DEANERY_BY_ID = gql`
         }
     }
 `;
+
 export const UPDATE_DEANERY_BY_ID = gql`
-   mutation updateDeanery($id: ID! $name: String!,$shortName: String!,$dioceseId: ID!) {
-    updateDeanery(id: $id, name: $name, shortName: $shortName,dioceseId: $dioceseId) {
+   mutation updateDeanery($id: ID! $name: String!,$shortName: String!, $published: Boolean, $dioceseId: ID!) {
+    updateDeanery(id: $id, name: $name, shortName: $shortName, published: $published, dioceseId: $dioceseId) {
         id
         name
         shortName
+        published
     }
   }
 `;

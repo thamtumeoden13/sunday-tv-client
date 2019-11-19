@@ -55,6 +55,12 @@ const DeaneryEditDetail = (props) => {
             props.onChange(event.target.name, event.target.value)
         }
     };
+    const handleChangeCheckbox = (event) => {
+        setState({ ...state, [event.target.name]: !state[event.target.name] });
+        if (props.onChange) {
+            props.onChange(event.target.name, !state[event.target.name])
+        }
+    };
 
     const renderOption = (listOption) => {
         return (
@@ -66,6 +72,7 @@ const DeaneryEditDetail = (props) => {
 
     useEffect(() => {
         if (props.deanery) {
+            console.log("props.deanery.published", props.deanery.published)
             setState({
                 id: props.deanery.id ? props.deanery.id : '',
                 name: props.deanery.name ? props.deanery.name : '',
@@ -147,7 +154,7 @@ const DeaneryEditDetail = (props) => {
                         control={
                             <Checkbox value={state.published} checked={state.published}
                                 color="primary" name="published" id="published"
-                                onChange={(event) => handleChange(event)}
+                                onChange={(event) => handleChangeCheckbox(event)}
                             />}
                         label="Công khai"
                     />

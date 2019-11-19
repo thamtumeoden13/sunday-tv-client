@@ -55,7 +55,8 @@ const DeaneryAdd = (props) => {
     const [deanery, setDeanery] = useState({
         name: '',
         shortName: '',
-        dioceseId: ''
+        dioceseId: '',
+        published: false
     })
     const [dioceses, setDioceses] = useState([])
 
@@ -79,7 +80,14 @@ const DeaneryAdd = (props) => {
     }
 
     const handleSubmit = () => {
-        createDeanery({ variables: { name: deanery.name, shortName: deanery.shortName, dioceseId: deanery.dioceseId } })
+        createDeanery({
+            variables: {
+                name: deanery.name,
+                shortName: deanery.shortName,
+                published: deanery.published,
+                dioceseId: deanery.dioceseId
+            }
+        })
     };
 
     useEffect(() => {

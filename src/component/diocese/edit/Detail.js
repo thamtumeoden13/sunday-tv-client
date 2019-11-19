@@ -7,7 +7,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -53,10 +52,6 @@ const DioceseEditDetail = (props) => {
         }
     };
 
-    // const onChangePublished = () => {
-    //     setPublished(!publish)
-    // }
-
     useEffect(() => {
         setState({
             id: props.data.id ? props.data.id : '',
@@ -65,10 +60,6 @@ const DioceseEditDetail = (props) => {
             published: props.data.published ? props.data.published : false,
         });
     }, [props.data])
-
-    // useEffect(() => {
-    //     setPublished(!props.publish ? false : props.publish)
-    // }, [props.publish])
 
     return (
         <div className={classes.paper}>

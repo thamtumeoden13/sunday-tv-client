@@ -44,6 +44,9 @@ const mapDispatchToProps = dispatch => {
         setPagePath: pagePath => {
             dispatch(setPagePath(pagePath));
         },
+        setLoadingDetail: isLoading => {
+            dispatch(setLoadingDetail(isLoading));
+        },
     };
 };
 
@@ -55,6 +58,7 @@ const DeaneryEdit = (props) => {
         name: '',
         shortName: '',
         dioceseId: '',
+        published: false
     })
     const [dioceses, setDioceses] = useState([])
 
@@ -84,7 +88,16 @@ const DeaneryEdit = (props) => {
     }
 
     const handleSubmit = () => {
-        updateDeanery({ variables: { id: deanery.id, name: deanery.name, shortName: deanery.shortName, dioceseId: deanery.dioceseId } })
+        console.log('handleSubmit', deanery.published)
+        updateDeanery({
+            variables: {
+                id: deanery.id,
+                name: deanery.name,
+                shortName: deanery.shortName,
+                published: deanery.published,
+                dioceseId: deanery.dioceseId
+            }
+        })
     };
 
     useEffect(() => {
@@ -107,6 +120,7 @@ const DeaneryEdit = (props) => {
 
     useEffect(() => {
         if (dataDeanery && dataDeanery.deanery) {
+            console.log("dataDeanery.deanery", dataDeanery.deanery)
             let temp = dataDeanery.deanery
             temp.dioceseId = dataDeanery.deanery.diocese.id ? dataDeanery.deanery.diocese.id : ''
             setDeanery(temp)

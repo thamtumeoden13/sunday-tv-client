@@ -56,13 +56,6 @@ const DioceseAddDetail = (props) => {
             props.onChange(event.target.name, event.target.value)
         }
     };
-    // const onChangePublished = () => {
-    //     setPublished(!publish)
-    // }
-
-    // useEffect(() => {
-    //     setPublished(!props.publish ? false : props.publish)
-    // }, [props.publish])
 
     return (
         <div className={classes.paper}>

@@ -54,7 +54,8 @@ const DioceseEdit = (props) => {
     const [diocese, setDiocese] = useState({
         id: '',
         name: '',
-        shortName: ''
+        shortName: '',
+        published: false
     })
 
     const [getDioceseById, { loading: loadingQuery, data: dataQuery, error: errorQuery, refetch }] = useLazyQuery(DIOCESE_BY_ID, {
@@ -67,9 +68,7 @@ const DioceseEdit = (props) => {
         {
             onCompleted(...params) {
                 if (params) {
-                    // < Redirect to = '/' />
                     props.history.goBack();
-                    //console.log({ params })
                 }
             },
             onError(error) {
@@ -85,7 +84,6 @@ const DioceseEdit = (props) => {
     }, [])
 
     useEffect(() => {
-        console.log('dataQuery', dataQuery)
         if (dataQuery && dataQuery.diocese) {
             setDiocese(dataQuery.diocese)
         }
@@ -104,7 +102,14 @@ const DioceseEdit = (props) => {
     }
 
     const handleSubmit = () => {
-        updateDiocese({ variables: { id: diocese.id, name: diocese.name, shortName: diocese.shortName } })
+        updateDiocese({
+            variables: {
+                id: diocese.id,
+                name: diocese.name,
+                shortName: diocese.shortName,
+                published: diocese.published,
+            }
+        })
     };
 
     return (

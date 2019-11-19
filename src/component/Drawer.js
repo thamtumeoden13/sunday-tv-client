@@ -88,7 +88,6 @@ const DrawerComponent = (props) => {
         ]
     });
     const handleClick = (id) => {
-        console.log({ id, open })
         setOpen(open => ({
             ...open,
             settings: open.settings.map(item =>
@@ -98,7 +97,6 @@ const DrawerComponent = (props) => {
     };
 
     const collapseSubMenu = (itemMenu) => {
-        console.log({ itemMenu })
         return (
             <div key={itemMenu.menuName} style={{ textDecoration: 'none', color: 'grey' }}>
                 <ListItem button onClick={() => handleClick(itemMenu.menuName)}>
