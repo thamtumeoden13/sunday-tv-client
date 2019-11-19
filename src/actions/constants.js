@@ -1,3 +1,4 @@
 export const actions = {
     SET_PAGE_PATH: 'SET_PAGE_PATH',
+    SET_LOADING_DETAIL: 'SET_LOADING_DETAIL'
 }

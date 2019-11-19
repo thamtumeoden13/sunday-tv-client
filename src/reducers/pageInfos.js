@@ -19,6 +19,11 @@ export const pageInfos = (state = initialState, action) => {
                 ...state,
                 pagePaths: action.pagePaths
             }
+        case actions.SET_LOADING_DETAIL:
+            return {
+                ...state,
+                loading: action.isLoading
+            }
         default:
             return {
                 ...state

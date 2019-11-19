@@ -11,32 +11,12 @@ import Typography from '@material-ui/core/Typography';
 import Detail from '../../component/deanery/add/Detail'
 
 import { connect } from "react-redux";
-import { setPagePath } from "../../actions/pageInfos";
+import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { DEANERY } from '../../constant/BreadcrumbsConfig'
+import { DEANERY as DeaneryPath } from '../../constant/BreadcrumbsConfig'
+import { DIOCESES, CREATE_DEANERY } from '../../gql/graphqlTag'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-
-const CREATEDEANERY = gql`
-   mutation createDeanery($name: String!,$shortName: String!, $dioceseId: ID!) {
-    createDeanery(name: $name, shortName: $shortName, dioceseId: $dioceseId) {
-        id
-        name
-        shortName
-    }
-  }
-`;
-
-const DIOCESES = gql`
-   query dioceses{
-        dioceses{
-            id
-            name
-            shortName
-        }
-    }
-`;
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -64,6 +44,9 @@ const mapDispatchToProps = dispatch => {
         setPagePath: pagePath => {
             dispatch(setPagePath(pagePath));
         },
+        setLoadingDetail: isLoading => {
+            dispatch(setLoadingDetail(isLoading));
+        },
     };
 };
 
@@ -76,14 +59,12 @@ const DeaneryAdd = (props) => {
     })
     const [dioceses, setDioceses] = useState([])
 
-    const [getDioceses, { loadingDioceses, data, errorDioceses }] = useLazyQuery(DIOCESES);
-    const [createDeanery, { loading, error }] = useMutation(CREATEDEANERY,
+    const [getDioceses, { loading: loadingQuery, data, error: errorQuery }] = useLazyQuery(DIOCESES);
+    const [createDeanery, { loading: loadingMutation, error }] = useMutation(CREATE_DEANERY,
         {
             onCompleted(...params) {
                 if (params) {
-                    // < Redirect to = '/' />
                     props.history.goBack();
-                    //console.log({ params })
                 }
             },
             onError(error) {
@@ -102,7 +83,7 @@ const DeaneryAdd = (props) => {
     };
 
     useEffect(() => {
-        props.setPagePath(DEANERY.add)
+        props.setPagePath(DeaneryPath.add)
         getDioceses()
     }, [])
 
@@ -111,6 +92,14 @@ const DeaneryAdd = (props) => {
             setDioceses(data.dioceses)
         }
     }, [data])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingQuery)
+    }, [loadingQuery])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingMutation)
+    }, [loadingMutation])
 
     return (
         <Fragment>

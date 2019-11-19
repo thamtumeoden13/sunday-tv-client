@@ -8,13 +8,13 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import { connect } from "react-redux";
-import { setPagePath } from "../../actions/pageInfos";
+import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
 import Detail from '../../component/diocese/edit/Detail'
-import { DIOCESE } from '../../constant/BreadcrumbsConfig'
+import { DIOCESE as DiocesePath } from '../../constant/BreadcrumbsConfig'
+import { DIOCESE_BY_ID, UPDATE_DIOCESE_BY_ID } from '../../gql/graphqlTag'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -31,25 +31,6 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const DIOCESEBYID = gql`
-   query diocese($id: ID!){
-        diocese(id: $id){
-            id
-            name
-            shortName
-        }
-    }
-`;
-const UPDATEDIOCESEBYID = gql`
-   mutation updateDiocese($id: ID! $name: String!,$shortName: String!) {
-    updateDiocese(id: $id, name: $name, shortName: $shortName) {
-        id
-        name
-        shortName
-    }
-  }
-`;
-
 const mapStateToProps = state => {
     return {
         PageInfos: state.PageInfosModule,
@@ -61,6 +42,9 @@ const mapDispatchToProps = dispatch => {
         setPagePath: pagePath => {
             dispatch(setPagePath(pagePath));
         },
+        setLoadingDetail: isLoading => {
+            dispatch(setLoadingDetail(isLoading));
+        },
     };
 };
 
@@ -69,17 +53,17 @@ const DioceseEdit = (props) => {
     const dioceseId = props.match.params.id
     const [diocese, setDiocese] = useState({
         id: '',
-        nName: '',
+        name: '',
         shortName: ''
     })
 
-    const [getDioceseById, { loading, data, error, refetch }] = useLazyQuery(DIOCESEBYID, {
+    const [getDioceseById, { loading: loadingQuery, data: dataQuery, error: errorQuery, refetch }] = useLazyQuery(DIOCESE_BY_ID, {
         variables: {
             id: dioceseId
         }
     });
 
-    const [updateDiocese, { loadingEdit, errorEdit }] = useMutation(UPDATEDIOCESEBYID,
+    const [updateDiocese, { loading: loadingMutation, error: errorEdit }] = useMutation(UPDATE_DIOCESE_BY_ID,
         {
             onCompleted(...params) {
                 if (params) {
@@ -96,15 +80,24 @@ const DioceseEdit = (props) => {
     );
 
     useEffect(() => {
-        props.setPagePath(DIOCESE.edit)
+        props.setPagePath(DiocesePath.edit)
         getDioceseById()
     }, [])
 
     useEffect(() => {
-        if (data && data.diocese) {
-            setDiocese(data.diocese)
+        console.log('dataQuery', dataQuery)
+        if (dataQuery && dataQuery.diocese) {
+            setDiocese(dataQuery.diocese)
         }
-    }, [data])
+    }, [dataQuery])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingQuery)
+    }, [loadingQuery])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingMutation)
+    }, [loadingMutation])
 
     const onChangeText = (name, value) => {
         setDiocese({ ...diocese, [name]: value });

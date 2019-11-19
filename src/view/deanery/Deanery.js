@@ -7,27 +7,12 @@ import EditIcon from '@material-ui/icons/EditOutlined'
 import MaterialTable from "material-table";
 
 import { connect } from "react-redux";
-import { setPagePath } from "../../actions/pageInfos";
+import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { DEANERY } from '../../constant/BreadcrumbsConfig'
+import { DEANERY as DeaneryPath } from '../../constant/BreadcrumbsConfig'
+import { DEANERIES, DELETE_DEANERIES } from '../../gql/graphqlTag'
 
-import { useQuery, useLazyQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-
-const DEANERIES = gql`
-   query deaneries{
-        deaneries{
-            id
-            name
-            shortName
-            diocese{
-                id 
-                name
-                shortName
-            }
-        }
-    }
-`;
+import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
 const mapStateToProps = state => {
     return {
@@ -39,6 +24,9 @@ const mapDispatchToProps = dispatch => {
     return {
         setPagePath: pagePath => {
             dispatch(setPagePath(pagePath));
+        },
+        setLoadingDetail: isLoading => {
+            dispatch(setLoadingDetail(isLoading));
         },
     };
 };
@@ -84,11 +72,31 @@ const useStyles = makeStyles(theme => ({
 const Deanery = (props) => {
     const classes = useStyles();
     const tableRef = useRef();
-    const [selectedRow, setSelectedRow] = useState(null);
     const [deaneries, setDeaneries] = useState([])
-    const [getDeaneries, { loading, data, error, refetch }] = useLazyQuery(DEANERIES);
+    const [getDeaneries, { loading: loadingQuery, data, error, refetch }] = useLazyQuery(DEANERIES);
+    const [deleteDeaneries, { loading: loadingMutation, error: errorMutation }] = useMutation(DELETE_DEANERIES,
+        {
+            onCompleted(...params) {
+                getDeaneries()
+            },
+            onError(error) {
+                console.log('onError', error)
+                alert(error)
+            }
+        }
+    );
+
+    const addDeanery = () => {
+        props.history.push('deanery/add')
+    }
+
+    const onDeleteData = (data) => {
+        const ids = data.map((e, i) => e.id)
+        deleteDeaneries({ variables: { ids: ids } })
+    }
+
     useEffect(() => {
-        props.setPagePath(DEANERY.search)
+        props.setPagePath(DeaneryPath.search)
         getDeaneries()
     }, [])
 
@@ -102,18 +110,14 @@ const Deanery = (props) => {
         }
     }, [data])
 
-    const onSelectRow = (evt, rowData) => {
-        setSelectedRow(rowData);
-    }
+    useEffect(() => {
+        props.setLoadingDetail(loadingQuery)
+    }, [loadingQuery])
 
-    const addDeanery = () => {
-        props.history.push('deanery/add')
-    }
+    useEffect(() => {
+        props.setLoadingDetail(loadingMutation)
+    }, [loadingMutation])
 
-    const onDeleteData = (evt, data) => {
-        console.log({ evt, data })
-        // props.history.push('deanery/add')
-    }
 
     return (
         <React.Fragment>
@@ -143,7 +147,6 @@ const Deanery = (props) => {
                         )
                     },
                 ]}
-                isLoading={loading}
                 data={deaneries}
                 actions={[
                     {
@@ -161,10 +164,9 @@ const Deanery = (props) => {
                     {
                         tooltip: 'Remove All Selected Categories',
                         icon: 'delete',
-                        onClick: (evt, data) => onDeleteData(evt, data)
+                        onClick: (evt, data) => onDeleteData(data)
                     },
                 ]}
-                onRowClick={((evt, row) => onSelectRow(evt, row))}
                 options={
                     {
                         search: true,

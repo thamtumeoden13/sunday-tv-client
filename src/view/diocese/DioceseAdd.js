@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 
 import { connect } from "react-redux";
-import { setPagePath } from "../../actions/pageInfos";
+import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,20 +11,10 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import Detail from '../../component/diocese/add/Detail'
-import { DIOCESE } from '../../constant/BreadcrumbsConfig'
+import { DIOCESE as DiocesePath } from '../../constant/BreadcrumbsConfig'
+import { CREATE_DIOCESE } from '../../gql/graphqlTag'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-
-const CREATE_DIOCESE = gql`
-   mutation createDiocese($name: String!,$shortName: String!) {
-    createDiocese(name: $name, shortName: $shortName) {
-        id
-        name
-        shortName
-    }
-  }
-`;
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -53,6 +43,9 @@ const mapDispatchToProps = dispatch => {
         setPagePath: pagePath => {
             dispatch(setPagePath(pagePath));
         },
+        setLoadingDetail: isLoading => {
+            dispatch(setLoadingDetail(isLoading));
+        },
     };
 };
 
@@ -64,13 +57,11 @@ const DioceseAdd = (props) => {
         shortName: ''
     })
 
-    const [createDiocese, { loading, error }] = useMutation(CREATE_DIOCESE,
+    const [createDiocese, { loading: loadingMutation, error }] = useMutation(CREATE_DIOCESE,
         {
             onCompleted(...params) {
                 if (params) {
-                    // < Redirect to = '/' />
                     props.history.goBack();
-                    //console.log({ params })
                 }
             },
             onError(error) {
@@ -80,10 +71,6 @@ const DioceseAdd = (props) => {
         }
     );
 
-    useEffect(() => {
-        props.setPagePath(DIOCESE.add)
-    }, [])
-
     const onChangeText = (name, value) => {
         setDiocese({ ...diocese, [name]: value });
     }
@@ -91,6 +78,15 @@ const DioceseAdd = (props) => {
     const handleSubmit = () => {
         createDiocese({ variables: { name: diocese.name, shortName: diocese.shortName } })
     };
+
+
+    useEffect(() => {
+        props.setPagePath(DiocesePath.add)
+    }, [])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingMutation)
+    }, [loadingMutation])
 
     return (
         <Fragment>

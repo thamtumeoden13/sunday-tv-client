@@ -1,28 +1,17 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Link, withRouter } from 'react-router-dom'
+import { Link, } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import EditIcon from '@material-ui/icons/EditOutlined'
 
 import { connect } from "react-redux";
-import { setPagePath } from "../../actions/pageInfos";
+import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
 import MaterialTable from "material-table";
 
-import { DIOCESE } from '../../constant/BreadcrumbsConfig'
-
-import { useQuery, useLazyQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-
-const DIOCESES = gql`
-   query dioceses{
-        dioceses{
-            id
-            name
-            shortName
-        }
-    }
-`;
+import { DIOCESE as DiocesePath } from '../../constant/BreadcrumbsConfig'
+import { DIOCESES, DELETE_DIOCESES } from '../../gql/graphqlTag'
+import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -72,41 +61,58 @@ const mapDispatchToProps = dispatch => {
         setPagePath: pagePath => {
             dispatch(setPagePath(pagePath));
         },
+        setLoadingDetail: isLoading => {
+            dispatch(setLoadingDetail(isLoading));
+        },
     };
 };
 
 const Diocese = (props) => {
     const classes = useStyles();
     const tableRef = useRef();
-    const [selectedRow, setSelectedRow] = useState(null);
     const [dioceses, setDioceses] = useState([])
 
-    const [getDioceses, { loading, data, error, refetch }] = useLazyQuery(DIOCESES);
+    const [getDioceses, { loading: loadingQuery, data, error: errorQuery, refetch }] = useLazyQuery(DIOCESES);
 
-    useEffect(() => {
-        props.setPagePath(DIOCESE.search)
-        getDioceses()
-    }, [])
-
-    useEffect(() => {
-        if (data && data.dioceses) {
-            console.log("data.dioceses", data.dioceses)
-            setDioceses(data.dioceses)
+    const [deleteDioceses, { loading: loadingMutation, error: errorMutation }] = useMutation(DELETE_DIOCESES,
+        {
+            onCompleted(...params) {
+                getDioceses()
+            },
+            onError(error) {
+                console.log('onError', error)
+                alert(error)
+            }
         }
-    }, [data])
-
-    const onSelectRow = (evt, rowData) => {
-        setSelectedRow(rowData);
-    }
+    );
 
     const addNewDiocese = () => {
         props.history.push('diocese/add')
     }
 
     const onDeleteData = (data) => {
-        console.log("{ evt.target, data }", data)
-        // props.history.push('deanery/add')
+        const ids = data.map((e, i) => e.id)
+        deleteDioceses({ variables: { ids: ids } })
     }
+
+    useEffect(() => {
+        props.setPagePath(DiocesePath.search)
+        getDioceses()
+    }, [])
+
+    useEffect(() => {
+        if (data && data.dioceses) {
+            setDioceses(data.dioceses)
+        }
+    }, [data])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingQuery)
+    }, [loadingQuery])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingMutation)
+    }, [loadingMutation])
 
     return (
         <React.Fragment>
@@ -114,7 +120,7 @@ const Diocese = (props) => {
             <MaterialTable
                 title="Danh Sách Giáo Phận"
                 tableRef={tableRef}
-                isLoading={loading}
+                // isLoading={loadingQuery}
                 columns={[
                     {
                         title: 'Avatar',
@@ -156,7 +162,6 @@ const Diocese = (props) => {
                         onClick: (evt, data) => onDeleteData(data)
                     },
                 ]}
-                onRowClick={((evt, row) => onSelectRow(evt, row))}
                 options={
                     {
                         search: true,

@@ -11,12 +11,12 @@ import Typography from '@material-ui/core/Typography';
 import Detail from '../../component/deanery/edit/Detail'
 
 import { connect } from "react-redux";
-import { setPagePath } from "../../actions/pageInfos";
+import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { DEANERY } from '../../constant/BreadcrumbsConfig'
+import { DEANERY as DeaneryPath } from '../../constant/BreadcrumbsConfig'
+import { DIOCESES, DEANERY_BY_ID, UPDATE_DEANERY_BY_ID } from '../../gql/graphqlTag'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -32,40 +32,6 @@ const useStyles = makeStyles(theme => ({
         marginLeft: theme.spacing(1),
     },
 }));
-
-const DEANERYBYID = gql`
-   query deanery($id: ID!){
-        deanery(id: $id){
-            id
-            name
-            shortName
-            diocese{
-                id
-                name
-            }
-        }
-    }
-`;
-const UPDATEDEANERYBYID = gql`
-   mutation updateDeanery($id: ID! $name: String!,$shortName: String!,$dioceseId: ID!) {
-    updateDeanery(id: $id, name: $name, shortName: $shortName,dioceseId: $dioceseId) {
-        id
-        name
-        shortName
-    }
-  }
-`;
-
-
-const DIOCESES = gql`
-   query dioceses{
-        dioceses{
-            id
-            name
-            shortName
-        }
-    }
-`;
 
 const mapStateToProps = state => {
     return {
@@ -92,21 +58,18 @@ const DeaneryEdit = (props) => {
     })
     const [dioceses, setDioceses] = useState([])
 
-
-    const [getDeaneryById, { loading, data: dataDeanery, error, refetch }] = useLazyQuery(DEANERYBYID, {
+    const [getDeaneryById, { loading: loadingQuery, data: dataDeanery, error, refetch }] = useLazyQuery(DEANERY_BY_ID, {
         variables: {
             id: deaneryId
         }
     });
 
-    const [getDioceses, { loadingDioceses, data: dataDioceses, errorDioceses }] = useLazyQuery(DIOCESES);
-    const [updateDeanery, { loadingEdit, errorEdit }] = useMutation(UPDATEDEANERYBYID,
+    const [getDioceses, { loading: loadingDioceses, data: dataDioceses, error: errorDioceses }] = useLazyQuery(DIOCESES);
+    const [updateDeanery, { loading: loadingMutation, error: errorMutation }] = useMutation(UPDATE_DEANERY_BY_ID,
         {
             onCompleted(...params) {
                 if (params) {
-                    // < Redirect to = '/' />
                     props.history.goBack();
-                    //console.log({ params })
                 }
             },
             onError(error) {
@@ -125,10 +88,22 @@ const DeaneryEdit = (props) => {
     };
 
     useEffect(() => {
-        props.setPagePath(DEANERY.edit)
+        props.setPagePath(DeaneryPath.edit)
         getDeaneryById()
         getDioceses()
     }, [])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingQuery)
+    }, [loadingQuery,])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingDioceses)
+    }, [loadingDioceses,])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingMutation)
+    }, [loadingMutation])
 
     useEffect(() => {
         if (dataDeanery && dataDeanery.deanery) {
