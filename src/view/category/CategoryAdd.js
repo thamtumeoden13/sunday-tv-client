@@ -16,9 +16,12 @@ import Step2 from '../../component/category/add/Content'
 import Step3 from '../../component/category/add/AddImages'
 
 import { connect } from "react-redux";
-import { setPagePath } from "../../actions/pageInfos";
+import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { CATEGORY } from '../../constant/BreadcrumbsConfig'
+import { CATEGORY as CategoryPath } from '../../constant/BreadcrumbsConfig'
+import { DIOCESES, CREATE_DEANERY } from '../../gql/graphqlTag'
+
+import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -67,6 +70,9 @@ const mapDispatchToProps = dispatch => {
         setPagePath: pagePath => {
             dispatch(setPagePath(pagePath));
         },
+        setLoadingDetail: isLoading => {
+            dispatch(setLoadingDetail(isLoading));
+        },
     };
 };
 const CategoryAdd = (props) => {
@@ -82,7 +88,7 @@ const CategoryAdd = (props) => {
     };
 
     useEffect(() => {
-        props.setPagePath(CATEGORY.add)
+        props.setPagePath(CategoryPath.add)
     }, [])
 
     return (

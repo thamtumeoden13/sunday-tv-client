@@ -24,6 +24,10 @@ import Deanery from '../deanery/Deanery'
 import DeaneryAdd from '../deanery/DeaneryAdd'
 import DeaneryEdit from '../deanery/DeaneryEdit'
 
+import Parish from '../parish/Parish'
+import ParishAdd from '../parish/ParishAdd'
+import ParishEdit from '../parish/ParishEdit'
+
 import Poster from '../poster/Poster'
 import NotFound from '../notfound/NotFound1'
 
@@ -114,6 +118,9 @@ const HomeScreen = (props) => {
                         <PrivateRoute exact path="/deanery" component={Deanery} isLoggedIn={isLoggedIn} />
                         <PrivateRoute path="/deanery/add" component={DeaneryAdd} isLoggedIn={isLoggedIn} />
                         <PrivateRoute path="/deanery/edit/:id" component={DeaneryEdit} isLoggedIn={isLoggedIn} />
+                        <PrivateRoute exact path="/parish" component={Parish} isLoggedIn={isLoggedIn} />
+                        <PrivateRoute path="/parish/add" component={ParishAdd} isLoggedIn={isLoggedIn} />
+                        <PrivateRoute path="/parish/edit/:id" component={ParishEdit} isLoggedIn={isLoggedIn} />
                         <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} />
                     </Switch>
                 </LoadingOverlay>

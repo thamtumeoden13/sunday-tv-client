@@ -43,7 +43,6 @@ const useStyles = makeStyles(theme => ({
 
 const DioceseAddDetail = (props) => {
     const classes = useStyles();
-    // const [publish, setPublished] = useState(!props.publish ? false : props.publish);
     const [state, setState] = React.useState({
         id: '',
         name: '',
@@ -55,7 +54,13 @@ const DioceseAddDetail = (props) => {
         if (props.onChange) {
             props.onChange(event.target.name, event.target.value)
         }
-    };
+    }
+    const handleChangeCheckbox = (event) => {
+        setState({ ...state, [event.target.name]: !state[event.target.name] });
+        if (props.onChange) {
+            props.onChange(event.target.name, !state[event.target.name])
+        }
+    }
 
     return (
         <div className={classes.paper}>
@@ -103,7 +108,7 @@ const DioceseAddDetail = (props) => {
                             <Checkbox
                                 value={state.published} checked={state.published} color="primary"
                                 name="published" id="published"
-                                onChange={(event) => handleChange(event)}
+                                onChange={(event) => handleChangeCheckbox(event)}
                             />}
                         label="Công khai"
                     />

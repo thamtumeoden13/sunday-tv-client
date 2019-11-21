@@ -46,6 +46,23 @@ export const DEANERY = {
     ]
 }
 
+export const PARISH = {
+    search: [
+        { link: "/", title: "Trang chủ", icon: <HomeIcon /> },
+        { link: "", title: "Giáo Xứ", icon: <WhatshotIcon /> }
+    ],
+    add: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/parish/", title: "Giáo Xứ", icon: <WhatshotIcon /> },
+        { link: "", title: "Thêm Mới", icon: <GrainIcon /> }
+    ],
+    edit: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/parish/", title: "Giáo Xứ", icon: <WhatshotIcon /> },
+        { link: "", title: "Chỉnh sửa", icon: <GrainIcon /> }
+    ]
+}
+
 export const CATEGORY = {
     search: [
         { link: "/", title: "Trang chủ", icon: <HomeIcon /> },

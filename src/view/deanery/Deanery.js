@@ -136,7 +136,7 @@ const Deanery = (props) => {
                             />
                         ),
                     },
-                    { title: 'Mã Giáo Hạt', field: 'id' },
+                    // { title: 'Mã Giáo Hạt', field: 'id' },
                     { title: 'Tên Giáo Hạt', field: 'name', },
                     { title: 'Tên rút gọn', field: 'shortName' },
                     { title: 'Giáo phận', field: 'dioceseName' },

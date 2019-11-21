@@ -123,11 +123,9 @@ const CategoryAddContent = (props) => {
     const handleChange = (event) => {
         setState({ ...state, [event.target.name]: Number(event.target.value) });
     };
+
     const onChangePublished = () => {
         setPublished(!publish)
-    }
-    const onSubmit = () => {
-        console.log("submit")
     }
 
     const renderOption = (listOption) => {

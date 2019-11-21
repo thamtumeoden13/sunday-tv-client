@@ -120,7 +120,6 @@ const DeaneryAdd = (props) => {
                         </Typography>
                         <React.Fragment>
                             <Detail
-                                // data={diocese}
                                 onChange={onChangeText}
                                 dioceses={dioceses}
                             />

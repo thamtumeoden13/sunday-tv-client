@@ -132,7 +132,7 @@ const Diocese = (props) => {
                             />
                         ),
                     },
-                    { title: 'Mã Giáo Phận', field: 'id' },
+                    // { title: 'Mã Giáo Phận', field: 'id' },
                     { title: 'Tên Giáo Phận', field: 'name', },
                     { title: 'Tên rút gọn', field: 'shortName' },
                     {

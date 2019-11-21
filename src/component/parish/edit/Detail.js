@@ -7,6 +7,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -36,37 +37,61 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const DioceseEditDetail = (props) => {
+const DeaneryEditDetail = (props) => {
     const classes = useStyles();
     const [state, setState] = React.useState({
         id: '',
         name: '',
         shortName: '',
+        dioceseId: '',
+        deaneryId: '',
         published: false
     });
+
+    const [dioceses, setDioceses] = useState([]);
+    const [deaneries, setDeaneries] = useState([]);
 
     const handleChange = (event) => {
         setState({ ...state, [event.target.name]: event.target.value });
         if (props.onChange) {
             props.onChange(event.target.name, event.target.value)
         }
-    }
-
+    };
     const handleChangeCheckbox = (event) => {
         setState({ ...state, [event.target.name]: !state[event.target.name] });
         if (props.onChange) {
             props.onChange(event.target.name, !state[event.target.name])
         }
+    };
+
+    const renderOption = (listOption) => {
+        return (
+            listOption.map((e, i) => {
+                return <MenuItem value={e.id} key={e.id}>{e.name}</MenuItem>
+            })
+        )
     }
 
     useEffect(() => {
-        setState({
-            id: props.data.id ? props.data.id : '',
-            name: props.data.name ? props.data.name : '',
-            shortName: props.data.shortName ? props.data.shortName : '',
-            published: props.data.published ? props.data.published : false,
-        });
-    }, [props.data])
+        if (props.deanery) {
+            setState({
+                id: props.deanery.id ? props.deanery.id : '',
+                name: props.deanery.name ? props.deanery.name : '',
+                shortName: props.deanery.shortName ? props.deanery.shortName : '',
+                dioceseId: props.deanery.dioceseId ? props.deanery.dioceseId : '',
+                deaneryId: props.deanery.deaneryId ? props.deanery.deaneryId : '',
+                published: props.deanery.published ? props.deanery.published : false,
+            });
+        }
+    }, [props.deanery])
+
+    useEffect(() => {
+        setDioceses(props.dioceses ? props.dioceses : [])
+    }, [props.dioceses])
+
+    useEffect(() => {
+        setDioceses(props.dioceses ? props.dioceses : [])
+    }, [props.dioceses])
 
     return (
         <div className={classes.paper}>
@@ -74,23 +99,23 @@ const DioceseEditDetail = (props) => {
             <Grid container component="main" spacing={2} className={classes.root} >
                 <Grid item xs={12}>
                     <TextField
-                        name="id"
-                        variant="outlined"
                         required
                         fullWidth
+                        variant="outlined"
+                        name="id"
                         id="id"
-                        label="Mã Giáo Phận(Tự động)"
+                        label="Mã Giáo Hạt(Tự động)"
                         disabled
                         value={state.id}
                     />
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        variant="outlined"
                         required
                         fullWidth
+                        variant="outlined"
                         id="name"
-                        label="Tên Giáo Phận"
+                        label="Tên Giáo Hạt"
                         name="name"
                         autoFocus
                         value={state.name}
@@ -99,14 +124,56 @@ const DioceseEditDetail = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        variant="outlined"
                         fullWidth
+                        variant="outlined"
                         id="shortName"
                         label="Tên rút gọn"
                         name="shortName"
                         value={state.shortName}
                         onChange={(event) => handleChange(event)}
                     />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        required
+                        fullWidth
+                        variant="outlined"
+                        name="dioceseId"
+                        id="dioceseId"
+                        select
+                        label="Giáo phận"
+                        value={state.dioceseId}
+                        onChange={(event) => handleChange(event)}
+                    >
+                        {dioceses && dioceses.length > 0
+                            ? renderOption(dioceses)
+                            :
+                            <MenuItem value="">
+                                <em>Vui Lòng Chọn Giáo Phận</em>
+                            </MenuItem>
+                        }
+                    </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        required
+                        fullWidth
+                        variant="outlined"
+                        name="deaneryId"
+                        id="deaneryId"
+                        select
+                        label="Giáo Hạt"
+                        value={state.deaneryId}
+                        onChange={(event) => handleChange(event)}
+                    >
+                        {deaneries && deaneries.length > 0
+                            ? renderOption(deaneries)
+                            :
+                            <MenuItem value="">
+                                <em>Vui Lòng Chọn Giáo Phận</em>
+                            </MenuItem>
+                        }
+                    </TextField>
                 </Grid>
                 <Grid item xs={12}>
                     <FormControlLabel
@@ -122,4 +189,4 @@ const DioceseEditDetail = (props) => {
         </div>
     );
 }
-export default DioceseEditDetail;
+export default DeaneryEditDetail;

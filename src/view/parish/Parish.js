@@ -9,10 +9,27 @@ import MaterialTable from "material-table";
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { CATEGORY as CategoryPath } from '../../constant/BreadcrumbsConfig'
-import { CATEGORIES, DELETE_CATEGORIES } from '../../gql/graphqlTag'
+import { PARISH as ParishPath } from '../../constant/BreadcrumbsConfig'
+import { PARISHES, DELETE_PARISHES } from '../../gql/graphqlTag'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
+
+const mapStateToProps = state => {
+    return {
+        PageInfos: state.PageInfosModule,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPagePath: pagePath => {
+            dispatch(setPagePath(pagePath));
+        },
+        setLoadingDetail: isLoading => {
+            dispatch(setLoadingDetail(isLoading));
+        },
+    };
+};
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -51,32 +68,16 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const mapStateToProps = state => {
-    return {
-        PageInfos: state.PageInfosModule,
-    };
-};
 
-const mapDispatchToProps = dispatch => {
-    return {
-        setPagePath: pagePath => {
-            dispatch(setPagePath(pagePath));
-        },
-        setLoadingDetail: isLoading => {
-            dispatch(setLoadingDetail(isLoading));
-        },
-    };
-};
-
-const CategoryAddNew = (props) => {
+const Deanery = (props) => {
     const classes = useStyles();
     const tableRef = useRef();
-    const [categories, setCategories] = useState([])
-    const [getCategories, { loading: loadingQuery, data, error, refetch }] = useLazyQuery(CATEGORIES);
-    const [deleteCategories, { loading: loadingMutation, error: errorMutation }] = useMutation(DELETE_CATEGORIES,
+    const [parishes, setParishes] = useState([])
+    const [getParishes, { loading: loadingQuery, data, error, refetch }] = useLazyQuery(PARISHES);
+    const [deleteParishes, { loading: loadingMutation, error: errorMutation }] = useMutation(DELETE_PARISHES,
         {
             onCompleted(...params) {
-                getCategories()
+                getParishes()
             },
             onError(error) {
                 console.log('onError', error)
@@ -85,27 +86,28 @@ const CategoryAddNew = (props) => {
         }
     );
 
-    const addCategory = () => {
-        props.history.push('category/add')
+    const addDeanery = () => {
+        props.history.push('parish/add')
     }
 
     const onDeleteData = (data) => {
         const ids = data.map((e, i) => e.id)
-        deleteCategories({ variables: { ids: ids } })
+        deleteParishes({ variables: { ids: ids } })
     }
 
     useEffect(() => {
-        props.setPagePath(CategoryPath.search)
-        getCategories()
+        props.setPagePath(ParishPath.search)
+        getParishes()
     }, [])
 
     useEffect(() => {
-        if (data && data.categories) {
-            data.categories.map((e, i) => {
+        if (data && data.parishes) {
+            data.parishes.map((e, i) => {
                 e.dioceseName = e.diocese.name
+                e.deaneryName = e.deanery.name
                 return e
             })
-            setCategories(data.categories)
+            setParishes(data.parishes)
         }
     }, [data])
 
@@ -117,11 +119,12 @@ const CategoryAddNew = (props) => {
         props.setLoadingDetail(loadingMutation)
     }, [loadingMutation])
 
+
     return (
         <React.Fragment>
             <CssBaseline />
             <MaterialTable
-                title="Danh Mục Hình Ảnh"
+                title="Danh Sách Giáo Xứ"
                 tableRef={tableRef}
                 columns={[
                     {
@@ -134,17 +137,19 @@ const CategoryAddNew = (props) => {
                             />
                         ),
                     },
-                    { title: 'Mã Danh mục', field: 'id' },
-                    { title: 'Tên Danh mục', field: 'name', },
-                    { title: 'Tiêu đề', field: 'title' },
+                    // { title: 'Mã Giáo Xứ', field: 'id' },
+                    { title: 'Tên Giáo Xứ', field: 'name', },
+                    { title: 'Tên rút gọn', field: 'shortName' },
+                    { title: 'Giáo phận', field: 'dioceseName' },
+                    { title: 'Giáo Hạt', field: 'deaneryName' },
                     {
                         title: 'Chỉnh sửa', field: 'edit',
                         render: rowData => (
-                            <Link to={`/category/edit/${rowData.id}`}><EditIcon /></Link>
+                            <Link to={`/parish/edit/${rowData.id}`}><EditIcon /></Link>
                         )
                     },
                 ]}
-                data={categories}
+                data={parishes}
                 actions={[
                     {
                         icon: 'refresh',
@@ -153,10 +158,10 @@ const CategoryAddNew = (props) => {
                         onClick: () => refetch(),
                     },
                     {
-                        tooltip: 'Add New Category',
+                        tooltip: 'Add New Deanery',
                         icon: 'add',
                         isFreeAction: true,
-                        onClick: (evt, data) => addCategory()
+                        onClick: (evt, data) => addDeanery()
                     },
                     {
                         tooltip: 'Remove All Selected Categories',
@@ -175,4 +180,4 @@ const CategoryAddNew = (props) => {
         </React.Fragment>
     );
 }
-export default connect(mapStateToProps, mapDispatchToProps)(CategoryAddNew);
+export default connect(mapStateToProps, mapDispatchToProps)(Deanery);

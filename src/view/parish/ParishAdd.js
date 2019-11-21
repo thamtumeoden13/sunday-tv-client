@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -8,13 +8,13 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import Detail from '../../component/deanery/edit/Detail'
+import Detail from '../../component/parish/add/Detail'
 
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { DEANERY as DeaneryPath } from '../../constant/BreadcrumbsConfig'
-import { DIOCESES, DEANERY_BY_ID, UPDATE_DEANERY_BY_ID } from '../../gql/graphqlTag'
+import { PARISH as ParishPath } from '../../constant/BreadcrumbsConfig'
+import { DIOCESES_CACHE, CREATE_PARISH, DEANERIES_BY_DIOCESE } from '../../gql/parishGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
@@ -50,26 +50,21 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const DeaneryEdit = (props) => {
+const ParishAdd = (props) => {
     const classes = useStyles();
-    const deaneryId = props.match.params.id
-    const [deanery, setDeanery] = useState({
-        id: '',
+    const [parish, setParish] = useState({
         name: '',
         shortName: '',
         dioceseId: '',
+        deaneryId: '',
         published: false
     })
     const [dioceses, setDioceses] = useState([])
+    const [deaneries, setDeaneries] = useState([])
 
-    const [getDeaneryById, { loading: loadingQuery, data: dataDeanery, error, refetch }] = useLazyQuery(DEANERY_BY_ID, {
-        variables: {
-            id: deaneryId
-        }
-    });
-
-    const [getDioceses, { loading: loadingDioceses, data: dataDioceses, error: errorDioceses }] = useLazyQuery(DIOCESES);
-    const [updateDeanery, { loading: loadingMutation, error: errorMutation }] = useMutation(UPDATE_DEANERY_BY_ID,
+    const [getDioceses, { loading: loadingQueryDioceses, data: dataDioceses, error: errorQueryioceses }] = useLazyQuery(DIOCESES_CACHE);
+    const [getDeaneries, { loading: loadingQueryDeaneries, data: dataDeaneries, error: errorQueryDeaneries }] = useLazyQuery(DEANERIES_BY_DIOCESE);
+    const [createParish, { loading: loadingMutation, error }] = useMutation(CREATE_PARISH,
         {
             onCompleted(...params) {
                 if (params) {
@@ -84,53 +79,57 @@ const DeaneryEdit = (props) => {
     );
 
     const onChangeText = (name, value) => {
-        setDeanery({ ...deanery, [name]: value });
+        setParish({ ...parish, [name]: value });
+        if (name === 'dioceseId') {
+            getDeaneries({
+                variables: {
+                    dioceseId: value
+                }
+            })
+        }
     }
 
     const handleSubmit = () => {
-        updateDeanery({
+        createParish({
             variables: {
-                id: deanery.id,
-                name: deanery.name,
-                shortName: deanery.shortName,
-                published: deanery.published,
-                dioceseId: deanery.dioceseId
+                name: parish.name,
+                shortName: parish.shortName,
+                published: parish.published,
+                dioceseId: parish.dioceseId,
+                deaneryId: parish.deaneryId
             }
         })
     };
 
     useEffect(() => {
-        props.setPagePath(DeaneryPath.edit)
-        getDeaneryById()
+        props.setPagePath(ParishPath.add)
         getDioceses()
     }, [])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingQuery)
-    }, [loadingQuery,])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingDioceses)
-    }, [loadingDioceses,])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingMutation)
-    }, [loadingMutation])
-
-    useEffect(() => {
-        if (dataDeanery && dataDeanery.deanery) {
-            console.log("dataDeanery.deanery", dataDeanery.deanery)
-            let temp = dataDeanery.deanery
-            temp.dioceseId = dataDeanery.deanery.diocese.id ? dataDeanery.deanery.diocese.id : ''
-            setDeanery(temp)
-        }
-    }, [dataDeanery])
 
     useEffect(() => {
         if (dataDioceses && dataDioceses.dioceses) {
             setDioceses(dataDioceses.dioceses)
         }
     }, [dataDioceses])
+
+    useEffect(() => {
+        console.log({ dataDeaneries })
+        if (dataDeaneries && dataDeaneries.deaneriesByDiocese) {
+            setDeaneries(dataDeaneries.deaneriesByDiocese.deaneries)
+        }
+    }, [dataDeaneries])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingQueryDioceses)
+    }, [loadingQueryDioceses])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingQueryDeaneries)
+    }, [loadingQueryDeaneries])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingMutation)
+    }, [loadingMutation])
 
     return (
         <Fragment>
@@ -139,13 +138,13 @@ const DeaneryEdit = (props) => {
                 <Grid item xs={12}>
                     <Paper square className={classes.paper}>
                         <Typography component="h1" variant="h4" align="center">
-                            CHỈNH SỬA GIÁO HẠT
+                            TẠO MỚI GIÁO XỨ
                         </Typography>
                         <React.Fragment>
                             <Detail
-                                deanery={deanery}
-                                dioceses={dioceses}
                                 onChange={onChangeText}
+                                dioceses={dioceses}
+                                deaneries={deaneries}
                             />
                             <div className={classes.buttons}>
                                 <Button
@@ -164,4 +163,4 @@ const DeaneryEdit = (props) => {
         </Fragment>
     );
 }
-export default connect(mapStateToProps, mapDispatchToProps)(DeaneryEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(ParishAdd);
