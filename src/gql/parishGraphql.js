@@ -35,7 +35,7 @@ export const PARISH_BY_ID = gql`
 `;
 
 export const CREATE_PARISH = gql`
-   mutation createParish($name: String!, $shortName: String!, $published: Boolean, $dioceseId: ID, $deaneryId: ID!) {
+   mutation createParish($name: String!, $shortName: String!, $published: Boolean, $dioceseId: ID!, $deaneryId: ID!) {
     createParish(name: $name, shortName: $shortName, published: $published, dioceseId: $dioceseId, deaneryId: $deaneryId) {
         id
         name
@@ -47,7 +47,7 @@ export const CREATE_PARISH = gql`
 
 
 export const UPDATE_PARISH_BY_ID = gql`
-   mutation updateParish($id: ID!, $name: String!, $shortName: String!, $published: Boolean, $dioceseId: ID, $deaneryId: ID!) {
+   mutation updateParish($id: ID!, $name: String!, $shortName: String!, $published: Boolean, $dioceseId: ID!, $deaneryId: ID!) {
     updateParish(id: $id, name: $name, shortName: $shortName, published: $published, dioceseId: $dioceseId, deaneryId: $deaneryId) {
         id
         name

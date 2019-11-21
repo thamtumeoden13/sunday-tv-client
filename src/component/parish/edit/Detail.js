@@ -4,7 +4,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -37,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const DeaneryEditDetail = (props) => {
+const ParishEditDetail = (props) => {
     const classes = useStyles();
     const [state, setState] = React.useState({
         id: '',
@@ -52,11 +51,17 @@ const DeaneryEditDetail = (props) => {
     const [deaneries, setDeaneries] = useState([]);
 
     const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.value });
+        if (event.target.name === 'dioceseId') {
+            setState({ ...state, [event.target.name]: event.target.value, deaneryId: '' });
+        }
+        else {
+            setState({ ...state, [event.target.name]: event.target.value });
+        }
         if (props.onChange) {
             props.onChange(event.target.name, event.target.value)
         }
-    };
+    }
+
     const handleChangeCheckbox = (event) => {
         setState({ ...state, [event.target.name]: !state[event.target.name] });
         if (props.onChange) {
@@ -73,25 +78,28 @@ const DeaneryEditDetail = (props) => {
     }
 
     useEffect(() => {
-        if (props.deanery) {
+        if (props.parish) {
+            console.log("props.parish", props.parish)
             setState({
-                id: props.deanery.id ? props.deanery.id : '',
-                name: props.deanery.name ? props.deanery.name : '',
-                shortName: props.deanery.shortName ? props.deanery.shortName : '',
-                dioceseId: props.deanery.dioceseId ? props.deanery.dioceseId : '',
-                deaneryId: props.deanery.deaneryId ? props.deanery.deaneryId : '',
-                published: props.deanery.published ? props.deanery.published : false,
+                id: props.parish.id ? props.parish.id : '',
+                name: props.parish.name ? props.parish.name : '',
+                shortName: props.parish.shortName ? props.parish.shortName : '',
+                dioceseId: props.parish.dioceseId ? props.parish.dioceseId : '',
+                deaneryId: props.parish.deaneryId ? props.parish.deaneryId : '',
+                published: props.parish.published ? props.parish.published : false,
             });
         }
-    }, [props.deanery])
+    }, [props.parish])
 
     useEffect(() => {
+        console.log("props.dioceses", props.dioceses)
         setDioceses(props.dioceses ? props.dioceses : [])
     }, [props.dioceses])
 
     useEffect(() => {
-        setDioceses(props.dioceses ? props.dioceses : [])
-    }, [props.dioceses])
+        console.log("props.deaneries", props.deaneries)
+        setDeaneries(props.deaneries ? props.deaneries : [])
+    }, [props.deaneries])
 
     return (
         <div className={classes.paper}>
@@ -104,7 +112,7 @@ const DeaneryEditDetail = (props) => {
                         variant="outlined"
                         name="id"
                         id="id"
-                        label="Mã Giáo Hạt(Tự động)"
+                        label="Mã Giáo Xứ(Tự động)"
                         disabled
                         value={state.id}
                     />
@@ -115,7 +123,7 @@ const DeaneryEditDetail = (props) => {
                         fullWidth
                         variant="outlined"
                         id="name"
-                        label="Tên Giáo Hạt"
+                        label="Tên Giáo Xứ"
                         name="name"
                         autoFocus
                         value={state.name}
@@ -170,7 +178,7 @@ const DeaneryEditDetail = (props) => {
                             ? renderOption(deaneries)
                             :
                             <MenuItem value="">
-                                <em>Vui Lòng Chọn Giáo Phận</em>
+                                <em>Vui Lòng Chọn Giáo Hạt</em>
                             </MenuItem>
                         }
                     </TextField>
@@ -189,4 +197,4 @@ const DeaneryEditDetail = (props) => {
         </div>
     );
 }
-export default DeaneryEditDetail;
+export default ParishEditDetail;

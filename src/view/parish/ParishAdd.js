@@ -90,6 +90,7 @@ const ParishAdd = (props) => {
     }
 
     const handleSubmit = () => {
+        console.log({ parish })
         createParish({
             variables: {
                 name: parish.name,
@@ -113,7 +114,6 @@ const ParishAdd = (props) => {
     }, [dataDioceses])
 
     useEffect(() => {
-        console.log({ dataDeaneries })
         if (dataDeaneries && dataDeaneries.deaneriesByDiocese) {
             setDeaneries(dataDeaneries.deaneriesByDiocese.deaneries)
         }

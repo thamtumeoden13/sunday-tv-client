@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,8 +13,8 @@ import Detail from '../../component/parish/edit/Detail'
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { DEANERY as DeaneryPath } from '../../constant/BreadcrumbsConfig'
-import { DIOCESES, DEANERY_BY_ID, UPDATE_DEANERY_BY_ID } from '../../gql/graphqlTag'
+import { PARISH as ParishPath } from '../../constant/BreadcrumbsConfig'
+import { DIOCESES_CACHE, UPDATE_PARISH_BY_ID, DEANERIES_BY_DIOCESE, PARISH_BY_ID } from '../../gql/parishGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
@@ -50,26 +50,29 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const DeaneryEdit = (props) => {
+const ParishEdit = (props) => {
     const classes = useStyles();
-    const deaneryId = props.match.params.id
-    const [deanery, setDeanery] = useState({
+    const parishId = props.match.params.id
+    const [parish, setParish] = useState({
         id: '',
         name: '',
         shortName: '',
         dioceseId: '',
+        deaneryId: '',
         published: false
     })
     const [dioceses, setDioceses] = useState([])
+    const [deaneries, setDeaneries] = useState([])
 
-    const [getDeaneryById, { loading: loadingQuery, data: dataDeanery, error, refetch }] = useLazyQuery(DEANERY_BY_ID, {
+    const [getParishById, { loading: loadingParishById, data: dataParishById, error, refetch }] = useLazyQuery(PARISH_BY_ID, {
         variables: {
-            id: deaneryId
+            id: parishId
         }
     });
 
-    const [getDioceses, { loading: loadingDioceses, data: dataDioceses, error: errorDioceses }] = useLazyQuery(DIOCESES);
-    const [updateDeanery, { loading: loadingMutation, error: errorMutation }] = useMutation(UPDATE_DEANERY_BY_ID,
+    const [getDioceses, { loading: loadingQueryDioceses, data: dataDioceses, error: errorQueryioceses }] = useLazyQuery(DIOCESES_CACHE);
+    const [getDeaneries, { loading: loadingQueryDeaneries, data: dataDeaneries, error: errorQueryDeaneries }] = useLazyQuery(DEANERIES_BY_DIOCESE);
+    const [updateParish, { loading: loadingMutation, error: errorMutationParish }] = useMutation(UPDATE_PARISH_BY_ID,
         {
             onCompleted(...params) {
                 if (params) {
@@ -84,54 +87,76 @@ const DeaneryEdit = (props) => {
     );
 
     const onChangeText = (name, value) => {
-        setDeanery({ ...deanery, [name]: value });
+        setParish({ ...parish, [name]: value });
+        if (name === 'dioceseId') {
+            getDeaneries({
+                variables: {
+                    dioceseId: value
+                }
+            })
+        }
     }
 
     const handleSubmit = () => {
-        console.log('handleSubmit', deanery.published)
-        updateDeanery({
+        updateParish({
             variables: {
-                id: deanery.id,
-                name: deanery.name,
-                shortName: deanery.shortName,
-                published: deanery.published,
-                dioceseId: deanery.dioceseId
+                id: parish.id,
+                name: parish.name,
+                shortName: parish.shortName,
+                published: parish.published,
+                dioceseId: parish.dioceseId,
+                deaneryId: parish.deaneryId
             }
         })
     };
 
     useEffect(() => {
-        props.setPagePath(DeaneryPath.edit)
-        getDeaneryById()
+        props.setPagePath(ParishPath.add)
+        getParishById()
         getDioceses()
     }, [])
 
     useEffect(() => {
-        props.setLoadingDetail(loadingQuery)
-    }, [loadingQuery,])
+        props.setLoadingDetail(loadingQueryDioceses)
+    }, [loadingQueryDioceses])
 
     useEffect(() => {
-        props.setLoadingDetail(loadingDioceses)
-    }, [loadingDioceses,])
+        props.setLoadingDetail(loadingQueryDeaneries)
+    }, [loadingQueryDeaneries])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingParishById)
+    }, [loadingParishById])
 
     useEffect(() => {
         props.setLoadingDetail(loadingMutation)
     }, [loadingMutation])
 
     useEffect(() => {
-        if (dataDeanery && dataDeanery.deanery) {
-            console.log("dataDeanery.deanery", dataDeanery.deanery)
-            let temp = dataDeanery.deanery
-            temp.dioceseId = dataDeanery.deanery.diocese.id ? dataDeanery.deanery.diocese.id : ''
-            setDeanery(temp)
-        }
-    }, [dataDeanery])
-
-    useEffect(() => {
         if (dataDioceses && dataDioceses.dioceses) {
             setDioceses(dataDioceses.dioceses)
         }
     }, [dataDioceses])
+
+    useEffect(() => {
+        if (dataDeaneries && dataDeaneries.deaneriesByDiocese) {
+            setDeaneries(dataDeaneries.deaneriesByDiocese.deaneries)
+        }
+    }, [dataDeaneries])
+
+    useEffect(() => {
+        if (dataParishById && dataParishById.parish) {
+            let temp = dataParishById.parish
+            temp.dioceseId = dataParishById.parish.diocese.id ? dataParishById.parish.diocese.id : ''
+            temp.deaneryId = dataParishById.parish.deanery.id ? dataParishById.parish.deanery.id : ''
+            setParish(temp)
+            getDeaneries({
+                variables: {
+                    dioceseId: temp.dioceseId
+                }
+            })
+        }
+    }, [dataParishById])
 
     return (
         <Fragment>
@@ -140,11 +165,12 @@ const DeaneryEdit = (props) => {
                 <Grid item xs={12}>
                     <Paper square className={classes.paper}>
                         <Typography component="h1" variant="h4" align="center">
-                            CHỈNH SỬA GIÁO HẠT
+                            TẠO MỚI GIÁO XỨ
                         </Typography>
                         <React.Fragment>
                             <Detail
-                                deanery={deanery}
+                                parish={parish}
+                                deaneries={deaneries}
                                 dioceses={dioceses}
                                 onChange={onChangeText}
                             />
@@ -165,4 +191,4 @@ const DeaneryEdit = (props) => {
         </Fragment>
     );
 }
-export default connect(mapStateToProps, mapDispatchToProps)(DeaneryEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(ParishEdit);
