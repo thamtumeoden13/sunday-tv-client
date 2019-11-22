@@ -4,7 +4,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -28,10 +27,6 @@ const useStyles = makeStyles(theme => ({
         // alignItems: 'center',
         width: '50%'
     },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
@@ -41,10 +36,8 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ParishAddDetail = (props) => {
+const ParishCom = (props) => {
     const classes = useStyles();
-    const [dioceses, setDioceses] = useState([]);
-    const [deaneries, setDeaneries] = useState([]);
     const [state, setState] = React.useState({
         id: '',
         name: '',
@@ -53,6 +46,10 @@ const ParishAddDetail = (props) => {
         deaneryId: '',
         published: false
     });
+
+    const [dioceses, setDioceses] = useState([]);
+    const [deaneries, setDeaneries] = useState([]);
+
     const handleChange = (event) => {
         if (event.target.name === 'dioceseId') {
             setState({ ...state, [event.target.name]: event.target.value, deaneryId: '' });
@@ -70,20 +67,36 @@ const ParishAddDetail = (props) => {
         if (props.onChange) {
             props.onChange(event.target.name, !state[event.target.name])
         }
-    }
+    };
 
     const renderOption = (listOption) => {
         return (
             listOption.map((e, i) => {
-                return <MenuItem value={e.id} key={i}>{e.name}</MenuItem>
+                return <MenuItem value={e.id} key={e.id}>{e.name}</MenuItem>
             })
         )
     }
+
     useEffect(() => {
+        if (props.parish) {
+            setState({
+                id: props.parish.id ? props.parish.id : '',
+                name: props.parish.name ? props.parish.name : '',
+                shortName: props.parish.shortName ? props.parish.shortName : '',
+                dioceseId: props.parish.dioceseId ? props.parish.dioceseId : '',
+                deaneryId: props.parish.deaneryId ? props.parish.deaneryId : '',
+                published: props.parish.published ? props.parish.published : false,
+            });
+        }
+    }, [props.parish])
+
+    useEffect(() => {
+        console.log("props.dioceses", props.dioceses)
         setDioceses(props.dioceses ? props.dioceses : [])
     }, [props.dioceses])
 
     useEffect(() => {
+        console.log("props.deaneries", props.deaneries)
         setDeaneries(props.deaneries ? props.deaneries : [])
     }, [props.deaneries])
 
@@ -93,25 +106,25 @@ const ParishAddDetail = (props) => {
             <Grid container component="main" spacing={2} className={classes.root} >
                 <Grid item xs={12}>
                     <TextField
-                        // required
+                        required
                         fullWidth
+                        variant="outlined"
                         name="id"
                         id="id"
-                        variant="outlined"
                         label="Mã Giáo Xứ(Tự động)"
-                        value={state.id}
                         disabled
+                        value={state.id}
                     />
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
                         required
                         fullWidth
-                        autoFocus
-                        id="name"
-                        name="name"
                         variant="outlined"
+                        id="name"
                         label="Tên Giáo Xứ"
+                        name="name"
+                        autoFocus
                         value={state.name}
                         onChange={(event) => handleChange(event)}
                     />
@@ -119,10 +132,10 @@ const ParishAddDetail = (props) => {
                 <Grid item xs={12}>
                     <TextField
                         fullWidth
-                        id="shortName"
-                        name="shortName"
                         variant="outlined"
+                        id="shortName"
                         label="Tên rút gọn"
+                        name="shortName"
                         value={state.shortName}
                         onChange={(event) => handleChange(event)}
                     />
@@ -133,8 +146,9 @@ const ParishAddDetail = (props) => {
                         fullWidth
                         variant="outlined"
                         name="dioceseId"
-                        label="Giáo Phận"
-                        select={true}
+                        id="dioceseId"
+                        select
+                        label="Giáo phận"
                         value={state.dioceseId}
                         onChange={(event) => handleChange(event)}
                     >
@@ -153,8 +167,9 @@ const ParishAddDetail = (props) => {
                         fullWidth
                         variant="outlined"
                         name="deaneryId"
-                        label="Giáo Hat"
-                        select={true}
+                        id="deaneryId"
+                        select
+                        label="Giáo Hạt"
                         value={state.deaneryId}
                         onChange={(event) => handleChange(event)}
                     >
@@ -170,9 +185,8 @@ const ParishAddDetail = (props) => {
                 <Grid item xs={12}>
                     <FormControlLabel
                         control={
-                            <Checkbox
-                                value={state.published} checked={state.published} color="primary"
-                                name="published" id="published"
+                            <Checkbox value={state.published} checked={state.published}
+                                color="primary" name="published" id="published"
                                 onChange={(event) => handleChangeCheckbox(event)}
                             />}
                         label="Công khai"
@@ -182,4 +196,4 @@ const ParishAddDetail = (props) => {
         </div>
     );
 }
-export default ParishAddDetail;
+export default ParishCom;

@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import Detail from '../../component/diocese/edit/Detail'
+import Detail from '../../component/diocese'
 import { DIOCESE as DiocesePath } from '../../constant/BreadcrumbsConfig'
 import { DIOCESE_BY_ID, UPDATE_DIOCESE_BY_ID } from '../../gql/graphqlTag'
 
@@ -123,7 +123,7 @@ const DioceseEdit = (props) => {
                         </Typography>
                         <React.Fragment>
                             <Detail
-                                data={diocese}
+                                diocese={diocese}
                                 onChange={onChangeText}
                             />
                             <div className={classes.buttons}>

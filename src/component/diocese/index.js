@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const DioceseEditDetail = (props) => {
+const DioceseCom = (props) => {
     const classes = useStyles();
     const [state, setState] = React.useState({
         id: '',
@@ -60,13 +60,15 @@ const DioceseEditDetail = (props) => {
     }
 
     useEffect(() => {
-        setState({
-            id: props.data.id ? props.data.id : '',
-            name: props.data.name ? props.data.name : '',
-            shortName: props.data.shortName ? props.data.shortName : '',
-            published: props.data.published ? props.data.published : false,
-        });
-    }, [props.data])
+        if (props.diocese) {
+            setState({
+                id: props.diocese.id ? props.diocese.id : '',
+                name: props.diocese.name ? props.diocese.name : '',
+                shortName: props.diocese.shortName ? props.diocese.shortName : '',
+                published: props.diocese.published ? props.diocese.published : false,
+            })
+        }
+    }, [props.diocese])
 
     return (
         <div className={classes.paper}>
@@ -122,4 +124,4 @@ const DioceseEditDetail = (props) => {
         </div>
     );
 }
-export default DioceseEditDetail;
+export default DioceseCom;

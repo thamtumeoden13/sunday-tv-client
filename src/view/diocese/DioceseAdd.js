@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import Detail from '../../component/diocese/add/Detail'
+import Detail from '../../component/diocese'
 import { DIOCESE as DiocesePath } from '../../constant/BreadcrumbsConfig'
 import { CREATE_DIOCESE } from '../../gql/graphqlTag'
 

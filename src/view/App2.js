@@ -82,6 +82,7 @@ export default class App extends Component {
 				return res.json()
 			})
 			.then(images => {
+				console.log('images', images)
 				this.setState({
 					uploading: false,
 					images

@@ -4,7 +4,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -28,10 +27,6 @@ const useStyles = makeStyles(theme => ({
         // alignItems: 'center',
         width: '50%'
     },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
@@ -41,152 +36,129 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const listOptionDiocese = [
-    {
-        value: "1",
-        label: "Giáo Phận Sài Gòn"
-    },
-    {
-        value: "2",
-        label: "Giáo Phận Vinh"
-    },
-    {
-        value: "3",
-        label: "Giáo Phận Hà Nội"
-    }
-]
-
-
-const listOptionDeanery = [
-    {
-        dioceseId: "1",
-        value: "1",
-        label: "Giáo Hạt Gia Định"
-    },
-    {
-        dioceseId: "2",
-        value: "1",
-        label: "Giáo Hạt chính tòa Xã Đoài"
-    },
-    {
-        dioceseId: "2",
-        value: "2",
-        label: "Giáo Hạt Thuận Nghĩa"
-    },
-    {
-        dioceseId: "3",
-        value: "1",
-        label: "Giáo Hạt Chính Tòa"
-    },
-    {
-        dioceseId: "3",
-        value: "2",
-        label: "Giáo Hạt Phủ Lý"
-    },
-    {
-        dioceseId: "3",
-        value: "3",
-        label: "Giáo Hạt Nam Định"
-    }
-]
-
-
-const listOptionParish = [
-    {
-        dioceseId: "1",
-        deaneryId: "1",
-        value: "1",
-        label: "Giáo Xứ Đức Mẹ Vô Nhiễm"
-    },
-    {
-        dioceseId: "2",
-        deaneryId: "1",
-        value: "1",
-        label: "Giáo Hạt Xã Đoài"
-    },
-    {
-        dioceseId: "3",
-        deaneryId: "2",
-        value: "1",
-        label: "Giáo xứ An Tập"
-    },
-]
-
 const CategoryAddContent = (props) => {
     const classes = useStyles();
-    const [publish, setPublished] = useState(!props.publish ? false : props.publish);
     const [state, setState] = React.useState({
-        diocese: '',
-        deanery: '',
-        parish: ''
+        id: '',
+        name: '1',
+        title: '2',
+        dioceseId: '',
+        deaneryId: '',
+        published: false
     });
-    const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: Number(event.target.value) });
-    };
 
-    const onChangePublished = () => {
-        setPublished(!publish)
+    const [dioceses, setDioceses] = useState([]);
+    const [deaneries, setDeaneries] = useState([]);
+    const [parishes, setParishes] = useState([]);
+
+    const handleChange = (event) => {
+        if (event.target.name === 'dioceseId') {
+            setState({ ...state, [event.target.name]: event.target.value, deaneryId: '' });
+        }
+        else {
+            setState({ ...state, [event.target.name]: event.target.value });
+        }
+        if (props.onChange) {
+            props.onChange(event.target.name, event.target.value)
+        }
     }
+
+    const handleChangeCheckbox = (event) => {
+        setState({ ...state, [event.target.name]: !state[event.target.name] });
+        if (props.onChange) {
+            props.onChange(event.target.name, !state[event.target.name])
+        }
+    };
 
     const renderOption = (listOption) => {
         return (
             listOption.map((e, i) => {
-                return <MenuItem value={e.value} key={i}>{e.label}</MenuItem>
+                return <MenuItem value={e.id} key={e.id}>{e.name}</MenuItem>
             })
         )
     }
 
+    // useEffect(() => {
+    //     if (props.category) {
+    //         setState({
+    //             id: props.category.id ? props.category.id : '',
+    //             name: props.category.name ? props.category.name : '',
+    //             title: props.category.title ? props.category.title : '',
+    //             dioceseId: props.category.dioceseId ? props.category.dioceseId : '',
+    //             deaneryId: props.category.deaneryId ? props.category.deaneryId : '',
+    //             published: props.category.published ? props.category.published : false,
+    //         });
+    //     }
+    // }, [props.category])
+
     useEffect(() => {
-        setPublished(!props.publish ? false : props.publish)
-    }, [props.publish])
+        console.log("props.dioceses", props.dioceses)
+        setDioceses(props.dioceses ? props.dioceses : [])
+    }, [props.dioceses])
+
+    useEffect(() => {
+        console.log("props.deaneries", props.deaneries)
+        setDeaneries(props.deaneries ? props.deaneries : [])
+    }, [props.deaneries])
+
+    useEffect(() => {
+        setParishes(props.parishes ? props.parishes : [])
+    }, [props.parishes])
 
     return (
         <div className={classes.paper}>
             <CssBaseline />
             <Grid container component="main" spacing={2} className={classes.root} >
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                     <TextField
-                        name="categoryId"
-                        variant="outlined"
                         required
                         fullWidth
-                        id="categoryId"
-                        label="Mã danh mục"
+                        variant="outlined"
+                        name="id"
+                        id="id"
+                        label="Mã Giáo Xứ(Tự động)"
+                        disabled
+                        value={state.id}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        required
+                        fullWidth
+                        variant="outlined"
+                        id="name"
+                        label="Tên Giáo Xứ"
+                        name="name"
                         autoFocus
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="categoryName"
-                        label="Tên danh mục"
-                        name="categoryName"
+                        value={state.name}
+                        onChange={(event) => handleChange(event)}
                     />
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        variant="outlined"
                         fullWidth
-                        id="categoryTitle"
-                        label="Tiêu đề danh mục"
-                        name="categoryTitle"
+                        variant="outlined"
+                        id="title"
+                        label="Tên rút gọn"
+                        name="title"
+                        value={state.title}
+                        onChange={(event) => handleChange(event)}
                     />
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        variant="outlined"
                         required
                         fullWidth
-                        name="diocese"
-                        label="Giáo Phận"
-                        select={true}
-                        value={state.diocese}
+                        variant="outlined"
+                        name="dioceseId"
+                        id="dioceseId"
+                        select
+                        label="Giáo phận"
+                        value={state.dioceseId}
                         onChange={(event) => handleChange(event)}
                     >
-                        {renderOption && renderOption.length > 0
-                            ? renderOption(listOptionDiocese)
+                        {dioceses && dioceses.length > 0
+                            ? renderOption(dioceses)
                             :
                             <MenuItem value="">
                                 <em>Vui Lòng Chọn Giáo Phận</em>
@@ -196,17 +168,18 @@ const CategoryAddContent = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        variant="outlined"
                         required
                         fullWidth
-                        name="deanery"
+                        variant="outlined"
+                        name="deaneryId"
+                        id="deaneryId"
+                        select
                         label="Giáo Hạt"
-                        select={true}
-                        value={state.deanery}
+                        value={state.deaneryId}
                         onChange={(event) => handleChange(event)}
                     >
-                        {renderOption && renderOption.length > 0
-                            ? renderOption(listOptionDeanery)
+                        {deaneries && deaneries.length > 0
+                            ? renderOption(deaneries)
                             :
                             <MenuItem value="">
                                 <em>Vui Lòng Chọn Giáo Hạt</em>
@@ -216,27 +189,32 @@ const CategoryAddContent = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        variant="outlined"
                         required
                         fullWidth
-                        name="parish"
+                        variant="outlined"
+                        name="parishId"
+                        id="parishId"
+                        select
                         label="Giáo Xứ"
-                        select={true}
-                        value={state.parish}
+                        value={state.parishId}
                         onChange={(event) => handleChange(event)}
                     >
-                        {renderOption && renderOption.length > 0
-                            ? renderOption(listOptionParish)
+                        {parishes && parishes.length > 0
+                            ? renderOption(parishes)
                             :
                             <MenuItem value="">
-                                <em>Vui Lòng Chọn Giáo Xứ</em>
+                                <em>Vui Lòng Chọn Giáo Hạt</em>
                             </MenuItem>
                         }
                     </TextField>
                 </Grid>
                 <Grid item xs={12}>
                     <FormControlLabel
-                        control={<Checkbox value={publish} checked={publish} color="primary" name="published" id="published" onChange={() => onChangePublished()} />}
+                        control={
+                            <Checkbox value={state.published} checked={state.published}
+                                color="primary" name="published" id="published"
+                                onChange={(event) => handleChangeCheckbox(event)}
+                            />}
                         label="Công khai"
                     />
                 </Grid>

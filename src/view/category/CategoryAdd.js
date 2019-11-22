@@ -11,9 +11,10 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Typography from '@material-ui/core/Typography';
 
-import Step1 from '../../component/category/add/Detail'
-import Step2 from '../../component/category/add/Content'
-import Step3 from '../../component/category/add/AddImages'
+import CategoryDetail from '../../component/category/add/Detail'
+import CategoryContent from '../../component/category/add/Content'
+import CategoryAddImages from '../../component/category/add/AddImages'
+import StepContent from '../../component/category/StepConent'
 
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
@@ -47,18 +48,6 @@ const useStyles = makeStyles(theme => ({
 
 const steps = ['Detail', 'TextEditor', 'Add Image'];
 
-function getStepContent(step) {
-    switch (step) {
-        case 0:
-            return <Step1 />;
-        case 1:
-            return <Step2 />;
-        case 2:
-            return <Step3 />;
-        default:
-            throw new Error('Unknown step');
-    }
-}
 const mapStateToProps = state => {
     return {
         PageInfos: state.PageInfosModule,
@@ -78,14 +67,35 @@ const mapDispatchToProps = dispatch => {
 const CategoryAdd = (props) => {
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
+    const [dataSource, setDataSource] = React.useState({
+        dataSourceDetail: {},
+        dataSourceContent: {},
+        dataSourceAddImages: {},
+    });
 
+    const getStepContent = (step, activeDataSource) => {
+        switch (step) {
+            case 0:
+                return <CategoryDetail dataSource={activeDataSource} onChangeDataSource={onChangeDataSource} />;
+            case 1:
+                return <CategoryContent dataSource={activeDataSource} onChangeDataSource={onChangeDataSource} />;
+            case 2:
+                return <CategoryAddImages dataSource={activeDataSource} onChangeDataSource={onChangeDataSource} />;
+            default:
+                throw new Error('Unknown step');
+        }
+    }
     const handleNext = () => {
         setActiveStep(activeStep + 1);
-    };
+    }
 
     const handleBack = () => {
         setActiveStep(activeStep - 1);
-    };
+    }
+
+    const onChangeDataSource = (name, result) => {
+        setDataSource({ ...dataSource, [name]: result })
+    }
 
     useEffect(() => {
         props.setPagePath(CategoryPath.add)
@@ -98,7 +108,7 @@ const CategoryAdd = (props) => {
                 <Grid item xs={12}>
                     <Paper square className={classes.paper}>
                         <Typography component="h1" variant="h4" align="center">
-                            CATEGORY
+                            DANH MỤC
                         </Typography>
                         <Stepper activeStep={activeStep} className={classes.stepper}>
                             {steps.map(label => (
@@ -108,6 +118,24 @@ const CategoryAdd = (props) => {
                             ))}
                         </Stepper>
                         <React.Fragment>
+                            {getStepContent(activeStep, dataSource)}
+                            <div className={classes.buttons}>
+                                {activeStep !== 0 && (
+                                    <Button onClick={handleBack} className={classes.button}>
+                                        Back
+                                                </Button>
+                                )}
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleNext}
+                                    className={classes.button}
+                                >
+                                    {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
+                                </Button>
+                            </div>
+                        </React.Fragment>
+                        {/* <React.Fragment>
                             {activeStep === steps.length ? (
                                 <React.Fragment>
                                     <Typography variant="h5" gutterBottom>
@@ -138,7 +166,7 @@ const CategoryAdd = (props) => {
                                         </div>
                                     </React.Fragment>
                                 )}
-                        </React.Fragment>
+                        </React.Fragment> */}
                     </Paper>
                 </Grid>
             </Grid>

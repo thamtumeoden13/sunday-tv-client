@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const DeaneryEditDetail = (props) => {
+const DeaneryCom = (props) => {
     const classes = useStyles();
     const [state, setState] = React.useState({
         id: '',
@@ -163,4 +163,4 @@ const DeaneryEditDetail = (props) => {
         </div>
     );
 }
-export default DeaneryEditDetail;
+export default DeaneryCom;
