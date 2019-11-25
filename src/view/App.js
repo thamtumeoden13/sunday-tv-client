@@ -13,7 +13,6 @@ const App = (props) => {
 	// const { loading, error, data } = client.readQuery({ query: IS_LOGGED_IN })
 	// if (loading) return <p>loading...</p>;
 	// if (error) return <p>ERROR: {error.message}</p>;
-	// console.log({ data })
 	// const isLoggedIn = !!localStorage.getItem(AUTH_TOKEN)
 	return (
 		<Switch>

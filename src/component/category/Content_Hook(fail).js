@@ -2,6 +2,8 @@ import React, { Fragment, useState, useEffect } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import { Editor } from 'react-draft-wysiwyg';
+import { EditorState, convertFromRaw, convertToRaw, ContentState, convertFromHTML } from "draft-js";
+import { stateToHTML } from 'draft-js-export-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 const useStyles = makeStyles(theme => ({
@@ -32,20 +34,30 @@ const useStyles = makeStyles(theme => ({
 
 const CategoryTextEditor = (props) => {
     const classes = useStyles();
-    const [state, setState] = React.useState({
-        textEditor: '',
-    });
+    const [editorState, setEditorState] = React.useState({
+        editorState: EditorState.createWithContent(
+            ContentState.createFromBlockArray(
+                convertFromHTML('<p>My initial content.</p>')
+            )
+        )
+    })
 
+    const onEditorStateChange = (editorState) => {
+        const convertHTML = stateToHTML(editorState.getCurrentContent())
+        setEditorState(convertHTML)
+        if (props.onChange)
+            props.onChange(convertHTML)
+    }
     return (
         <Fragment>
             <CssBaseline />
             <div className={classes.paper}>
                 <Editor
-                    // editorState={editorState}
+                    editorState={editorState}
                     toolbarClassName="toolbarClassName"
                     wrapperClassName="wrapperClassName"
                     editorClassName="editorClassName"
-                // onEditorStateChange={this.onEditorStateChange}
+                    onEditorStateChange={(editorState) => onEditorStateChange(editorState)}
                 />
             </div>
         </Fragment>

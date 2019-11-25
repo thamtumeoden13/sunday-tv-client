@@ -40,8 +40,8 @@ const CategoryAddContent = (props) => {
     const classes = useStyles();
     const [state, setState] = React.useState({
         id: '',
-        name: '1',
-        title: '2',
+        name: '',
+        title: '',
         dioceseId: '',
         deaneryId: '',
         parishId: '',
@@ -73,7 +73,7 @@ const CategoryAddContent = (props) => {
         let valueObject = { ...state, [event.target.name]: !state[event.target.name] }
         setState(valueObject);
         if (props.onChange) {
-            props.onChange(valueObject)
+            props.onChange(props.name, valueObject)
         }
     };
 
@@ -84,6 +84,20 @@ const CategoryAddContent = (props) => {
             })
         )
     }
+
+    useEffect(() => {
+        if (props.dataSource) {
+            setState({
+                id: props.dataSource.id ? props.dataSource.id : '',
+                name: props.dataSource.name ? props.dataSource.name : '',
+                title: props.dataSource.title ? props.dataSource.title : '',
+                dioceseId: props.dataSource.dioceseId ? props.dataSource.dioceseId : '',
+                deaneryId: props.dataSource.deaneryId ? props.dataSource.deaneryId : '',
+                parishId: props.dataSource.parishId ? props.dataSource.parishId : '',
+                published: props.dataSource.published ? props.dataSource.published : false,
+            });
+        }
+    }, [props.dataSource])
 
     useEffect(() => {
         setDioceses(props.dioceses ? props.dioceses : [])

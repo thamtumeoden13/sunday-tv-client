@@ -36,31 +36,32 @@ class CategoryTextEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            editorState: EditorState.createEmpty()
-            // ),
+            // editorState: EditorState.createEmpty(),
+            editorState: EditorState.createWithContent(
+                ContentState.createFromBlockArray(
+                    convertFromHTML('<p>My initial content.</p>')
+                )
+            )
         };
     }
     componentDidMount() {
-        this.setState({
-            editorState: EditorState.createWithContent(
-                ContentState.createFromBlockArray(
-                    convertFromHTML(this.props.dataSource.textEditor)
+        const { textEditor } = this.props.dataSource
+        if (textEditor && textEditor.length > 0) {
+            this.setState({
+                editorState: EditorState.createWithContent(
+                    ContentState.createFromBlockArray(
+                        convertFromHTML(this.props.dataSource.textEditor)
+                    )
                 )
-            )
-        })
+            })
+        }
     }
     onEditorStateChange = (editorState) => {
         const convertHTML = stateToHTML(editorState.getCurrentContent())
-        console.log({ convertHTML })
-        // this.setState({
-        //     editorState: EditorState.createWithContent(
-        //         ContentState.createFromBlockArray(
-        //             convertFromHTML(convertHTML)
-        //         )
-        //     )
-
-        // })
         this.setState({ editorState })
+        if (this.props.onChange) {
+            this.props.onChange(this.props.name, { textEditor: convertHTML })
+        }
     }
     render() {
         return (

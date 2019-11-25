@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
 import { CATEGORY as CategoryPath } from '../../constant/BreadcrumbsConfig'
-import { CATEGORIES, DELETE_CATEGORIES } from '../../gql/graphqlTag'
+import { CATEGORIES, DELETE_CATEGORIES } from '../../gql/categoryGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
@@ -102,6 +102,8 @@ const CategoryAddNew = (props) => {
         if (data && data.categories) {
             data.categories.map((e, i) => {
                 e.dioceseName = e.diocese.name
+                e.deaneryName = e.deanery.name
+                e.parishName = e.parish.name
                 return e
             })
             setCategories(data.categories)
@@ -136,6 +138,10 @@ const CategoryAddNew = (props) => {
                     { title: 'Mã Danh mục', field: 'id' },
                     { title: 'Tên Danh mục', field: 'name', },
                     { title: 'Tiêu đề', field: 'title' },
+                    { title: 'Nội dung', field: 'content' },
+                    { title: 'Giáo phận', field: 'dioceseName' },
+                    { title: 'Giáo hạt', field: 'deaneryName' },
+                    { title: 'Giáo xứ', field: 'parishName' },
                     {
                         title: 'Chỉnh sửa', field: 'edit',
                         render: rowData => (

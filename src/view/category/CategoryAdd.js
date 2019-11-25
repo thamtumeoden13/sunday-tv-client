@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,15 +11,15 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Typography from '@material-ui/core/Typography';
 
-import CategoryDetail from '../../component/category/add/Detail'
-import CategoryContent from '../../component/category/add/Content'
-import CategoryAddImages from '../../component/category/add/AddImages'
+import CategoryDetail from '../../component/category/Detail'
+import CategoryContent from '../../component/category/Content'
+import CategoryAddImages from '../../component/category/AddImages'
 
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
 import { CATEGORY as CategoryPath } from '../../constant/BreadcrumbsConfig'
-import { DIOCESES, CREATE_DEANERY } from '../../gql/graphqlTag'
+import { DIOCESES_CACHE, DEANERIES_BY_DIOCESE, PARISHES_BY_DEANERY, CREATE_CATEGORY, CATEGORY_BY_ID } from '../../gql/categoryGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
@@ -65,25 +65,52 @@ const mapDispatchToProps = dispatch => {
 };
 const CategoryAdd = (props) => {
     const classes = useStyles();
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [dataSource, setDataSource] = React.useState({
-        categoryDetail: {},
-        categoryContent: { textEditor: "<p>All the parameters of the <code>search</code> method are optional. Including no parameters in the method call will return the 50 most recently created resources in descending order of creation time.My initial content.</p>" },
+    const [activeStep, setActiveStep] = useState(0);
+    const [result, setResult] = useState({
+        categoryDetail: {
+            name: '',
+            title: '',
+            published: '',
+            dioceseId: '',
+            deaneryId: '',
+            parishId: ''
+        },
+        categoryContent: { textEditor: '' },
         categoryAddImages: {},
-    });
+    })
 
+    const [dioceses, setDioceses] = useState([])
+    const [deaneries, setDeaneries] = useState([])
+    const [parishes, setParishes] = useState([])
+
+    const [getDioceses, { loading: loadingQueryDioceses, data: dataDioceses, error: errorQueryioceses }] = useLazyQuery(DIOCESES_CACHE);
+    const [getDeaneries, { loading: loadingQueryDeaneries, data: dataDeaneries, error: errorQueryDeaneries }] = useLazyQuery(DEANERIES_BY_DIOCESE);
+    const [getParishes, { loading: loadingQueryParishes, data: dataParishes, error: errorQueryParishes }] = useLazyQuery(PARISHES_BY_DEANERY);
+    const [createCategory, { loading: loadingMutation, error }] = useMutation(CREATE_CATEGORY,
+        {
+            onCompleted(...params) {
+                if (params) {
+                    props.history.goBack();
+                }
+            },
+            onError(error) {
+                alert(error)
+            }
+        }
+    );
     const getStepContent = (step) => {
         switch (step) {
             case 0:
-                return <CategoryDetail name="categoryDetail" dataSource={dataSource["categoryDetail"]} onChange={onChangeDataSource} />;
+                return <CategoryDetail name="categoryDetail" dataSource={result["categoryDetail"]} onChange={onChangeDataSource} dioceses={dioceses} deaneries={deaneries} parishes={parishes} />;
             case 1:
-                return <CategoryContent name="categoryContent" dataSource={dataSource["categoryContent"]} onChange={onChangeDataSource} />;
+                return <CategoryContent name="categoryContent" dataSource={result["categoryContent"]} onChange={onChangeDataSource} />;
             case 2:
-                return <CategoryAddImages name="categoryAddImages" dataSource={dataSource["categoryAddImages"]} onChange={onChangeDataSource} />;
+                return <CategoryAddImages name="categoryAddImages" dataSource={result["categoryAddImages"]} onChange={onChangeDataSource} />;
             default:
                 throw new Error('Unknown step');
         }
     }
+
     const handleNext = () => {
         setActiveStep(activeStep + 1);
     }
@@ -92,27 +119,75 @@ const CategoryAdd = (props) => {
         setActiveStep(activeStep - 1);
     }
 
-    const onChangeDataSource = (name, result, isReloadDeanery, isReloadParish) => {
-        setDataSource({ ...dataSource, [name]: result })
+    const handleSubmit = () => {
+        createCategory({
+            variables: {
+                name: result.categoryDetail.name,
+                title: result.categoryDetail.title,
+                content: result.categoryContent.textEditor,
+                published: result.categoryDetail.published,
+                dioceseId: result.categoryDetail.dioceseId,
+                deaneryId: result.categoryDetail.deaneryId,
+                parishId: result.categoryDetail.parishId
+            }
+        })
+    }
+    const onChangeDataSource = (name, value, isReloadDeanery, isReloadParish) => {
+        setResult({ ...result, [name]: value })
         if (isReloadDeanery) {
-            // getDeaneries({
-            //     variables: {
-            //         dioceseId: value.dioceseId
-            //     }
-            // })
+            getDeaneries({
+                variables: {
+                    dioceseId: value.dioceseId
+                }
+            })
         }
         if (isReloadParish) {
-            // getDeaneries({
-            //     variables: {
-            //         dioceseId: value.dioceseId
-            //     }
-            // })
+            getParishes({
+                variables: {
+                    deaneryId: value.deaneryId
+                }
+            })
         }
     }
 
     useEffect(() => {
         props.setPagePath(CategoryPath.add)
+        getDioceses()
     }, [])
+
+    useEffect(() => {
+        if (dataDioceses && dataDioceses.dioceses) {
+            setDioceses(dataDioceses.dioceses)
+        }
+    }, [dataDioceses])
+
+    useEffect(() => {
+        if (dataDeaneries && dataDeaneries.deaneriesByDiocese) {
+            setDeaneries(dataDeaneries.deaneriesByDiocese.deaneries)
+        }
+    }, [dataDeaneries])
+
+    useEffect(() => {
+        if (dataParishes && dataParishes.parishesByDeanery) {
+            setParishes(dataParishes.parishesByDeanery.parishes)
+        }
+    }, [dataParishes])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingQueryDioceses)
+    }, [loadingQueryDioceses])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingQueryDeaneries)
+    }, [loadingQueryDeaneries])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingQueryParishes)
+    }, [loadingQueryParishes])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingMutation)
+    }, [loadingMutation])
 
     return (
         <Fragment>
@@ -141,7 +216,7 @@ const CategoryAdd = (props) => {
                                 <Button
                                     variant="contained"
                                     color="primary"
-                                    onClick={handleNext}
+                                    onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
                                     className={classes.button}
                                 >
                                     {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
