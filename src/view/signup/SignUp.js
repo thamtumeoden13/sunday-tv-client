@@ -14,15 +14,14 @@ const SIGNUP = gql`
 `;
 
 const SignUpScreen = (props) => {
-    const [signUp, { data }] = useMutation(SIGNUP);
+  const [signUp, { data }] = useMutation(SIGNUP);
 
-    const onSignUp = (email, password) => {
-        console.log({ email, password })
-        // signUp({ variables: { email: email, password: password } });
-    }
+  const onSignUp = (email, password) => {
+    // signUp({ variables: { email: email, password: password } });
+  }
 
-    return (
-        <SignUpComponent onSignUp={onSignUp} id="1" />
-    );
+  return (
+    <SignUpComponent onSignUp={onSignUp} id="1" />
+  );
 }
 export default SignUpScreen;

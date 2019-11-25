@@ -66,14 +66,13 @@ const DioceseAdd = (props) => {
                 }
             },
             onError(error) {
-                console.log('onError', error)
                 alert(error)
             }
         }
     );
 
-    const onChangeText = (name, value) => {
-        setDiocese({ ...diocese, [name]: value });
+    const onChangeText = (value) => {
+        setDiocese(value);
     }
 
     const handleSubmit = () => {

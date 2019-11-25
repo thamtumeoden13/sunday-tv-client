@@ -72,25 +72,23 @@ const ParishAdd = (props) => {
                 }
             },
             onError(error) {
-                console.log('onError', error)
                 alert(error)
             }
         }
     );
 
-    const onChangeText = (name, value) => {
-        setParish({ ...parish, [name]: value });
-        if (name === 'dioceseId') {
+    const onChangeText = (value, isReloadDeanery) => {
+        setParish(value);
+        if (isReloadDeanery) {
             getDeaneries({
                 variables: {
-                    dioceseId: value
+                    dioceseId: value.dioceseId
                 }
             })
         }
     }
 
     const handleSubmit = () => {
-        console.log({ parish })
         createParish({
             variables: {
                 name: parish.name,

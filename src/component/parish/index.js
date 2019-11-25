@@ -51,21 +51,23 @@ const ParishCom = (props) => {
     const [deaneries, setDeaneries] = useState([]);
 
     const handleChange = (event) => {
+        let valueObject = { ...state, [event.target.name]: event.target.value }
+        let isReloadDeanery = false
         if (event.target.name === 'dioceseId') {
-            setState({ ...state, [event.target.name]: event.target.value, deaneryId: '' });
+            isReloadDeanery = true
+            valueObject = { ...state, [event.target.name]: event.target.value, deaneryId: '' }
         }
-        else {
-            setState({ ...state, [event.target.name]: event.target.value });
-        }
+        setState(valueObject);
         if (props.onChange) {
-            props.onChange(event.target.name, event.target.value)
+            props.onChange(valueObject, isReloadDeanery)
         }
     }
 
     const handleChangeCheckbox = (event) => {
-        setState({ ...state, [event.target.name]: !state[event.target.name] });
+        const valueObject = { ...state, [event.target.name]: !state[event.target.name] }
+        setState(valueObject);
         if (props.onChange) {
-            props.onChange(event.target.name, !state[event.target.name])
+            props.onChange(valueObject)
         }
     };
 
@@ -91,12 +93,10 @@ const ParishCom = (props) => {
     }, [props.parish])
 
     useEffect(() => {
-        console.log("props.dioceses", props.dioceses)
         setDioceses(props.dioceses ? props.dioceses : [])
     }, [props.dioceses])
 
     useEffect(() => {
-        console.log("props.deaneries", props.deaneries)
         setDeaneries(props.deaneries ? props.deaneries : [])
     }, [props.deaneries])
 

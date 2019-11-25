@@ -80,7 +80,6 @@ const Diocese = (props) => {
                 getDioceses()
             },
             onError(error) {
-                console.log('onError', error)
                 alert(error)
             }
         }

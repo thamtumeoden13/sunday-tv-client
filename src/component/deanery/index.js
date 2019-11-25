@@ -50,15 +50,17 @@ const DeaneryCom = (props) => {
     const [dioceses, setDioceses] = useState([]);
 
     const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.value });
+        const valueObject = { ...state, [event.target.name]: event.target.value }
+        setState(valueObject);
         if (props.onChange) {
-            props.onChange(event.target.name, event.target.value)
+            props.onChange(valueObject)
         }
     };
     const handleChangeCheckbox = (event) => {
-        setState({ ...state, [event.target.name]: !state[event.target.name] });
+        const valueObject = { ...state, [event.target.name]: !state[event.target.name] }
+        setState(valueObject);
         if (props.onChange) {
-            props.onChange(event.target.name, !state[event.target.name])
+            props.onChange(valueObject)
         }
     };
 

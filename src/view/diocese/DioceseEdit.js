@@ -72,7 +72,6 @@ const DioceseEdit = (props) => {
                 }
             },
             onError(error) {
-                console.log('onError', error)
                 alert(error)
             }
         }
@@ -97,8 +96,8 @@ const DioceseEdit = (props) => {
         props.setLoadingDetail(loadingMutation)
     }, [loadingMutation])
 
-    const onChangeText = (name, value) => {
-        setDiocese({ ...diocese, [name]: value });
+    const onChangeText = (value) => {
+        setDiocese(value);
     }
 
     const handleSubmit = () => {

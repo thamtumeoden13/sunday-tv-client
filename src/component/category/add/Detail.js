@@ -44,6 +44,7 @@ const CategoryAddContent = (props) => {
         title: '2',
         dioceseId: '',
         deaneryId: '',
+        parishId: '',
         published: false
     });
 
@@ -52,21 +53,27 @@ const CategoryAddContent = (props) => {
     const [parishes, setParishes] = useState([]);
 
     const handleChange = (event) => {
+        let valueObject = { ...state, [event.target.name]: event.target.value }
+        let isReloadDeanery = false
+        let isReloadParish = false
         if (event.target.name === 'dioceseId') {
-            setState({ ...state, [event.target.name]: event.target.value, deaneryId: '' });
+            isReloadDeanery = true
+            valueObject = { ...state, [event.target.name]: event.target.value, deaneryId: '', parishId: '' }
+        } else if (event.target.name === 'deaneryId') {
+            isReloadParish = true
+            valueObject = { ...state, [event.target.name]: event.target.value, parishId: '' }
         }
-        else {
-            setState({ ...state, [event.target.name]: event.target.value });
-        }
+        setState(valueObject);
         if (props.onChange) {
-            props.onChange(event.target.name, event.target.value)
+            props.onChange(props.name, valueObject, isReloadDeanery, isReloadParish)
         }
     }
 
     const handleChangeCheckbox = (event) => {
-        setState({ ...state, [event.target.name]: !state[event.target.name] });
+        let valueObject = { ...state, [event.target.name]: !state[event.target.name] }
+        setState(valueObject);
         if (props.onChange) {
-            props.onChange(event.target.name, !state[event.target.name])
+            props.onChange(valueObject)
         }
     };
 
@@ -78,26 +85,11 @@ const CategoryAddContent = (props) => {
         )
     }
 
-    // useEffect(() => {
-    //     if (props.category) {
-    //         setState({
-    //             id: props.category.id ? props.category.id : '',
-    //             name: props.category.name ? props.category.name : '',
-    //             title: props.category.title ? props.category.title : '',
-    //             dioceseId: props.category.dioceseId ? props.category.dioceseId : '',
-    //             deaneryId: props.category.deaneryId ? props.category.deaneryId : '',
-    //             published: props.category.published ? props.category.published : false,
-    //         });
-    //     }
-    // }, [props.category])
-
     useEffect(() => {
-        console.log("props.dioceses", props.dioceses)
         setDioceses(props.dioceses ? props.dioceses : [])
     }, [props.dioceses])
 
     useEffect(() => {
-        console.log("props.deaneries", props.deaneries)
         setDeaneries(props.deaneries ? props.deaneries : [])
     }, [props.deaneries])
 
@@ -116,7 +108,7 @@ const CategoryAddContent = (props) => {
                         variant="outlined"
                         name="id"
                         id="id"
-                        label="Mã Giáo Xứ(Tự động)"
+                        label="Mã Danh Mục(Tự động)"
                         disabled
                         value={state.id}
                     />
@@ -127,7 +119,7 @@ const CategoryAddContent = (props) => {
                         fullWidth
                         variant="outlined"
                         id="name"
-                        label="Tên Giáo Xứ"
+                        label="Tên Danh Mục"
                         name="name"
                         autoFocus
                         value={state.name}
@@ -139,7 +131,7 @@ const CategoryAddContent = (props) => {
                         fullWidth
                         variant="outlined"
                         id="title"
-                        label="Tên rút gọn"
+                        label="Tiêu Đề Danh Mục"
                         name="title"
                         value={state.title}
                         onChange={(event) => handleChange(event)}

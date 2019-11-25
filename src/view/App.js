@@ -15,7 +15,6 @@ const App = (props) => {
 	// if (error) return <p>ERROR: {error.message}</p>;
 	// console.log({ data })
 	// const isLoggedIn = !!localStorage.getItem(AUTH_TOKEN)
-	console.log("App", props)
 	return (
 		<Switch>
 			<Route exact path="/" component={Home} />

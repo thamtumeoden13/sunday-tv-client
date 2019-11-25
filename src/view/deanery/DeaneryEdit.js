@@ -77,14 +77,13 @@ const DeaneryEdit = (props) => {
                 }
             },
             onError(error) {
-                console.log('onError', error)
                 alert(error)
             }
         }
     );
 
-    const onChangeText = (name, value) => {
-        setDeanery({ ...deanery, [name]: value });
+    const onChangeText = (value) => {
+        setDeanery(value);
     }
 
     const handleSubmit = () => {
@@ -119,7 +118,6 @@ const DeaneryEdit = (props) => {
 
     useEffect(() => {
         if (dataDeanery && dataDeanery.deanery) {
-            console.log("dataDeanery.deanery", dataDeanery.deanery)
             let temp = dataDeanery.deanery
             temp.dioceseId = dataDeanery.deanery.diocese.id ? dataDeanery.deanery.diocese.id : ''
             setDeanery(temp)

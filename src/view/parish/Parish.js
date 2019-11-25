@@ -80,7 +80,6 @@ const Deanery = (props) => {
                 getParishes()
             },
             onError(error) {
-                console.log('onError', error)
                 alert(error)
             }
         }

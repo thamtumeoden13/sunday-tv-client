@@ -14,7 +14,6 @@ import Typography from '@material-ui/core/Typography';
 import CategoryDetail from '../../component/category/add/Detail'
 import CategoryContent from '../../component/category/add/Content'
 import CategoryAddImages from '../../component/category/add/AddImages'
-import StepContent from '../../component/category/StepConent'
 
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
@@ -68,19 +67,19 @@ const CategoryAdd = (props) => {
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const [dataSource, setDataSource] = React.useState({
-        dataSourceDetail: {},
-        dataSourceContent: {},
-        dataSourceAddImages: {},
+        categoryDetail: {},
+        categoryContent: { textEditor: "<p>All the parameters of the <code>search</code> method are optional. Including no parameters in the method call will return the 50 most recently created resources in descending order of creation time.My initial content.</p>" },
+        categoryAddImages: {},
     });
 
-    const getStepContent = (step, activeDataSource) => {
+    const getStepContent = (step) => {
         switch (step) {
             case 0:
-                return <CategoryDetail dataSource={activeDataSource} onChangeDataSource={onChangeDataSource} />;
+                return <CategoryDetail name="categoryDetail" dataSource={dataSource["categoryDetail"]} onChange={onChangeDataSource} />;
             case 1:
-                return <CategoryContent dataSource={activeDataSource} onChangeDataSource={onChangeDataSource} />;
+                return <CategoryContent name="categoryContent" dataSource={dataSource["categoryContent"]} onChange={onChangeDataSource} />;
             case 2:
-                return <CategoryAddImages dataSource={activeDataSource} onChangeDataSource={onChangeDataSource} />;
+                return <CategoryAddImages name="categoryAddImages" dataSource={dataSource["categoryAddImages"]} onChange={onChangeDataSource} />;
             default:
                 throw new Error('Unknown step');
         }
@@ -93,8 +92,22 @@ const CategoryAdd = (props) => {
         setActiveStep(activeStep - 1);
     }
 
-    const onChangeDataSource = (name, result) => {
+    const onChangeDataSource = (name, result, isReloadDeanery, isReloadParish) => {
         setDataSource({ ...dataSource, [name]: result })
+        if (isReloadDeanery) {
+            // getDeaneries({
+            //     variables: {
+            //         dioceseId: value.dioceseId
+            //     }
+            // })
+        }
+        if (isReloadParish) {
+            // getDeaneries({
+            //     variables: {
+            //         dioceseId: value.dioceseId
+            //     }
+            // })
+        }
     }
 
     useEffect(() => {
@@ -118,12 +131,12 @@ const CategoryAdd = (props) => {
                             ))}
                         </Stepper>
                         <React.Fragment>
-                            {getStepContent(activeStep, dataSource)}
+                            {getStepContent(activeStep)}
                             <div className={classes.buttons}>
                                 {activeStep !== 0 && (
                                     <Button onClick={handleBack} className={classes.button}>
                                         Back
-                                                </Button>
+                                    </Button>
                                 )}
                                 <Button
                                     variant="contained"
@@ -135,38 +148,6 @@ const CategoryAdd = (props) => {
                                 </Button>
                             </div>
                         </React.Fragment>
-                        {/* <React.Fragment>
-                            {activeStep === steps.length ? (
-                                <React.Fragment>
-                                    <Typography variant="h5" gutterBottom>
-                                        Thank you for your order.
-                                    </Typography>
-                                    <Typography variant="subtitle1">
-                                        Your order number is #2001539. We have emailed your order confirmation, and will
-                                        send you an update when your order has shipped.
-                                    </Typography>
-                                </React.Fragment>
-                            ) : (
-                                    <React.Fragment>
-                                        {getStepContent(activeStep)}
-                                        <div className={classes.buttons}>
-                                            {activeStep !== 0 && (
-                                                <Button onClick={handleBack} className={classes.button}>
-                                                    Back
-                                                </Button>
-                                            )}
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={handleNext}
-                                                className={classes.button}
-                                            >
-                                                {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
-                                            </Button>
-                                        </div>
-                                    </React.Fragment>
-                                )}
-                        </React.Fragment> */}
                     </Paper>
                 </Grid>
             </Grid>

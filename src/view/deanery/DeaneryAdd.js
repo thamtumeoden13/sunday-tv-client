@@ -69,14 +69,13 @@ const DeaneryAdd = (props) => {
                 }
             },
             onError(error) {
-                console.log('onError', error)
                 alert(error)
             }
         }
     );
 
-    const onChangeText = (name, value) => {
-        setDeanery({ ...deanery, [name]: value });
+    const onChangeText = (value) => {
+        setDeanery(value);
     }
 
     const handleSubmit = () => {

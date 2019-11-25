@@ -32,49 +32,42 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-class CategoryTextEditor extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            editorState: EditorState.createEmpty()
-            // ),
-        };
-    }
-    componentDidMount() {
-        this.setState({
-            editorState: EditorState.createWithContent(
-                ContentState.createFromBlockArray(
-                    convertFromHTML(this.props.dataSource.textEditor)
-                )
+const CategoryTextEditor = (props) => {
+    const classes = useStyles();
+    const [editorState, setEditorState] = React.useState({
+        editorState: EditorState.createWithContent(
+            ContentState.createFromBlockArray(
+                convertFromHTML('<p>My initial content.</p>')
             )
-        })
-    }
-    onEditorStateChange = (editorState) => {
-        const convertHTML = stateToHTML(editorState.getCurrentContent())
-        console.log({ convertHTML })
-        // this.setState({
-        //     editorState: EditorState.createWithContent(
-        //         ContentState.createFromBlockArray(
-        //             convertFromHTML(convertHTML)
-        //         )
-        //     )
+        )
+    })
+    console.log({ editorState })
 
-        // })
-        this.setState({ editorState })
+    const onEditorStateChange = (editorState) => {
+        const convertHTML = stateToHTML(editorState.getCurrentContent())
+        setEditorState(convertHTML)
+        if (props.onChange)
+            props.onChange(convertHTML)
     }
-    render() {
-        return (
-            <Fragment>
-                <CssBaseline />
+
+    // useEffect(() => {
+    //     if (props.dataSource)
+    //         setEditorState(props.dataSource)
+    // }, [props.dataSource])
+
+    return (
+        <Fragment>
+            <CssBaseline />
+            <div className={classes.paper}>
                 <Editor
-                    editorState={this.state.editorState}
+                    editorState={editorState}
                     toolbarClassName="toolbarClassName"
                     wrapperClassName="wrapperClassName"
                     editorClassName="editorClassName"
-                    onEditorStateChange={this.onEditorStateChange}
+                    onEditorStateChange={(editorState) => onEditorStateChange(editorState)}
                 />
-            </Fragment>
-        )
-    }
+            </div>
+        </Fragment>
+    );
 }
 export default CategoryTextEditor;
