@@ -13,6 +13,7 @@ const initialState = {
 };
 
 export const pageInfos = (state = initialState, action) => {
+
     switch (action.type) {
         case actions.SET_PAGE_PATH:
             return {

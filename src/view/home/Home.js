@@ -6,6 +6,9 @@ import { setLoadingDetail } from "../../actions/pageInfos";
 
 import { makeStyles } from '@material-ui/core/styles';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import AppBar from '../../component/AppBar'
 import Drawer from '../../component/Drawer'
 import Main from '../../component/Main'
@@ -90,6 +93,17 @@ const HomeScreen = (props) => {
             <AppBar handleDrawer={handleDrawer} statusDrawer={statusDrawer} title={"Trang chủ"} onSignOut={onSignOut} />
             <Drawer handleDrawer={handleDrawer} statusDrawer={statusDrawer} />
             <Main>
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop
+                    closeOnClick
+                    rtl={false}
+                    pauseOnVisibilityChange
+                    draggable
+                    pauseOnHover
+                />
                 <LoadingOverlay
                     active={loading}
                     spinner={<PacmanLoader

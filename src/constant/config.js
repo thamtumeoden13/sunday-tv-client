@@ -5,6 +5,8 @@ export const API_URL = process.env.REACT_APP_NODE_ENV === 'production'
 // export const APOLLO_API_URL = 'http://localhost:8383'
 export const APOLLO_API_URL = process.env.REACT_APP_NODE_ENV === 'production'
   ? 'https://euf0jp3r7h.execute-api.us-east-1.amazonaws.com/dev/graphql'
+  // ? 'https://cpnviyziz3.execute-api.eu-west-1.amazonaws.com/dev/graphql'
+  // ? 'https://szudcnq3ff.execute-api.eu-west-1.amazonaws.com/production/graphql'
   : 'http://localhost:8383'
 
 export const AUTH_TOKEN = 'auth-token';

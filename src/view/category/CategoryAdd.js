@@ -76,7 +76,7 @@ const CategoryAdd = (props) => {
             parishId: ''
         },
         categoryContent: { textEditor: '' },
-        categoryAddImages: {},
+        categoryAddImages: [],
     })
 
     const [dioceses, setDioceses] = useState([])
@@ -120,20 +120,23 @@ const CategoryAdd = (props) => {
     }
 
     const handleSubmit = () => {
-        createCategory({
-            variables: {
-                name: result.categoryDetail.name,
-                title: result.categoryDetail.title,
-                content: result.categoryContent.textEditor,
-                published: result.categoryDetail.published,
-                dioceseId: result.categoryDetail.dioceseId,
-                deaneryId: result.categoryDetail.deaneryId,
-                parishId: result.categoryDetail.parishId
-            }
-        })
+        console.log({ result })
+        // createCategory({
+        //     variables: {
+        //         name: result.categoryDetail.name,
+        //         title: result.categoryDetail.title,
+        //         content: result.categoryContent.textEditor,
+        //         published: result.categoryDetail.published,
+        //         dioceseId: result.categoryDetail.dioceseId,
+        //         deaneryId: result.categoryDetail.deaneryId,
+        //         parishId: result.categoryDetail.parishId,
+        //         images: result.categoryAddImages,
+        //     }
+        // })
     }
     const onChangeDataSource = (name, value, isReloadDeanery, isReloadParish) => {
         setResult({ ...result, [name]: value })
+        console.log({ name, value })
         if (isReloadDeanery) {
             getDeaneries({
                 variables: {

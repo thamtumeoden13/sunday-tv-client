@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -90,6 +89,8 @@ const SignInComponent = (props) => {
                 }
             },
             onError(error) {
+                const { from } = props.location.state || { from: { pathname: '/' } }
+                props.history.push(from)
                 alert(error)
             }
         }

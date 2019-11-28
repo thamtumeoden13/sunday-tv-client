@@ -104,6 +104,7 @@ const CategoryAddNew = (props) => {
                 e.dioceseName = e.diocese.name
                 e.deaneryName = e.deanery.name
                 e.parishName = e.parish.name
+                // e.content = e.content.substring(0, 100)
                 return e
             })
             setCategories(data.categories)
@@ -135,10 +136,10 @@ const CategoryAddNew = (props) => {
                             />
                         ),
                     },
-                    { title: 'Mã Danh mục', field: 'id' },
+                    // { title: 'Mã Danh mục', field: 'id' },
                     { title: 'Tên Danh mục', field: 'name', },
                     { title: 'Tiêu đề', field: 'title' },
-                    { title: 'Nội dung', field: 'content' },
+                    // { title: 'Nội dung', field: 'content' },
                     { title: 'Giáo phận', field: 'dioceseName' },
                     { title: 'Giáo hạt', field: 'deaneryName' },
                     { title: 'Giáo xứ', field: 'parishName' },

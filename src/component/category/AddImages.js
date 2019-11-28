@@ -5,17 +5,17 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Notifications, { notify } from 'react-notify-toast'
-import clsx from 'clsx';
-// import { loadCSS } from 'fg-loadcss';
-import { red } from '@material-ui/core/colors';
-import Icon from '@material-ui/core/Icon';
 
+import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faImages, faImage } from '@fortawesome/free-solid-svg-icons'
+
+import { API_URL } from '../../constant/config'
+
+import { connect } from "react-redux";
+import { setLoadingDetail } from "../../actions/pageInfos";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -67,38 +67,135 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const mapStateToProps = state => {
+    return {
+        PageInfos: state.PageInfosModule,
+    };
+};
 
-const CategoryEditContent = () => {
+const mapDispatchToProps = dispatch => {
+    return {
+        setLoadingDetail: isLoading => {
+            dispatch(setLoadingDetail(isLoading));
+        },
+    };
+};
+const CategoryEditContent = (props) => {
     const classes = useStyles();
-    const [hasImage, setHasImage] = useState(false)
-    const [src, setSrc] = useState("")
+    const [state, setState] = useState({
+        loading: true,
+        uploading: false,
+        images: []
+    })
 
-    const onChange = (e) => {
+    const onChange = e => {
         const errs = []
         const files = Array.from(e.target.files)
-        console.log(e.target.files[0])
-        setHasImage(true)
-        setSrc(e.target.files[0])
+
+        if (files.length > 3) {
+            const msg = 'Only 3 images can be uploaded at a time'
+            return toast.error(msg)
+        }
+
+        const formData = new FormData()
+        const types = ['image/png', 'image/jpeg', 'image/gif']
+
+        files.forEach((file, i) => {
+
+            if (types.every(type => file.type !== type)) {
+                errs.push(`'${file.type}' is not a supported format`)
+            }
+
+            // if (file.size > 150000) {
+            //     errs.push(`'${file.name}' is too large, please pick a smaller file`)
+            // }
+
+            formData.append(i, file)
+        })
+
+        if (errs.length) {
+            return errs.forEach(err => toast.error(err))
+        }
+
+        setState({ ...state, uploading: true })
+
+        fetch(`${API_URL}/image-upload`, {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => {
+                if (!res.ok) {
+                    throw res
+                }
+                return res.json()
+            })
+            .then(images => {
+                setState({ ...state, uploading: false, images })
+                if (props.onChange) {
+                    const secureUrls = images.map(image => {
+                        return { public_id: image.public_id, secure_url: image.secure_url }
+                    })
+                    console.log({ secureUrls })
+                    props.onChange(props.name, secureUrls)
+                }
+            })
+            .catch(err => {
+                console.log({ err })
+                err.json().then(e => {
+                    toast.error(e.message)
+                    setState({ ...state, uploading: false })
+                })
+            })
     }
+
+    const filter = id => {
+        return state.images.filter(image => image.public_id !== id)
+    }
+
+    const removeImage = id => {
+        const images = filter(id)
+        setState({ ...state, images: images })
+        if (props.onChange) {
+            const secureUrls = images.map(image => {
+                return { public_id: image.public_id, secure_url: image.secure_url }
+            })
+            console.log({ secureUrls })
+            props.onChange(props.name, secureUrls)
+        }
+    }
+
+    const onError = id => {
+        toast.error('Oops, something went wrong')
+        setState({ ...state, images: filter(id) })
+    }
+
+    useEffect(() => {
+        props.setLoadingDetail(state.uploading)
+    }, [state.uploading])
+
+    useEffect(() => {
+        if (props.dataSource.length > 0) {
+            console.log("props.dataSource", props.dataSource)
+            setState({ ...state, images: props.dataSource })
+        }
+    }, [props.dataSource])
 
     return (
         <Grid container component="main" spacing={4}>
             <CssBaseline />
-            {hasImage
+            {state.images.length > 0
                 ?
-                cards.map(card => (
-                    <Grid item key={card} xs={12} sm={6} md={4}>
+                state.images.map((card, index) => (
+                    <Grid item key={index} xs={12} sm={6} md={4}>
                         <Card className={classes.card}>
                             <CardMedia
                                 className={classes.cardMedia}
-                                // image="https://source.unsplash.com/random"
-                                image="https://res.cloudinary.com/dypbi98sc/image/upload/v1573553406/teo1vs3mlfahjswebmzw.png"
+                                image={card.secure_url}
                                 title="Image title"
                             >
                                 <CardContent className={classes.cardContent}>
                                     <Button size="small" color="primary">
-                                        <DeleteIcon color="secondary" />
+                                        <DeleteIcon color="secondary" onClick={() => removeImage(card.public_id)} />
                                     </Button>
                                 </CardContent>
                             </CardMedia>
@@ -108,7 +205,6 @@ const CategoryEditContent = () => {
                 :
                 <Grid item xs={12}>
                     <div className={classes.rootAddImage}>
-                        <Notifications />
                         <div className={classes.buttonAddImages}>
                             <label htmlFor='multi'>
                                 <FontAwesomeIcon icon={faImages} color='#6d84b4' size='10x' />
@@ -121,4 +217,4 @@ const CategoryEditContent = () => {
         </Grid>
     );
 }
-export default CategoryEditContent;
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryEditContent);

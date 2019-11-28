@@ -200,6 +200,7 @@ const CategoryEdit = (props) => {
 
     useEffect(() => {
         if (dataCategoryById && dataCategoryById.category) {
+            console.log({ dataCategoryById })
             const textEditor = dataCategoryById.category.content
             let categoryDetail = dataCategoryById.category
             categoryDetail.dioceseId = dataCategoryById.category.diocese.id ? dataCategoryById.category.diocese.id : ''

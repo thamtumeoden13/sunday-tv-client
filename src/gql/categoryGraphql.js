@@ -20,6 +20,12 @@ export const CATEGORIES = gql`
                 id
                 name
             }
+            posters{
+                id
+                name
+                image
+                thumbnail
+            }
         }
     }
 `;
@@ -44,36 +50,54 @@ export const CATEGORY_BY_ID = gql`
                 id
                 name
             }
+            posters{
+                id
+                name
+                image
+                thumbnail
+            }
         }
     }
 `;
 
 export const CREATE_CATEGORY = gql`
-   mutation createCategory($name: String!, $title: String, $content: String, $published: Boolean, $dioceseId: ID!, $deaneryId: ID!, $parishId: ID!) {
-    createCategory(name: $name, title: $title, content: $content, published: $published, dioceseId: $dioceseId, deaneryId: $deaneryId, parishId: $parishId) {
+   mutation createCategory($name: String!, $title: String, $content: String, $published: Boolean, $dioceseId: ID!, $deaneryId: ID!, $parishId: ID!, $images: [Image!]!) {
+    createCategory(name: $name, title: $title, content: $content, published: $published, dioceseId: $dioceseId, deaneryId: $deaneryId, parishId: $parishId, images: $images) {
         id
         name
         title
         content
         published
+        posters{
+            id
+            name
+            image
+            thumbnail
+        }
     }
   }
 `;
 
 export const UPDATE_CATEGORY_BY_ID = gql`
-   mutation updateCategory($id: ID!, $name: String!, $title: String, $content: String, $published: Boolean, $dioceseId: ID!, $deaneryId: ID! $parishId: ID!) {
-    updateCategory(id: $id, name: $name, title: $title, content: $content, published: $published, dioceseId: $dioceseId, deaneryId: $deaneryId, parishId: $parishId) {
+   mutation updateCategory($id: ID!, $name: String!, $title: String, $content: String, $published: Boolean, $dioceseId: ID!, $deaneryId: ID!, $parishId: ID!, $images: [Image!]!) {
+    updateCategory(id: $id, name: $name, title: $title, content: $content, published: $published, dioceseId: $dioceseId, deaneryId: $deaneryId, parishId: $parishId, images: $images) {
         id
         name
         title
         content
         published
+        posters{
+            id
+            name
+            image
+            thumbnail
+        }
     }
   }
 `;
 
 export const DELETE_CATEGORIES = gql`
-   mutation deleteCategories($ids: [ID!]) {
+   mutation deleteCategories($ids: [ID!]!) {
     deleteCategories(ids: $ids) {
         count
     }
