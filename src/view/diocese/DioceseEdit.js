@@ -104,9 +104,11 @@ const DioceseEdit = (props) => {
         updateDiocese({
             variables: {
                 id: diocese.id,
-                name: diocese.name,
-                shortName: diocese.shortName,
-                published: diocese.published,
+                input: {
+                    name: diocese.name,
+                    shortName: diocese.shortName,
+                    published: diocese.published,
+                }
             }
         })
     };

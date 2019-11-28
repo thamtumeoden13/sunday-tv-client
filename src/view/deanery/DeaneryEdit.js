@@ -90,10 +90,12 @@ const DeaneryEdit = (props) => {
         updateDeanery({
             variables: {
                 id: deanery.id,
-                name: deanery.name,
-                shortName: deanery.shortName,
-                published: deanery.published,
-                dioceseId: deanery.dioceseId
+                input: {
+                    name: deanery.name,
+                    shortName: deanery.shortName,
+                    published: deanery.published,
+                    dioceseId: deanery.dioceseId
+                }
             }
         })
     };

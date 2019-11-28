@@ -130,14 +130,16 @@ const CategoryEdit = (props) => {
         updateCategory({
             variables: {
                 id: result.categoryDetail.id,
-                name: result.categoryDetail.name,
-                title: result.categoryDetail.title,
-                content: result.categoryContent.textEditor,
-                published: result.categoryDetail.published,
-                dioceseId: result.categoryDetail.dioceseId,
-                deaneryId: result.categoryDetail.deaneryId,
-                parishId: result.categoryDetail.parishId,
-                images: result.categoryAddImages,
+                input: {
+                    name: result.categoryDetail.name,
+                    title: result.categoryDetail.title,
+                    content: result.categoryContent.textEditor,
+                    published: result.categoryDetail.published,
+                    dioceseId: result.categoryDetail.dioceseId,
+                    deaneryId: result.categoryDetail.deaneryId,
+                    parishId: result.categoryDetail.parishId,
+                    images: result.categoryAddImages,
+                }
             }
         })
     }

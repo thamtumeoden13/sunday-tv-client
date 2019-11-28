@@ -81,10 +81,12 @@ const DeaneryAdd = (props) => {
     const handleSubmit = () => {
         createDeanery({
             variables: {
-                name: deanery.name,
-                shortName: deanery.shortName,
-                published: deanery.published,
-                dioceseId: deanery.dioceseId
+                input: {
+                    name: deanery.name,
+                    shortName: deanery.shortName,
+                    published: deanery.published,
+                    dioceseId: deanery.dioceseId
+                }
             }
         })
     };

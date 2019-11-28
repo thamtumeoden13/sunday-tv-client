@@ -101,6 +101,7 @@ const Deanery = (props) => {
 
     useEffect(() => {
         if (data && data.parishes) {
+            console.log({ data })
             data.parishes.map((e, i) => {
                 e.dioceseName = e.diocese.name
                 e.deaneryName = e.deanery.name

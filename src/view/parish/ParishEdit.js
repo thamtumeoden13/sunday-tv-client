@@ -100,11 +100,13 @@ const ParishEdit = (props) => {
         updateParish({
             variables: {
                 id: parish.id,
-                name: parish.name,
-                shortName: parish.shortName,
-                published: parish.published,
-                dioceseId: parish.dioceseId,
-                deaneryId: parish.deaneryId
+                input: {
+                    name: parish.name,
+                    shortName: parish.shortName,
+                    published: parish.published,
+                    dioceseId: parish.dioceseId,
+                    deaneryId: parish.deaneryId
+                }
             }
         })
     };

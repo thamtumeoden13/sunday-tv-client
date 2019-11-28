@@ -78,9 +78,11 @@ const DioceseAdd = (props) => {
     const handleSubmit = () => {
         createDiocese({
             variables: {
-                name: diocese.name,
-                shortName: diocese.shortName,
-                published: diocese.published,
+                input: {
+                    name: diocese.name,
+                    shortName: diocese.shortName,
+                    published: diocese.published,
+                }
             }
         })
     };

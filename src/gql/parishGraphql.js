@@ -11,6 +11,10 @@ export const PARISHES = gql`
                 id 
                 name
             }
+            diocese{
+                id
+                name
+            }
         }
     }
 `;
