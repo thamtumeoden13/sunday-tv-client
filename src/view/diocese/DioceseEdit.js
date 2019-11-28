@@ -11,8 +11,8 @@ import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
 import Detail from '../../component/diocese'
-import { DIOCESE as DiocesePath } from '../../constant/BreadcrumbsConfig'
-import { DIOCESE_BY_ID, UPDATE_DIOCESE_BY_ID } from '../../gql/graphqlTag'
+import { DIOCESE as DiocesePath } from '../../constant/breadcrumbsConfig'
+import { DIOCESE_BY_ID, UPDATE_DIOCESE_BY_ID } from '../../gql/dioceseGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 

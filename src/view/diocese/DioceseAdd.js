@@ -11,8 +11,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import Detail from '../../component/diocese'
-import { DIOCESE as DiocesePath } from '../../constant/BreadcrumbsConfig'
-import { CREATE_DIOCESE } from '../../gql/graphqlTag'
+import { DIOCESE as DiocesePath } from '../../constant/breadcrumbsConfig'
+import { CREATE_DIOCESE } from '../../gql/dioceseGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 

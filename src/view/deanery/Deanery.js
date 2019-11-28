@@ -9,8 +9,8 @@ import MaterialTable from "material-table";
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { DEANERY as DeaneryPath } from '../../constant/BreadcrumbsConfig'
-import { DEANERIES, DELETE_DEANERIES } from '../../gql/graphqlTag'
+import { DEANERY as DeaneryPath } from '../../constant/breadcrumbsConfig'
+import { DEANERIES, DELETE_DEANERIES } from '../../gql/deaneryGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 

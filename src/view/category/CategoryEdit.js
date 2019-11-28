@@ -18,7 +18,7 @@ import CategoryAddImages from '../../component/category/AddImages'
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { CATEGORY as CategoryPath } from '../../constant/BreadcrumbsConfig'
+import { CATEGORY as CategoryPath } from '../../constant/breadcrumbsConfig'
 import { DIOCESES_CACHE, DEANERIES_BY_DIOCESE, PARISHES_BY_DEANERY, UPDATE_CATEGORY_BY_ID, CATEGORY_BY_ID } from '../../gql/categoryGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
@@ -78,7 +78,7 @@ const CategoryEdit = (props) => {
             parishId: ''
         },
         categoryContent: { textEditor: "<p>All the parameters of the <code>search</code> method are optional. Including no parameters in the method call will return the 50 most recently created resources in descending order of creation time.My initial content.</p>" },
-        categoryAddImages: {},
+        categoryAddImages: [],
     })
 
     const [dioceses, setDioceses] = useState([])
@@ -136,7 +136,8 @@ const CategoryEdit = (props) => {
                 published: result.categoryDetail.published,
                 dioceseId: result.categoryDetail.dioceseId,
                 deaneryId: result.categoryDetail.deaneryId,
-                parishId: result.categoryDetail.parishId
+                parishId: result.categoryDetail.parishId,
+                images: result.categoryAddImages,
             }
         })
     }
@@ -159,7 +160,7 @@ const CategoryEdit = (props) => {
     }
 
     useEffect(() => {
-        props.setPagePath(CategoryPath.add)
+        props.setPagePath(CategoryPath.edit)
         getCategoryById()
         getDioceses()
     }, [])
@@ -200,17 +201,16 @@ const CategoryEdit = (props) => {
 
     useEffect(() => {
         if (dataCategoryById && dataCategoryById.category) {
-            console.log({ dataCategoryById })
             const textEditor = dataCategoryById.category.content
             let categoryDetail = dataCategoryById.category
             categoryDetail.dioceseId = dataCategoryById.category.diocese.id ? dataCategoryById.category.diocese.id : ''
             categoryDetail.deaneryId = dataCategoryById.category.deanery.id ? dataCategoryById.category.deanery.id : ''
             categoryDetail.parishId = dataCategoryById.category.parish.id ? dataCategoryById.category.parish.id : ''
-
+            const images = dataCategoryById.category.posters.map((e, i) => { return { secure_url: e.secure_url, public_id: e.public_id } })
             setResult({
                 categoryDetail: categoryDetail,
                 categoryContent: { textEditor: textEditor },
-                categoryAddImages: {},
+                categoryAddImages: images,
             })
             getDeaneries({
                 variables: {

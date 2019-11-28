@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import { connect } from "react-redux";
 import { setPagePath } from "../../actions/pageInfos";
 
-import { DASHBOARD } from '../../constant/BreadcrumbsConfig'
+import { DASHBOARD } from '../../constant/breadcrumbsConfig'
 
 const useStyles = makeStyles(theme => ({
     paper: {

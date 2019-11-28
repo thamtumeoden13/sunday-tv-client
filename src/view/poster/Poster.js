@@ -12,7 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import { setPagePath } from "../../actions/pageInfos";
 
-import { POSTER } from '../../constant/BreadcrumbsConfig'
+import { POSTER } from '../../constant/breadcrumbsConfig'
 
 const useStyles = makeStyles(theme => ({
     icon: {

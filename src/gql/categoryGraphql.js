@@ -55,14 +55,16 @@ export const CATEGORY_BY_ID = gql`
                 name
                 image
                 thumbnail
+                secure_url
+                public_id
             }
         }
     }
 `;
 
 export const CREATE_CATEGORY = gql`
-   mutation createCategory($name: String!, $title: String, $content: String, $published: Boolean, $dioceseId: ID!, $deaneryId: ID!, $parishId: ID!, $images: [Image!]!) {
-    createCategory(name: $name, title: $title, content: $content, published: $published, dioceseId: $dioceseId, deaneryId: $deaneryId, parishId: $parishId, images: $images) {
+   mutation createCategory($input: CategoryInput) {
+    createCategory(input: $input) {
         id
         name
         title
@@ -71,16 +73,16 @@ export const CREATE_CATEGORY = gql`
         posters{
             id
             name
-            image
-            thumbnail
+            public_id
+            secure_url
         }
     }
   }
 `;
 
 export const UPDATE_CATEGORY_BY_ID = gql`
-   mutation updateCategory($id: ID!, $name: String!, $title: String, $content: String, $published: Boolean, $dioceseId: ID!, $deaneryId: ID!, $parishId: ID!, $images: [Image!]!) {
-    updateCategory(id: $id, name: $name, title: $title, content: $content, published: $published, dioceseId: $dioceseId, deaneryId: $deaneryId, parishId: $parishId, images: $images) {
+   mutation updateCategory($id: ID!, $input: CategoryInput) {
+    updateCategory(id: $id, input: $input) {
         id
         name
         title
@@ -89,8 +91,8 @@ export const UPDATE_CATEGORY_BY_ID = gql`
         posters{
             id
             name
-            image
-            thumbnail
+            public_id
+            secure_url
         }
     }
   }

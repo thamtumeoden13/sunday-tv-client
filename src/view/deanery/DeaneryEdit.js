@@ -13,8 +13,8 @@ import Detail from '../../component/deanery'
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { DEANERY as DeaneryPath } from '../../constant/BreadcrumbsConfig'
-import { DIOCESES, DEANERY_BY_ID, UPDATE_DEANERY_BY_ID } from '../../gql/graphqlTag'
+import { DEANERY as DeaneryPath } from '../../constant/breadcrumbsConfig'
+import { DIOCESES, DEANERY_BY_ID, UPDATE_DEANERY_BY_ID } from '../../gql/deaneryGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 

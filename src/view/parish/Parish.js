@@ -9,8 +9,8 @@ import MaterialTable from "material-table";
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { PARISH as ParishPath } from '../../constant/BreadcrumbsConfig'
-import { PARISHES, DELETE_PARISHES } from '../../gql/graphqlTag'
+import { PARISH as ParishPath } from '../../constant/breadcrumbsConfig'
+import { PARISHES, DELETE_PARISHES } from '../../gql/parishGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 

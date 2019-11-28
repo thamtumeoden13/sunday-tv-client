@@ -18,7 +18,7 @@ import CategoryAddImages from '../../component/category/AddImages'
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { CATEGORY as CategoryPath } from '../../constant/BreadcrumbsConfig'
+import { CATEGORY as CategoryPath } from '../../constant/breadcrumbsConfig'
 import { DIOCESES_CACHE, DEANERIES_BY_DIOCESE, PARISHES_BY_DEANERY, CREATE_CATEGORY, CATEGORY_BY_ID } from '../../gql/categoryGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
@@ -120,23 +120,21 @@ const CategoryAdd = (props) => {
     }
 
     const handleSubmit = () => {
-        console.log({ result })
-        // createCategory({
-        //     variables: {
-        //         name: result.categoryDetail.name,
-        //         title: result.categoryDetail.title,
-        //         content: result.categoryContent.textEditor,
-        //         published: result.categoryDetail.published,
-        //         dioceseId: result.categoryDetail.dioceseId,
-        //         deaneryId: result.categoryDetail.deaneryId,
-        //         parishId: result.categoryDetail.parishId,
-        //         images: result.categoryAddImages,
-        //     }
-        // })
+        createCategory({
+            variables: {
+                name: result.categoryDetail.name,
+                title: result.categoryDetail.title,
+                content: result.categoryContent.textEditor,
+                published: result.categoryDetail.published,
+                dioceseId: result.categoryDetail.dioceseId,
+                deaneryId: result.categoryDetail.deaneryId,
+                parishId: result.categoryDetail.parishId,
+                images: result.categoryAddImages,
+            }
+        })
     }
     const onChangeDataSource = (name, value, isReloadDeanery, isReloadParish) => {
         setResult({ ...result, [name]: value })
-        console.log({ name, value })
         if (isReloadDeanery) {
             getDeaneries({
                 variables: {

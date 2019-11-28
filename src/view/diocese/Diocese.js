@@ -9,8 +9,8 @@ import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
 import MaterialTable from "material-table";
 
-import { DIOCESE as DiocesePath } from '../../constant/BreadcrumbsConfig'
-import { DIOCESES, DELETE_DIOCESES } from '../../gql/graphqlTag'
+import { DIOCESE as DiocesePath } from '../../constant/breadcrumbsConfig'
+import { DIOCESES, DELETE_DIOCESES } from '../../gql/dioceseGraphql'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
 const useStyles = makeStyles(theme => ({

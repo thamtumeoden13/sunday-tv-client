@@ -13,8 +13,8 @@ import Detail from '../../component/parish'
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { PARISH as ParishPath } from '../../constant/BreadcrumbsConfig'
-import { DIOCESES_CACHE, CREATE_PARISH, DEANERIES_BY_DIOCESE } from '../../gql/parishGraphql'
+import { PARISH as ParishPath } from '../../constant/breadcrumbsConfig'
+import { DIOCESES_CACHE, CREATE_PARISH, DEANERIES_BY_DIOCESE } from '../../gql/parishGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
