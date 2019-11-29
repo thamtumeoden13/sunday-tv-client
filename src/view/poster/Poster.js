@@ -1,33 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import Paper from '@material-ui/core/Paper';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import FilterListIcon from '@material-ui/icons/FilterList';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import SearchIcon from '@material-ui/icons/Search';
 
 import { connect } from "react-redux";
-import { setPagePath } from "../../actions/pageInfos";
+import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { POSTER } from '../../constant/breadcrumbsConfig'
+import { POSTER as PosterPath } from '../../constant/breadcrumbsConfig'
+
+import { POSTERS, DELETE_CATEGORIES } from '../../gql/posterGraphql'
+
+import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
 const useStyles = makeStyles(theme => ({
-    icon: {
-        marginRight: theme.spacing(2),
-    },
-    heroContent: {
-        backgroundColor: theme.palette.background.paper,
-        padding: theme.spacing(8, 0, 6),
-    },
-    heroButtons: {
-        marginTop: theme.spacing(4),
-    },
-    cardGrid: {
-        paddingTop: theme.spacing(8),
-        paddingBottom: theme.spacing(8),
+    paper: {
+        marginBottom: theme.spacing(3),
+        padding: theme.spacing(2),
     },
     card: {
         height: '100%',
@@ -40,13 +42,33 @@ const useStyles = makeStyles(theme => ({
     cardContent: {
         flexGrow: 1,
     },
-    footer: {
-        backgroundColor: theme.palette.background.paper,
-        padding: theme.spacing(6),
+    actionGroup: {
+        display: "flex",
+        justifyContent: 'space-between'
+    },
+    actionSearch: {
+        display: "flex",
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    actionIcons: {
+        display: "flex",
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    extendedIcon: {
+        marginRight: theme.spacing(1),
+    },
+    fab: {
+        boxShadow: 'none',
+        background: 'none',
+        color: '#3f51b5'
+    },
+    search: {
+        margin: theme.spacing(1),
+        // width: "100%"
     },
 }));
-
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const mapStateToProps = state => {
     return {
@@ -59,26 +81,94 @@ const mapDispatchToProps = dispatch => {
         setPagePath: pagePath => {
             dispatch(setPagePath(pagePath));
         },
+        setLoadingDetail: isLoading => {
+            dispatch(setLoadingDetail(isLoading));
+        },
     };
 };
-
 const PosterScreen = (props) => {
     const classes = useStyles();
 
+    const [posters, setPosters] = useState([])
+    const [getPosters, { loading: loadingQuery, data: dataPosters, error, refetch }] = useLazyQuery(POSTERS);
     useEffect(() => {
-        props.setPagePath(POSTER.search)
+        props.setPagePath(PosterPath.search)
+        getPosters()
     }, [])
+
+    useEffect(() => {
+        if (dataPosters && dataPosters.posters) {
+            console.log({ dataPosters })
+            dataPosters.posters.map((e, i) => {
+                e.categoryName = e.category.name
+                return e
+            })
+            setPosters(dataPosters.posters)
+        }
+    }, [dataPosters])
+
+    useEffect(() => {
+        props.setLoadingDetail(loadingQuery)
+    }, [loadingQuery])
 
     return (
         <React.Fragment>
             <CssBaseline />
             <Grid container spacing={4}>
-                {cards.map(card => (
-                    <Grid item key={card} xs={12} sm={6} md={4}>
+                <Grid item xs={12} className={classes.actionGroup}>
+                    <Grid item xs={6} className={classes.actionSearch}>
+                        <TextField
+                            className={classes.search}
+                            id="input-with-icon-textfield"
+                            label="Search"
+                            fullWidth
+                            variant="filled"
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <SearchIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={6} className={classes.actionIcons}>
+                        <Fab
+                            variant="extended"
+                            size="small"
+                            aria-label="add"
+                            className={classes.fab}
+                        >
+                            <FilterListIcon className={classes.extendedIcon} />
+                            ADD FILTER
+                        </Fab>
+                        <Fab
+                            variant="extended"
+                            size="small"
+                            aria-label="add"
+                            className={classes.fab}
+                        >
+                            <AddIcon className={classes.extendedIcon} />
+                            CREATE
+                        </Fab>
+                        <Fab
+                            variant="extended"
+                            size="small"
+                            aria-label="add"
+                            className={classes.fab}
+                        >
+                            <GetAppIcon className={classes.extendedIcon} />
+                            EXPORT
+                        </Fab>
+                    </Grid>
+                </Grid>
+                {posters.map(poster => (
+                    <Grid item key={poster.id} xs={12} sm={6} md={4}>
                         <Card className={classes.card}>
                             <CardMedia
                                 className={classes.cardMedia}
-                                image="https://source.unsplash.com/random"
+                                // image="https://source.unsplash.com/random"
+                                image={poster.image}
                                 title="Image title"
                             />
                             <CardContent className={classes.cardContent}>
