@@ -45,7 +45,7 @@ export const UPDATE_DIOCESE_BY_ID = gql`
 `;
 
 export const DELETE_DIOCESES = gql`
-   mutation deleteDioceses($ids: [ID!]) {
+   mutation deleteDioceses($ids: [ID!]!) {
     deleteDioceses(ids: $ids) {
         count
     }
@@ -107,7 +107,7 @@ export const UPDATE_DEANERY_BY_ID = gql`
 `;
 
 export const DELETE_DEANERIES = gql`
-   mutation deleteDeaneries($ids: [ID!]) {
+   mutation deleteDeaneries($ids: [ID!]!) {
     deleteDeaneries(ids: $ids) {
         count
     }

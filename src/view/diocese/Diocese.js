@@ -91,6 +91,7 @@ const Diocese = (props) => {
 
     const onDeleteData = (data) => {
         const ids = data.map((e, i) => e.id)
+        console.log({ ids })
         deleteDioceses({ variables: { ids: ids } })
     }
 

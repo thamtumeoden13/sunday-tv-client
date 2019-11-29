@@ -62,7 +62,7 @@ export const UPDATE_PARISH_BY_ID = gql`
 `;
 
 export const DELETE_PARISHES = gql`
-   mutation deleteParishes($ids: [ID!]) {
+   mutation deleteParishes($ids: [ID!]!) {
     deleteParishes(ids: $ids) {
         count
     }

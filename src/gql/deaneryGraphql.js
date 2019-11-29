@@ -66,7 +66,7 @@ export const UPDATE_DEANERY_BY_ID = gql`
 `;
 
 export const DELETE_DEANERIES = gql`
-   mutation deleteDeaneries($ids: [ID!]) {
+   mutation deleteDeaneries($ids: [ID!]!) {
     deleteDeaneries(ids: $ids) {
         count
     }
