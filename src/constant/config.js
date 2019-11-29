@@ -1,5 +1,5 @@
 export const API_URL = process.env.REACT_APP_NODE_ENV === 'production'
-  ? 'https://sunday-tv-cloudinary.herokuapp.com'
+  ? 'https://sunday-tv-cloudinary-v2.herokuapp.com'
   : 'http://localhost:8080'
 
 // export const APOLLO_API_URL = 'http://localhost:8383'
