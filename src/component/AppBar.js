@@ -17,8 +17,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import SignOut from '@material-ui/icons/SettingsPower';
 import HomeIcon from '@material-ui/icons/Home';
-import WhatshotIcon from '@material-ui/icons/Whatshot';
-import GrainIcon from '@material-ui/icons/Grain';
 
 import { setPagePath } from "../actions/pageInfos";
 
@@ -47,9 +45,6 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flex: 1,
         flexDirection: 'row',
-        // alignItems: 'flex-end',
-        // justifyContent: 'flex-end',
-        // backgroundColor: '#ff57'
     },
     menuButton: {
         marginRight: 36,
@@ -60,20 +55,10 @@ const useStyles = makeStyles(theme => ({
     title: {
         flexGrow: 1,
     },
-    rootBreadcrumbs: {
-        padding: theme.spacing(1, 2),
-        // backgroundColor: 'blue'
-        backgroundColor: 'transparent'
-    },
     link: {
         display: 'flex',
         textDecoration: 'none',
         color: 'grey'
-    },
-    icon: {
-        marginRight: theme.spacing(0.5),
-        width: 20,
-        height: 20,
     },
     groupIconsRight: {
         padding: theme.spacing(1, 2),
@@ -142,7 +127,6 @@ const AppBarComponent = (props) => {
                         <MenuIcon />
                     </IconButton>
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                        {/* {props.title} */}
                         <Breadcrumbs aria-label="breadcrumb">
                             {
                                 pagePaths.map((item, index) => {
@@ -157,7 +141,6 @@ const AppBarComponent = (props) => {
                                     else {
                                         return (
                                             <Link color="inherit" to={item.link} className={classes.link} key={index}>
-                                                {/* <HomeIcon className={classes.icon} /> */}
                                                 {React.cloneElement(item.icon)}
                                                 {item.title}
                                             </Link>
@@ -165,22 +148,6 @@ const AppBarComponent = (props) => {
                                     }
                                 })
                             }
-                            {/* <Link color="inherit" href="/" className={classes.link}>
-                                <HomeIcon className={classes.icon} />
-                                Home
-                            </Link>
-                            <Link
-                                color="inherit"
-                                href="/getting-started/installation/"
-                                className={classes.link}
-                            >
-                                <WhatshotIcon className={classes.icon} />
-                                Core
-                            </Link>
-                            <Typography color="textPrimary" className={classes.link}>
-                                <GrainIcon className={classes.icon} />
-                                Breadcrumb
-                            </Typography> */}
                         </Breadcrumbs>
                     </Typography>
                     <Paper elevation={0} className={classes.groupIconsRight}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route, BrowserRouter as Router, } from 'react-router-dom'
+import { Switch } from 'react-router-dom'
 
 import { connect } from "react-redux";
 import { setLoadingDetail } from "../../actions/pageInfos";
@@ -35,7 +35,7 @@ import Poster from '../poster/Poster'
 import NotFound from '../notfound/NotFound1'
 
 import { AUTH_TOKEN } from '../../constant/config'
-import { useMutation, useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/react-hooks';
 
 import PrivateRoute from '../../route/privateRoute'
 import PacmanLoader from 'react-spinners/PacmanLoader';

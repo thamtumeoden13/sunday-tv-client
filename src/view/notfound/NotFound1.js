@@ -8,12 +8,7 @@ import Paper from '@material-ui/core/Paper';
 
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn'
 
-const useStyles = makeStyles(theme => ({
-
-}));
-
 const NotFoundScreen = (props) => {
-    const classes = useStyles();
     return (
         <Fragment>
             <CssBaseline />

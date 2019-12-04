@@ -10,7 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faImages, faImage } from '@fortawesome/free-solid-svg-icons'
+import { faImages } from '@fortawesome/free-solid-svg-icons'
 
 import { API_URL } from '../../constant/config'
 
@@ -162,11 +162,6 @@ const CategoryEditContent = (props) => {
             console.log({ secureUrls })
             props.onChange(props.name, secureUrls)
         }
-    }
-
-    const onError = id => {
-        toast.error('Oops, something went wrong')
-        setState({ ...state, images: filter(id) })
     }
 
     useEffect(() => {

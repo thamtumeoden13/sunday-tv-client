@@ -26,10 +26,6 @@ import { POSTERS, DELETE_CATEGORIES } from '../../gql/posterGraphql'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
 const useStyles = makeStyles(theme => ({
-    paper: {
-        marginBottom: theme.spacing(3),
-        padding: theme.spacing(2),
-    },
     card: {
         height: '100%',
         display: 'flex',
@@ -65,7 +61,6 @@ const useStyles = makeStyles(theme => ({
     },
     search: {
         margin: theme.spacing(1),
-        // width: "100%"
     },
 }));
 

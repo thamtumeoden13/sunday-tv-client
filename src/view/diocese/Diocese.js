@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Link, } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import EditIcon from '@material-ui/icons/EditOutlined'
 
@@ -11,44 +10,7 @@ import MaterialTable from "material-table";
 
 import { DIOCESE as DiocesePath } from '../../constant/breadcrumbsConfig'
 import { DIOCESES, DELETE_DIOCESES } from '../../gql/dioceseGraphql'
-import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
-
-const useStyles = makeStyles(theme => ({
-    appBar: {
-        position: 'relative',
-    },
-    layout: {
-        width: 'auto',
-        marginLeft: theme.spacing(2),
-        marginRight: theme.spacing(2),
-        [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-            width: 600,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-        },
-    },
-    paper: {
-        marginTop: theme.spacing(3),
-        marginBottom: theme.spacing(3),
-        padding: theme.spacing(2),
-        [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-            marginTop: theme.spacing(6),
-            marginBottom: theme.spacing(6),
-            padding: theme.spacing(3),
-        },
-    },
-    stepper: {
-        padding: theme.spacing(3, 0, 5),
-    },
-    buttons: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-    },
-    button: {
-        marginTop: theme.spacing(3),
-        marginLeft: theme.spacing(1),
-    },
-}));
+import { useLazyQuery, useMutation } from '@apollo/react-hooks';
 
 const mapStateToProps = state => {
     return {
@@ -68,7 +30,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 const Diocese = (props) => {
-    const classes = useStyles();
     const tableRef = useRef();
     const [dioceses, setDioceses] = useState([])
 
@@ -91,7 +52,6 @@ const Diocese = (props) => {
 
     const onDeleteData = (data) => {
         const ids = data.map((e, i) => e.id)
-        console.log({ ids })
         deleteDioceses({ variables: { ids: ids } })
     }
 
@@ -120,7 +80,6 @@ const Diocese = (props) => {
             <MaterialTable
                 title="Danh Sách Giáo Phận"
                 tableRef={tableRef}
-                // isLoading={loadingQuery}
                 columns={[
                     {
                         title: 'Avatar',
@@ -132,7 +91,6 @@ const Diocese = (props) => {
                             />
                         ),
                     },
-                    // { title: 'Mã Giáo Phận', field: 'id' },
                     { title: 'Tên Giáo Phận', field: 'name', },
                     { title: 'Tên rút gọn', field: 'shortName' },
                     {

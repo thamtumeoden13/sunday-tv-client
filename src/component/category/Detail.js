@@ -1,5 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import Button from '@material-ui/core/Button';
+import React, { useState, useEffect } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -19,20 +18,9 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        // maxWidth: '50%'
     },
     root: {
-        // display: 'flex',
-        // flexDirection: 'column',
-        // alignItems: 'center',
         width: '50%'
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
     },
 }));
 

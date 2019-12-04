@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Link, withRouter } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import EditIcon from '@material-ui/icons/EditOutlined'
@@ -13,43 +13,6 @@ import { CATEGORY as CategoryPath } from '../../constant/breadcrumbsConfig'
 import { CATEGORIES, DELETE_CATEGORIES } from '../../gql/categoryGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
-
-const useStyles = makeStyles(theme => ({
-    appBar: {
-        position: 'relative',
-    },
-    layout: {
-        width: 'auto',
-        marginLeft: theme.spacing(2),
-        marginRight: theme.spacing(2),
-        [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-            width: 600,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-        },
-    },
-    paper: {
-        marginTop: theme.spacing(3),
-        marginBottom: theme.spacing(3),
-        padding: theme.spacing(2),
-        [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-            marginTop: theme.spacing(6),
-            marginBottom: theme.spacing(6),
-            padding: theme.spacing(3),
-        },
-    },
-    stepper: {
-        padding: theme.spacing(3, 0, 5),
-    },
-    buttons: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-    },
-    button: {
-        marginTop: theme.spacing(3),
-        marginLeft: theme.spacing(1),
-    },
-}));
 
 const mapStateToProps = state => {
     return {
@@ -69,7 +32,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 const CategoryAddNew = (props) => {
-    const classes = useStyles();
     const tableRef = useRef();
     const [categories, setCategories] = useState([])
     const [getCategories, { loading: loadingQuery, data, error, refetch }] = useLazyQuery(CATEGORIES);
@@ -104,7 +66,6 @@ const CategoryAddNew = (props) => {
                 e.dioceseName = e.diocese.name
                 e.deaneryName = e.deanery.name
                 e.parishName = e.parish.name
-                // e.content = e.content.substring(0, 100)
                 return e
             })
             setCategories(data.categories)
@@ -136,10 +97,8 @@ const CategoryAddNew = (props) => {
                             />
                         ),
                     },
-                    // { title: 'Mã Danh mục', field: 'id' },
                     { title: 'Tên Danh mục', field: 'name', },
                     { title: 'Tiêu đề', field: 'title' },
-                    // { title: 'Nội dung', field: 'content' },
                     { title: 'Giáo phận', field: 'dioceseName' },
                     { title: 'Giáo hạt', field: 'deaneryName' },
                     { title: 'Giáo xứ', field: 'parishName' },

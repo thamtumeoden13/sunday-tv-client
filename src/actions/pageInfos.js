@@ -5,9 +5,7 @@ export const setPagePath = (pagePaths) => ({
     pagePaths: pagePaths,
 });
 
-
 export const setLoadingDetail = (isLoading) => ({
     type: actions.SET_LOADING_DETAIL,
     isLoading: isLoading,
 });
-

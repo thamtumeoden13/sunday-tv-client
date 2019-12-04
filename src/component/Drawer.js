@@ -20,7 +20,6 @@ import Collapse from '@material-ui/core/Collapse';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import StarBorder from '@material-ui/icons/StarBorder';
 
 import AppBarMenu from '../constant/AppBarMenu';
 

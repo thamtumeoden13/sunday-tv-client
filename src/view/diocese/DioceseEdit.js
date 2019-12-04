@@ -14,7 +14,7 @@ import Detail from '../../component/diocese'
 import { DIOCESE as DiocesePath } from '../../constant/breadcrumbsConfig'
 import { DIOCESE_BY_ID, UPDATE_DIOCESE_BY_ID } from '../../gql/dioceseGraphql'
 
-import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
+import { useLazyQuery, useMutation } from '@apollo/react-hooks';
 
 const useStyles = makeStyles(theme => ({
     paper: {

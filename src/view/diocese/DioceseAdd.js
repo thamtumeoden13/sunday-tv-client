@@ -14,7 +14,7 @@ import Detail from '../../component/diocese'
 import { DIOCESE as DiocesePath } from '../../constant/breadcrumbsConfig'
 import { CREATE_DIOCESE } from '../../gql/dioceseGraphql'
 
-import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -30,7 +30,6 @@ const useStyles = makeStyles(theme => ({
         marginLeft: theme.spacing(1),
     },
 }));
-
 
 const mapStateToProps = state => {
     return {
