@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useState, useEffect } from 'react';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -102,12 +103,9 @@ const DeaneryAdd = (props) => {
     }, [data])
 
     useEffect(() => {
-        props.setLoadingDetail(loadingQuery)
-    }, [loadingQuery])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingMutation)
-    }, [loadingMutation])
+        const loading = loadingQuery || loadingMutation
+        props.setLoadingDetail(loading)
+    }, [loadingQuery, loadingMutation])
 
     return (
         <Fragment>

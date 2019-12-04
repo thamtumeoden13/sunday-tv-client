@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -92,7 +93,6 @@ const PosterScreen = (props) => {
 
     useEffect(() => {
         if (dataPosters && dataPosters.posters) {
-            console.log({ dataPosters })
             dataPosters.posters.map((e, i) => {
                 e.categoryName = e.category.name
                 return e

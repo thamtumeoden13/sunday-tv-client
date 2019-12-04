@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useState, useEffect } from 'react';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -117,20 +118,9 @@ const ParishEdit = (props) => {
     }, [])
 
     useEffect(() => {
-        props.setLoadingDetail(loadingQueryDioceses)
-    }, [loadingQueryDioceses])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingQueryDeaneries)
-    }, [loadingQueryDeaneries])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingParishById)
-    }, [loadingParishById])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingMutation)
-    }, [loadingMutation])
+        const loading = loadingQueryDioceses || loadingQueryDeaneries || loadingParishById || loadingMutation
+        props.setLoadingDetail(loading)
+    }, [loadingQueryDioceses, loadingQueryDeaneries, loadingParishById, loadingMutation])
 
     useEffect(() => {
         if (dataDioceses && dataDioceses.dioceses) {

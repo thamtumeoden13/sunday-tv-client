@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useEffect, useState } from 'react';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -179,20 +180,9 @@ const CategoryEdit = (props) => {
     }, [dataParishes])
 
     useEffect(() => {
-        props.setLoadingDetail(loadingQueryDioceses)
-    }, [loadingQueryDioceses])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingQueryDeaneries)
-    }, [loadingQueryDeaneries])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingQueryParishes)
-    }, [loadingQueryParishes])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingMutation)
-    }, [loadingMutation])
+        const loading = loadingQueryDioceses || loadingQueryDeaneries || loadingQueryParishes || loadingMutation;
+        props.setLoadingDetail(loading)
+    }, [loadingQueryDioceses, loadingQueryDeaneries, loadingQueryParishes, loadingMutation])
 
     useEffect(() => {
         if (dataCategoryById && dataCategoryById.category) {

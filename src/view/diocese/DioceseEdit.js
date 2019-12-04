@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useEffect, useState } from 'react';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -77,25 +78,6 @@ const DioceseEdit = (props) => {
         }
     );
 
-    useEffect(() => {
-        props.setPagePath(DiocesePath.edit)
-        getDioceseById()
-    }, [])
-
-    useEffect(() => {
-        if (dataQuery && dataQuery.diocese) {
-            setDiocese(dataQuery.diocese)
-        }
-    }, [dataQuery])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingQuery)
-    }, [loadingQuery])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingMutation)
-    }, [loadingMutation])
-
     const onChangeText = (value) => {
         setDiocese(value);
     }
@@ -112,6 +94,22 @@ const DioceseEdit = (props) => {
             }
         })
     };
+
+    useEffect(() => {
+        props.setPagePath(DiocesePath.edit)
+        getDioceseById()
+    }, [])
+
+    useEffect(() => {
+        if (dataQuery && dataQuery.diocese) {
+            setDiocese(dataQuery.diocese)
+        }
+    }, [dataQuery])
+
+    useEffect(() => {
+        const loading = loadingQuery || loadingMutation
+        props.setLoadingDetail(loading)
+    }, [loadingQuery, loadingMutation])
 
     return (
         <Fragment>

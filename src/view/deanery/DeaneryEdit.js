@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useEffect, useState } from 'react';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -106,16 +107,9 @@ const DeaneryEdit = (props) => {
     }, [])
 
     useEffect(() => {
-        props.setLoadingDetail(loadingQuery)
-    }, [loadingQuery,])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingDioceses)
-    }, [loadingDioceses,])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingMutation)
-    }, [loadingMutation])
+        const loading = loadingQuery || loadingDioceses || loadingMutation
+        props.setLoadingDetail(loading)
+    }, [loadingQuery, loadingDioceses, loadingMutation])
 
     useEffect(() => {
         if (dataDeanery && dataDeanery.deanery) {

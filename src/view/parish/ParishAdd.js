@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useState, useEffect } from 'react';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -119,16 +120,9 @@ const ParishAdd = (props) => {
     }, [dataDeaneries])
 
     useEffect(() => {
-        props.setLoadingDetail(loadingQueryDioceses)
-    }, [loadingQueryDioceses])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingQueryDeaneries)
-    }, [loadingQueryDeaneries])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingMutation)
-    }, [loadingMutation])
+        const loading = loadingQueryDioceses || loadingQueryDeaneries || loadingMutation
+        props.setLoadingDetail(loading)
+    }, [loadingQueryDioceses, loadingQueryDeaneries, loadingMutation])
 
     return (
         <Fragment>

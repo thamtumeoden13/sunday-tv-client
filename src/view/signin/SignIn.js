@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -36,7 +37,7 @@ const Copyright = () => {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
+            <Link color="primary" href="https://material-ui.com/">
                 Your Website
       </Link>{' '}
             {new Date().getFullYear()}
@@ -107,7 +108,6 @@ const SignInScreen = (props) => {
             onError(error) {
                 const { from } = props.location.state || { from: { pathname: '/' } }
                 props.history.push(from)
-                // alert(error)
             }
         }
     );

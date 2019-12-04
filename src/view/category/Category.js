@@ -1,6 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import EditIcon from '@material-ui/icons/EditOutlined'
 
@@ -73,12 +73,9 @@ const CategoryAddNew = (props) => {
     }, [data])
 
     useEffect(() => {
-        props.setLoadingDetail(loadingQuery)
-    }, [loadingQuery])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingMutation)
-    }, [loadingMutation])
+        const loading = loadingQuery || loadingMutation
+        props.setLoadingDetail(loading)
+    }, [loadingQuery, loadingMutation])
 
     return (
         <React.Fragment>

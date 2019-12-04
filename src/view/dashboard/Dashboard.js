@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useEffect } from 'react';
 import clsx from 'clsx';
 
@@ -72,4 +73,3 @@ const DashBoardScreen = (props) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashBoardScreen);
-// export default DashBoardScreen;

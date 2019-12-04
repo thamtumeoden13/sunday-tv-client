@@ -1,6 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import EditIcon from '@material-ui/icons/EditOutlined'
 
@@ -34,7 +34,7 @@ const mapDispatchToProps = dispatch => {
 const Deanery = (props) => {
     const tableRef = useRef();
     const [parishes, setParishes] = useState([])
-    const [getParishes, { loading: loadingQuery, data, error, refetch }] = useLazyQuery(PARISHES);
+    const [getParishes, { loading: loadingQuery, data, error: errorQuery, refetch }] = useLazyQuery(PARISHES);
     const [deleteParishes, { loading: loadingMutation, error: errorMutation }] = useMutation(DELETE_PARISHES,
         {
             onCompleted(...params) {
@@ -62,7 +62,6 @@ const Deanery = (props) => {
 
     useEffect(() => {
         if (data && data.parishes) {
-            console.log({ data })
             data.parishes.map((e, i) => {
                 e.dioceseName = e.diocese.name
                 e.deaneryName = e.deanery.name
@@ -73,12 +72,13 @@ const Deanery = (props) => {
     }, [data])
 
     useEffect(() => {
-        props.setLoadingDetail(loadingQuery)
-    }, [loadingQuery])
+        const loading = loadingQuery || loadingMutation
+        props.setLoadingDetail(loading)
+    }, [loadingQuery, loadingMutation])
 
-    useEffect(() => {
-        props.setLoadingDetail(loadingMutation)
-    }, [loadingMutation])
+    // useEffect(() => {
+    //     props.setLoadingDetail(loadingMutation)
+    // }, [loadingMutation])
 
 
     return (

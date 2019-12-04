@@ -119,14 +119,14 @@ const AppBarComponent = (props) => {
                 <Toolbar className={classes.toolbar}>
                     <IconButton
                         edge="start"
-                        color="inherit"
+                        color="primary"
                         aria-label="open drawer"
                         onClick={handleDrawerOpen}
                         className={clsx(classes.menuButton, statusDrawer && classes.menuButtonHidden)}
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                    <Typography component="h1" variant="h6" color="primary" noWrap className={classes.title}>
                         <Breadcrumbs aria-label="breadcrumb">
                             {
                                 pagePaths.map((item, index) => {
@@ -140,7 +140,7 @@ const AppBarComponent = (props) => {
                                     }
                                     else {
                                         return (
-                                            <Link color="inherit" to={item.link} className={classes.link} key={index}>
+                                            <Link color="primary" to={item.link} className={classes.link} key={index}>
                                                 {React.cloneElement(item.icon)}
                                                 {item.title}
                                             </Link>
@@ -151,12 +151,12 @@ const AppBarComponent = (props) => {
                         </Breadcrumbs>
                     </Typography>
                     <Paper elevation={0} className={classes.groupIconsRight}>
-                        <IconButton color="inherit">
+                        <IconButton color="primary">
                             <Badge badgeContent={4} color="secondary">
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton>
-                        <IconButton color="inherit" onClick={handleSignOut}>
+                        <IconButton color="primary" onClick={handleSignOut}>
                             <SignOut />
                         </IconButton>
                     </Paper>

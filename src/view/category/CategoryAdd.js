@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useEffect, useState } from 'react';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -18,7 +19,7 @@ import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
 import { CATEGORY as CategoryPath } from '../../constant/breadcrumbsConfig'
-import { DIOCESES_CACHE, DEANERIES_BY_DIOCESE, PARISHES_BY_DEANERY, CREATE_CATEGORY, CATEGORY_BY_ID } from '../../gql/categoryGraphql'
+import { DIOCESES_CACHE, DEANERIES_BY_DIOCESE, PARISHES_BY_DEANERY, CREATE_CATEGORY } from '../../gql/categoryGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
@@ -170,20 +171,9 @@ const CategoryAdd = (props) => {
     }, [dataParishes])
 
     useEffect(() => {
-        props.setLoadingDetail(loadingQueryDioceses)
-    }, [loadingQueryDioceses])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingQueryDeaneries)
-    }, [loadingQueryDeaneries])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingQueryParishes)
-    }, [loadingQueryParishes])
-
-    useEffect(() => {
-        props.setLoadingDetail(loadingMutation)
-    }, [loadingMutation])
+        const loading = loadingQueryDioceses || loadingQueryDeaneries || loadingQueryParishes || loadingMutation;
+        props.setLoadingDetail(loading)
+    }, [loadingQueryDioceses, loadingQueryDeaneries, loadingQueryParishes, loadingMutation])
 
     return (
         <Fragment>

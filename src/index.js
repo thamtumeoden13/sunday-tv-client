@@ -1,7 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { connect } from 'react-redux';
-// import App1 from './view/App'
 import registerServiceWorker from './registerServiceWorker'
 import { BrowserRouter as Router } from 'react-router-dom'
 
@@ -70,8 +68,6 @@ const error = onError(({ graphQLErrors, networkError, operation, forward }) => {
                 `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, extensions: ${extensions.code}`,
             ),
         );
-    // console.log(`[operation]: ${operation.getContext().headers}`);
-    // console.log(`[forward]: ${forward}`);
     if (networkError) console.log(`[Network error]: ${networkError}`);
     // if (graphQLErrors) {
     //     for (let err of graphQLErrors) {
@@ -113,7 +109,6 @@ const link = ApolloLink.from([
 const client = new ApolloClient({
     // Provide required constructor fields
     cache: cache,
-    // link: link,
     link: link,
     // Provide some optional constructor fields
     // name: 'react-web-client',
