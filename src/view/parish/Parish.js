@@ -9,7 +9,7 @@ import MaterialTable from "material-table";
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-// import { PARISH as ParishPath } from '../../constant/breadcrumbsConfig'
+import { PARISH as ParishPath } from '../../constant/breadcrumbsConfig'
 import { PARISHES, DELETE_PARISHES } from '../../gql/parishGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
@@ -56,7 +56,7 @@ const Deanery = (props) => {
     }
 
     useEffect(() => {
-        // props.setPagePath(ParishPath.search)
+        props.setPagePath(ParishPath.search)
         getParishes()
     }, [])
 
@@ -75,11 +75,6 @@ const Deanery = (props) => {
         const loading = loadingQuery || loadingMutation
         props.setLoadingDetail(loading)
     }, [loadingQuery, loadingMutation])
-
-    // useEffect(() => {
-    //     props.setLoadingDetail(loadingMutation)
-    // }, [loadingMutation])
-
 
     return (
         <React.Fragment>
