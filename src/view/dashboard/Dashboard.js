@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import { connect } from "react-redux";
 import { setPagePath } from "../../actions/pageInfos";
 
-// import { DASHBOARD } from '../../constant/breadcrumbsConfig'
+import { DASHBOARD } from '../../constant/breadcrumbsConfig'
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -42,7 +42,7 @@ const DashBoardScreen = (props) => {
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     useEffect(() => {
-        // props.setPagePath(DASHBOARD.search)
+        props.setPagePath(DASHBOARD.search)
     }, [])
 
     return (

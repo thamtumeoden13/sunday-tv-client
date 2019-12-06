@@ -9,7 +9,7 @@ import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
 import MaterialTable from "material-table";
 
-// import { DIOCESE as DiocesePath } from '../../constant/breadcrumbsConfig'
+import { DIOCESE as DiocesePath } from '../../constant/breadcrumbsConfig'
 import { DIOCESES, DELETE_DIOCESES } from '../../gql/dioceseGraphql'
 import { useLazyQuery, useMutation } from '@apollo/react-hooks';
 
@@ -57,7 +57,7 @@ const Diocese = (props) => {
     }
 
     useEffect(() => {
-        // props.setPagePath(DiocesePath.search)
+        props.setPagePath(DiocesePath.search)
         getDioceses()
     }, [])
 

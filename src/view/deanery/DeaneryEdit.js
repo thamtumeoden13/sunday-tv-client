@@ -13,7 +13,7 @@ import Detail from '../../component/deanery'
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-// import { DEANERY as DeaneryPath } from '../../constant/breadcrumbsConfig'
+import { DEANERY as DeaneryPath } from '../../constant/breadcrumbsConfig'
 import { DIOCESES, DEANERY_BY_ID, UPDATE_DEANERY_BY_ID } from '../../gql/deaneryGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
@@ -101,7 +101,7 @@ const DeaneryEdit = (props) => {
     };
 
     useEffect(() => {
-        // props.setPagePath(DeaneryPath.edit)
+        props.setPagePath(DeaneryPath.edit)
         getDeaneryById()
         getDioceses()
     }, [])

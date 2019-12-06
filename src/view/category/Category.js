@@ -9,7 +9,7 @@ import MaterialTable from "material-table";
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-// import { CATEGORY as CategoryPath } from '../../constant/breadcrumbsConfig'
+import { CATEGORY as CategoryPath } from '../../constant/breadcrumbsConfig'
 import { CATEGORIES, DELETE_CATEGORIES } from '../../gql/categoryGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
@@ -56,7 +56,7 @@ const CategoryAddNew = (props) => {
     }
 
     useEffect(() => {
-        // props.setPagePath(CategoryPath.search)
+        props.setPagePath(CategoryPath.search)
         getCategories()
     }, [])
 
