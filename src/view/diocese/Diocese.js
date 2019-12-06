@@ -9,7 +9,10 @@ import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
 import MaterialTable from "material-table";
 
-import { DIOCESE as DiocesePath } from '../../constant/breadcrumbsConfig'
+import HomeIcon from '@material-ui/icons/Home';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import GrainIcon from '@material-ui/icons/Grain';
+// import { DIOCESE as DiocesePath } from '../../constant/breadcrumbsConfig'
 import { DIOCESES, DELETE_DIOCESES } from '../../gql/dioceseGraphql'
 import { useLazyQuery, useMutation } from '@apollo/react-hooks';
 
@@ -29,7 +32,22 @@ const mapDispatchToProps = dispatch => {
         },
     };
 };
-
+const DIOCESE = {
+    search: [
+        { link: "/", title: "Trang chủ", icon: <HomeIcon /> },
+        { link: "", title: "Giáo Phận", icon: <WhatshotIcon /> }
+    ],
+    add: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/diocese/", title: "Giáo Phận", icon: <WhatshotIcon /> },
+        { link: "", title: "Thêm Mới", icon: <GrainIcon /> }
+    ],
+    edit: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/diocese", title: "Giáo Phận", icon: <WhatshotIcon /> },
+        { link: "", title: "Chỉnh sửa", icon: <GrainIcon /> }
+    ]
+}
 const Diocese = (props) => {
     const tableRef = useRef();
     const [dioceses, setDioceses] = useState([])
@@ -57,7 +75,7 @@ const Diocese = (props) => {
     }
 
     useEffect(() => {
-        props.setPagePath(DiocesePath.search)
+        props.setPagePath(DIOCESE.search)
         getDioceses()
     }, [])
 
