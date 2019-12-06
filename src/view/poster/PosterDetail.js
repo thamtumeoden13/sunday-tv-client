@@ -13,7 +13,7 @@ import SignIn from '../../component/SignIn'
 import { connect } from "react-redux";
 import { setPagePath } from "../../actions/pageInfos";
 
-import { POSTER } from '../../constant/BreadcrumbsConfig'
+// import { POSTER } from '../../constant/BreadcrumbsConfig'
 
 const useStyles = makeStyles(theme => ({
 
@@ -37,7 +37,7 @@ const PosterScreen = (props) => {
     const classes = useStyles();
 
     useEffect(() => {
-        props.setPagePath(POSTER.view)
+        // props.setPagePath(POSTER.view)
     }, [])
     return (
         <Fragment>
