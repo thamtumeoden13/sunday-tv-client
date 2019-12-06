@@ -18,7 +18,7 @@ import CategoryAddImages from '../../component/category/AddImages'
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { CATEGORY as CategoryPath } from '../../constant/breadcrumbsConfig'
+// import { CATEGORY as CategoryPath } from '../../constant/breadcrumbsConfig'
 import { DIOCESES_CACHE, DEANERIES_BY_DIOCESE, PARISHES_BY_DEANERY, UPDATE_CATEGORY_BY_ID, CATEGORY_BY_ID } from '../../gql/categoryGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
@@ -156,7 +156,7 @@ const CategoryEdit = (props) => {
     }
 
     useEffect(() => {
-        props.setPagePath(CategoryPath.edit)
+        // props.setPagePath(CategoryPath.edit)
         getCategoryById()
         getDioceses()
     }, [])

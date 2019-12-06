@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
 import Detail from '../../component/diocese'
-import { DIOCESE as DiocesePath } from '../../constant/breadcrumbsConfig'
+// import { DIOCESE as DiocesePath } from '../../constant/breadcrumbsConfig'
 import { DIOCESE_BY_ID, UPDATE_DIOCESE_BY_ID } from '../../gql/dioceseGraphql'
 
 import { useLazyQuery, useMutation } from '@apollo/react-hooks';
@@ -96,7 +96,7 @@ const DioceseEdit = (props) => {
     };
 
     useEffect(() => {
-        props.setPagePath(DiocesePath.edit)
+        // props.setPagePath(DiocesePath.edit)
         getDioceseById()
     }, [])
 

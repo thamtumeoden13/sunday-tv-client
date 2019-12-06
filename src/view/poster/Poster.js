@@ -20,7 +20,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { POSTER as PosterPath } from '../../constant/breadcrumbsConfig'
+// import { POSTER as PosterPath } from '../../constant/breadcrumbsConfig'
 
 import { POSTERS, DELETE_CATEGORIES } from '../../gql/posterGraphql'
 
@@ -87,7 +87,7 @@ const PosterScreen = (props) => {
     const [posters, setPosters] = useState([])
     const [getPosters, { loading: loadingQuery, data: dataPosters, error, refetch }] = useLazyQuery(POSTERS);
     useEffect(() => {
-        props.setPagePath(PosterPath.search)
+        // props.setPagePath(PosterPath.search)
         getPosters()
     }, [])
 

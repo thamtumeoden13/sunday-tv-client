@@ -9,7 +9,7 @@ import MaterialTable from "material-table";
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { DEANERY as DeaneryPath } from '../../constant/breadcrumbsConfig'
+// import { DEANERY as DeaneryPath } from '../../constant/breadcrumbsConfig'
 import { DEANERIES, DELETE_DEANERIES } from '../../gql/deaneryGraphql'
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
@@ -56,7 +56,7 @@ const Deanery = (props) => {
     }
 
     useEffect(() => {
-        props.setPagePath(DeaneryPath.search)
+        // props.setPagePath(DeaneryPath.search)
         getDeaneries()
     }, [])
 
