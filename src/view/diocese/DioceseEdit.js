@@ -8,11 +8,14 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+import HomeIcon from '@material-ui/icons/Home';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import GrainIcon from '@material-ui/icons/Grain';
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
 import Detail from '../../component/diocese'
-import { DIOCESE as DiocesePath } from '../../constant/breadcrumbsConfig'
+// import { DIOCESE as DiocesePath } from '../../constant/breadcrumbsConfig'
 import { DIOCESE_BY_ID, UPDATE_DIOCESE_BY_ID } from '../../gql/dioceseGraphql'
 
 import { useLazyQuery, useMutation } from '@apollo/react-hooks';
@@ -49,6 +52,22 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
+const DIOCESE = {
+    search: [
+        { link: "/", title: "Trang chủ", icon: <HomeIcon /> },
+        { link: "", title: "Giáo Phận", icon: <WhatshotIcon /> }
+    ],
+    add: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/diocese/", title: "Giáo Phận", icon: <WhatshotIcon /> },
+        { link: "", title: "Thêm Mới", icon: <GrainIcon /> }
+    ],
+    edit: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/diocese", title: "Giáo Phận", icon: <WhatshotIcon /> },
+        { link: "", title: "Chỉnh sửa", icon: <GrainIcon /> }
+    ]
+}
 const DioceseEdit = (props) => {
     const classes = useStyles();
     const dioceseId = props.match.params.id
@@ -96,7 +115,7 @@ const DioceseEdit = (props) => {
     };
 
     useEffect(() => {
-        props.setPagePath(DiocesePath.edit)
+        props.setPagePath(DIOCESE.edit)
         getDioceseById()
     }, [])
 

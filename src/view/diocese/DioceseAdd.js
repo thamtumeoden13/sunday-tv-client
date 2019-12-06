@@ -12,9 +12,12 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import Detail from '../../component/diocese'
-import { DIOCESE as DiocesePath } from '../../constant/breadcrumbsConfig'
+// import { DIOCESE as DiocesePath } from '../../constant/breadcrumbsConfig'
 import { CREATE_DIOCESE } from '../../gql/dioceseGraphql'
 
+import HomeIcon from '@material-ui/icons/Home';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import GrainIcon from '@material-ui/icons/Grain';
 import { useMutation } from '@apollo/react-hooks';
 
 const useStyles = makeStyles(theme => ({
@@ -49,6 +52,22 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
+const DIOCESE = {
+    search: [
+        { link: "/", title: "Trang chủ", icon: <HomeIcon /> },
+        { link: "", title: "Giáo Phận", icon: <WhatshotIcon /> }
+    ],
+    add: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/diocese/", title: "Giáo Phận", icon: <WhatshotIcon /> },
+        { link: "", title: "Thêm Mới", icon: <GrainIcon /> }
+    ],
+    edit: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/diocese", title: "Giáo Phận", icon: <WhatshotIcon /> },
+        { link: "", title: "Chỉnh sửa", icon: <GrainIcon /> }
+    ]
+}
 const DioceseAdd = (props) => {
     const classes = useStyles();
     const [diocese, setDiocese] = useState({
@@ -89,7 +108,7 @@ const DioceseAdd = (props) => {
 
 
     useEffect(() => {
-        props.setPagePath(DiocesePath.add)
+        props.setPagePath(DIOCESE.add)
     }, [])
 
     useEffect(() => {

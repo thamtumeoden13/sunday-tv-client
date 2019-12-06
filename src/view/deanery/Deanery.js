@@ -9,8 +9,11 @@ import MaterialTable from "material-table";
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { DEANERY as DeaneryPath } from '../../constant/breadcrumbsConfig'
+// import { DEANERY as DeaneryPath } from '../../constant/breadcrumbsConfig'
 import { DEANERIES, DELETE_DEANERIES } from '../../gql/deaneryGraphql'
+import HomeIcon from '@material-ui/icons/Home';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import GrainIcon from '@material-ui/icons/Grain';
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
@@ -30,6 +33,23 @@ const mapDispatchToProps = dispatch => {
         },
     };
 };
+
+export const DEANERY = {
+    search: [
+        { link: "/", title: "Trang chủ", icon: <HomeIcon /> },
+        { link: "", title: "Giáo Hạt", icon: <WhatshotIcon /> }
+    ],
+    add: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/diocese", title: "Giáo Hạt", icon: <WhatshotIcon /> },
+        { link: "", title: "Thêm Mới", icon: <GrainIcon /> }
+    ],
+    edit: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/diocese", title: "Giáo Hạt", icon: <WhatshotIcon /> },
+        { link: "", title: "Chỉnh sửa", icon: <GrainIcon /> }
+    ]
+}
 
 const Deanery = (props) => {
     const tableRef = useRef();
@@ -56,7 +76,7 @@ const Deanery = (props) => {
     }
 
     useEffect(() => {
-        props.setPagePath(DeaneryPath.search)
+        props.setPagePath(DEANERY.search)
         getDeaneries()
     }, [])
 

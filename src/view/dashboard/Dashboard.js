@@ -10,8 +10,17 @@ import Paper from '@material-ui/core/Paper';
 import { connect } from "react-redux";
 import { setPagePath } from "../../actions/pageInfos";
 
-import { DASHBOARD } from '../../constant/breadcrumbsConfig'
+// import { DASHBOARD } from '../../constant/breadcrumbsConfig'
+import HomeIcon from '@material-ui/icons/Home';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import GrainIcon from '@material-ui/icons/Grain';
 
+export const DASHBOARD = {
+    search: [
+        { link: "/", title: "Trang chủ", icon: <HomeIcon /> },
+        { link: "", title: "Thống Kê", icon: <WhatshotIcon /> }
+    ],
+}
 const useStyles = makeStyles(theme => ({
     paper: {
         padding: theme.spacing(2),

@@ -18,8 +18,11 @@ import CategoryAddImages from '../../component/category/AddImages'
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { CATEGORY as CategoryPath } from '../../constant/breadcrumbsConfig'
+// import { CATEGORY as CategoryPath } from '../../constant/breadcrumbsConfig'
 import { DIOCESES_CACHE, DEANERIES_BY_DIOCESE, PARISHES_BY_DEANERY, UPDATE_CATEGORY_BY_ID, CATEGORY_BY_ID } from '../../gql/categoryGraphql'
+import HomeIcon from '@material-ui/icons/Home';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import GrainIcon from '@material-ui/icons/Grain';
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
@@ -57,6 +60,23 @@ const mapDispatchToProps = dispatch => {
         },
     };
 };
+
+export const CATEGORY = {
+    search: [
+        { link: "/", title: "Trang chủ", icon: <HomeIcon /> },
+        { link: "", title: "Danh Mục", icon: <WhatshotIcon /> }
+    ],
+    add: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/category", title: "Danh Mục", icon: <WhatshotIcon /> },
+        { link: "", title: "Thêm Mới", icon: <GrainIcon /> }
+    ],
+    edit: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/category", title: "Danh Mục", icon: <WhatshotIcon /> },
+        { link: "", title: "Chỉnh sửa", icon: <GrainIcon /> }
+    ]
+}
 const CategoryEdit = (props) => {
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
@@ -156,7 +176,7 @@ const CategoryEdit = (props) => {
     }
 
     useEffect(() => {
-        props.setPagePath(CategoryPath.edit)
+        props.setPagePath(CATEGORY.edit)
         getCategoryById()
         getDioceses()
     }, [])

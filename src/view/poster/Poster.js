@@ -20,7 +20,10 @@ import SearchIcon from '@material-ui/icons/Search';
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { POSTER as PosterPath } from '../../constant/breadcrumbsConfig'
+// import { POSTER as PosterPath } from '../../constant/breadcrumbsConfig'
+import HomeIcon from '@material-ui/icons/Home';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import GrainIcon from '@material-ui/icons/Grain';
 
 import { POSTERS, DELETE_CATEGORIES } from '../../gql/posterGraphql'
 
@@ -81,13 +84,35 @@ const mapDispatchToProps = dispatch => {
         },
     };
 };
+
+export const POSTER = {
+    search: [
+        { link: "/", title: "Trang chủ", icon: <HomeIcon /> },
+        { link: "", title: "Hình Ảnh", icon: <WhatshotIcon /> }
+    ],
+    add: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/poster", title: "Hình Ảnh", icon: <WhatshotIcon /> },
+        { link: "", title: "Thêm Mới", icon: <GrainIcon /> }
+    ],
+    edit: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/poster", title: "Hình Ảnh", icon: <WhatshotIcon /> },
+        { link: "", title: "Chỉnh sửa", icon: <GrainIcon /> }
+    ],
+    view: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/poster", title: "Hình Ảnh", icon: <WhatshotIcon /> },
+        { link: "", title: "Chi Tiết", icon: <GrainIcon /> }
+    ],
+}
 const PosterScreen = (props) => {
     const classes = useStyles();
 
     const [posters, setPosters] = useState([])
     const [getPosters, { loading: loadingQuery, data: dataPosters, error, refetch }] = useLazyQuery(POSTERS);
     useEffect(() => {
-        props.setPagePath(PosterPath.search)
+        props.setPagePath(POSTER.search)
         getPosters()
     }, [])
 

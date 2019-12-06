@@ -13,8 +13,11 @@ import Detail from '../../component/parish'
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { PARISH as ParishPath } from '../../constant/breadcrumbsConfig'
+// import { PARISH as ParishPath } from '../../constant/breadcrumbsConfig'
 import { DIOCESES_CACHE, UPDATE_PARISH_BY_ID, DEANERIES_BY_DIOCESE, PARISH_BY_ID } from '../../gql/parishGraphql'
+import HomeIcon from '@material-ui/icons/Home';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import GrainIcon from '@material-ui/icons/Grain';
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
@@ -49,6 +52,23 @@ const mapDispatchToProps = dispatch => {
         },
     };
 };
+
+export const PARISH = {
+    search: [
+        { link: "/", title: "Trang chủ", icon: <HomeIcon /> },
+        { link: "", title: "Giáo Xứ", icon: <WhatshotIcon /> }
+    ],
+    add: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/parish", title: "Giáo Xứ", icon: <WhatshotIcon /> },
+        { link: "", title: "Thêm Mới", icon: <GrainIcon /> }
+    ],
+    edit: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/parish", title: "Giáo Xứ", icon: <WhatshotIcon /> },
+        { link: "", title: "Chỉnh sửa", icon: <GrainIcon /> }
+    ]
+}
 
 const ParishEdit = (props) => {
     const classes = useStyles();
@@ -112,7 +132,7 @@ const ParishEdit = (props) => {
     };
 
     useEffect(() => {
-        props.setPagePath(ParishPath.add)
+        props.setPagePath(PARISH.add)
         getParishById()
         getDioceses()
     }, [])

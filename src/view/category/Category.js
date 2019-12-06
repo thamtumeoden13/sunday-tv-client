@@ -9,8 +9,11 @@ import MaterialTable from "material-table";
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { CATEGORY as CategoryPath } from '../../constant/breadcrumbsConfig'
+// import { CATEGORY as CategoryPath } from '../../constant/breadcrumbsConfig'
 import { CATEGORIES, DELETE_CATEGORIES } from '../../gql/categoryGraphql'
+import HomeIcon from '@material-ui/icons/Home';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import GrainIcon from '@material-ui/icons/Grain';
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
@@ -31,6 +34,22 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
+export const CATEGORY = {
+    search: [
+        { link: "/", title: "Trang chủ", icon: <HomeIcon /> },
+        { link: "", title: "Danh Mục", icon: <WhatshotIcon /> }
+    ],
+    add: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/category", title: "Danh Mục", icon: <WhatshotIcon /> },
+        { link: "", title: "Thêm Mới", icon: <GrainIcon /> }
+    ],
+    edit: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/category", title: "Danh Mục", icon: <WhatshotIcon /> },
+        { link: "", title: "Chỉnh sửa", icon: <GrainIcon /> }
+    ]
+}
 const CategoryAddNew = (props) => {
     const tableRef = useRef();
     const [categories, setCategories] = useState([])
@@ -56,7 +75,7 @@ const CategoryAddNew = (props) => {
     }
 
     useEffect(() => {
-        props.setPagePath(CategoryPath.search)
+        props.setPagePath(CATEGORY.search)
         getCategories()
     }, [])
 

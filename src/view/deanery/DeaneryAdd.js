@@ -13,8 +13,11 @@ import Detail from '../../component/deanery'
 import { connect } from "react-redux";
 import { setPagePath, setLoadingDetail } from "../../actions/pageInfos";
 
-import { DEANERY as DeaneryPath } from '../../constant/breadcrumbsConfig'
+// import { DEANERY as DeaneryPath } from '../../constant/breadcrumbsConfig'
 import { DIOCESES, CREATE_DEANERY } from '../../gql/deaneryGraphql'
+import HomeIcon from '@material-ui/icons/Home';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import GrainIcon from '@material-ui/icons/Grain';
 
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 
@@ -49,6 +52,23 @@ const mapDispatchToProps = dispatch => {
         },
     };
 };
+
+export const DEANERY = {
+    search: [
+        { link: "/", title: "Trang chủ", icon: <HomeIcon /> },
+        { link: "", title: "Giáo Hạt", icon: <WhatshotIcon /> }
+    ],
+    add: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/diocese", title: "Giáo Hạt", icon: <WhatshotIcon /> },
+        { link: "", title: "Thêm Mới", icon: <GrainIcon /> }
+    ],
+    edit: [
+        { link: "/", title: "Trang Chủ", icon: <HomeIcon /> },
+        { link: "/diocese", title: "Giáo Hạt", icon: <WhatshotIcon /> },
+        { link: "", title: "Chỉnh sửa", icon: <GrainIcon /> }
+    ]
+}
 
 const DeaneryAdd = (props) => {
     const classes = useStyles();
@@ -92,7 +112,7 @@ const DeaneryAdd = (props) => {
     };
 
     useEffect(() => {
-        props.setPagePath(DeaneryPath.add)
+        props.setPagePath(DEANERY.add)
         getDioceses()
     }, [])
 
