@@ -61,7 +61,7 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export const CATEGORY = {
+const CATEGORY = {
     search: [
         { link: "/", title: "Trang chủ", icon: <HomeIcon /> },
         { link: "", title: "Danh Mục", icon: <WhatshotIcon /> }
